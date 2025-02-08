@@ -1,7 +1,5 @@
-// Language reference (does not always work):
-// https://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/language-elements.html
+// Language reference
 
-// https://help.adobe.com/en_US/as3/learn/WS597e5dadb9cc1e02-6e28df0f130d240d5d7-8000.html
 const PREC = {
   PRIMARY: 16, // [] {x:y} () f(x) new x.y x[y] <></> @ :: ..
   POSTFIX: 15, // x++ x--
@@ -22,7 +20,7 @@ const PREC = {
 };
 
 module.exports = grammar({
-  name: 'actionscript',
+  name: 'hexa',
 
   extras: ($) => [$.line_comment, $.block_comment, /\s/],
 
@@ -717,7 +715,6 @@ module.exports = grammar({
       );
 
       // Numeric constants
-      // https://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/package-detail.html
       const nan = 'NaN';
       const pInfinity = 'Infinity';
       const mInfinity = '-Infinity';
