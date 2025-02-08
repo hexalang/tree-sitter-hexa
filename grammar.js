@@ -14,7 +14,7 @@ const PREC = {
   BITWISE_OR: 6, // |
   LOGICAL_AND: 5, // &&
   LOGICAL_OR: 4, // ||
-  CONDITIONAL: 3, // ?:
+  CONDITIONAL: 3, // ?: ?? =>
   ASSIGNEMENT: 2, // = *= /= %= += -= <<= >>= >>>= &= ^= |=
   COMMA: 1, // ,
 };
@@ -79,7 +79,7 @@ module.exports = grammar({
       seq(
         repeat($.annotation),
         repeat($.class_attribut),
-        'class',
+        choice('enum', 'class'),
         field('name', $._data_type),
         optional(field('superclass', seq('extends', $._data_type))),
         optional(
@@ -90,15 +90,20 @@ module.exports = grammar({
 
     annotation: ($) =>
       seq(
-        '[',
-        sep1(
-          seq($.identifier, optional(seq('(', sep1($.expression, ','), ')'))),
-          ','
-        ),
-        ']'
+        field('name', /@[A-z0-9_]+/),
+        //'@',
+        //sep1(
+         // seq(
+        //  $.identifier,
+          optional(seq('(', sep1($.expression, ','), ')'))
+          //)
+          //,
+        //  ','
+        //)//,
+        //''
       ),
 
-    class_attribut: ($) => choice('dynamic', 'final', 'internal', 'public'),
+    class_attribut: ($) => choice('dynamic', 'final', 'declare', 'public'),
 
     interface_declaration: ($) =>
       seq(
@@ -112,7 +117,7 @@ module.exports = grammar({
         '}'
       ),
 
-    interface_attribut: ($) => choice('internal', 'public'),
+    interface_attribut: ($) => choice('declare', 'public'),
 
     method_declaration: ($) =>
       seq(
@@ -175,7 +180,7 @@ module.exports = grammar({
       seq(
         repeat($.annotation),
         repeat($.property_attribut),
-        'const',
+        'let',
         field('name', $.identifier),
         optional(field('type', $.type_hint)),
         optional(seq('=', field('value', $.expression))),
@@ -184,14 +189,14 @@ module.exports = grammar({
 
     property_attribut: ($) =>
       choice(
-        'internal',
+        'declare',
         'private',
         'protected',
         'public',
         'static',
         'final',
-        'override',
-        $.identifier // namespace
+        'override' //,
+         // $.identifier // namespace
       ),
 
     accessor: ($) => choice('get', 'set'),
@@ -233,7 +238,7 @@ module.exports = grammar({
       prec.right(
         seq(
           'if',
-          field('condition', $.parenthesized_expression),
+          field('condition', prec(PREC.PRIMARY + 10, $._expressions)),
           field('consequence', $.statement),
           optional(field('alternative', $.else_clause))
         )
@@ -244,7 +249,7 @@ module.exports = grammar({
     switch_statement: ($) =>
       seq(
         'switch',
-        field('value', $.parenthesized_expression),
+        field('value', prec(PREC.PRIMARY, $._expressions)),
         field('body', $.switch_body)
       ),
     switch_body: ($) =>
@@ -310,7 +315,7 @@ module.exports = grammar({
     while_statement: ($) =>
       seq(
         'while',
-        field('condition', $.parenthesized_expression),
+        field('condition', prec(PREC.PRIMARY + 10, $._expressions)),
         field('body', $.statement)
       ),
 
@@ -340,10 +345,10 @@ module.exports = grammar({
     catch_clause: ($) =>
       seq(
         'catch',
-        '(',
+        //'(',
         field('parameter', $.identifier),
         optional(field('type', $.type_hint)),
-        ')',
+        //')',
         field('body', $.statement_block)
       ),
     finally_clause: ($) => seq('finally', field('body', $.statement_block)),
@@ -472,7 +477,7 @@ module.exports = grammar({
       ),
 
     array: ($) =>
-      prec(PREC.PRIMARY, seq('[', optional(sep1($.expression, ',')), ']')),
+      prec(PREC.PRIMARY + 1, seq('[', optional(sep1($.expression, ',')), ']')),
 
     vector: ($) =>
       prec(
@@ -484,8 +489,9 @@ module.exports = grammar({
     xml: ($) =>
       choice(
         seq(
-          '<',
-          $.identifier,
+          //'<',
+          //$.identifier,
+          /<[A-z]+/,
           repeat($.xml_attribute),
           '>',
           // TODO: make a proper regex for the xml content
@@ -494,7 +500,7 @@ module.exports = grammar({
           $.identifier,
           '>'
         ),
-        seq('<', $.identifier, repeat($.xml_attribute), '/>')
+        seq(/*'<', $.identifier*/ /<[A-z]+/, repeat($.xml_attribute), '/>')
       ),
 
     xml_attribute: ($) => seq($.identifier, '=', $.string),
@@ -517,7 +523,7 @@ module.exports = grammar({
       prec(
         PREC.PRIMARY,
         seq(
-          field('fun', $.expression),
+          field('fun', $.identifier),
           '(',
           field('parameters', optional(sep1($.expression, ','))),
           ')'
@@ -571,7 +577,7 @@ module.exports = grammar({
         seq(
           field(
             'operator',
-            choice('+', '-', '~', '!', 'delete', 'typeof', 'void')
+            choice('+', '-', '~', '!', 'not', 'typeof', 'void')
           ),
           field('argument', $.expression)
         )
@@ -604,14 +610,18 @@ module.exports = grammar({
           ['^', PREC.BITWISE_XOR],
           ['|', PREC.BITWISE_OR],
           ['&&', PREC.LOGICAL_AND],
+          ['and', PREC.LOGICAL_AND],
           ['||', PREC.LOGICAL_OR],
+          ['or', PREC.LOGICAL_OR],
+          ['??', PREC.CONDITIONAL],
+          ['=>', PREC.CONDITIONAL],
         ].map(([op, pre]) =>
           prec.left(pre, seq($.expression, op, $.expression))
         )
       ),
 
     cast_expression: ($) =>
-      prec.left(PREC.RELATIONAL, seq($.expression, 'as', $._data_type)),
+      prec.left(PREC.RELATIONAL, seq($.expression, 'as', optional(choice('!', '?')), $._data_type)),
 
     ternary_expression: ($) =>
       prec.right(
@@ -649,6 +659,7 @@ module.exports = grammar({
     _data_type: ($) =>
       prec.right(
         choice(
+          $.array_type,
           $.any_type,
           $.identifier,
           $.generic_data_type,
@@ -657,6 +668,8 @@ module.exports = grammar({
       ),
 
     any_type: ($) => '*',
+
+    array_type: ($) => seq('[', $._data_type, ']'),
 
     generic_data_type: ($) =>
       seq(
@@ -668,7 +681,10 @@ module.exports = grammar({
 
     scoped_data_type: ($) => seq($.identifier, '.', $._data_type),
 
-    type_hint: ($) => seq(':', field('type', $._data_type)),
+    type_hint: ($) => seq(':',
+      field('type', $._data_type),
+      optional('?')
+    ),
 
     // Primitive
 
@@ -775,6 +791,13 @@ module.exports = grammar({
             choice($._unescaped_single_string_fragment, $._escape_sequence)
           ),
           "'"
+        ),
+        seq(
+          "`",
+          repeat(
+            choice($._unescaped_backtick_string_fragment, $._escape_sequence)
+          ),
+          "`"
         )
       ),
 
@@ -783,6 +806,9 @@ module.exports = grammar({
 
     _unescaped_single_string_fragment: ($) =>
       token.immediate(prec(1, /[^'\\]+/)),
+
+    _unescaped_backtick_string_fragment: ($) =>
+      token.immediate(prec(1, /[^`\\]+/)),
 
     _escape_sequence: ($) =>
       token.immediate(
