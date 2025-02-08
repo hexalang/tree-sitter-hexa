@@ -117,7 +117,7 @@ module.exports = grammar({
     method_declaration: ($) =>
       seq(
         repeat($.annotation),
-        'function',
+        'fun',
         optional($.accessor),
         field('name', choice('get', 'set', $.identifier)),
         '(',
@@ -131,7 +131,7 @@ module.exports = grammar({
       seq(
         repeat($.annotation),
         repeat($.property_attribut),
-        'function',
+        'fun',
         optional($.accessor),
         // awful way to allow function named 'get' or 'set'
         field('name', choice('get', 'set', $.identifier)),
@@ -503,7 +503,7 @@ module.exports = grammar({
       prec(
         PREC.PRIMARY,
         seq(
-          'function',
+          'fun',
           optional(field('name', $.identifier)),
           '(',
           field('parameters', optional($.function_parameters)),
@@ -517,7 +517,7 @@ module.exports = grammar({
       prec(
         PREC.PRIMARY,
         seq(
-          field('function', $.expression),
+          field('fun', $.expression),
           '(',
           field('parameters', optional(sep1($.expression, ','))),
           ')'

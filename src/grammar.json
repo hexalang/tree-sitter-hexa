@@ -532,7 +532,7 @@
         },
         {
           "type": "STRING",
-          "value": "function"
+          "value": "fun"
         },
         {
           "type": "CHOICE",
@@ -632,7 +632,7 @@
         },
         {
           "type": "STRING",
-          "value": "function"
+          "value": "fun"
         },
         {
           "type": "CHOICE",
@@ -2599,7 +2599,7 @@
         "members": [
           {
             "type": "STRING",
-            "value": "function"
+            "value": "fun"
           },
           {
             "type": "CHOICE",
@@ -2676,7 +2676,7 @@
         "members": [
           {
             "type": "FIELD",
-            "name": "function",
+            "name": "fun",
             "content": {
               "type": "SYMBOL",
               "name": "expression"

@@ -37,7 +37,7 @@ Simple package
 
 package a {
     class B {
-        function c() {
+        fun c() {
 
         }
     }

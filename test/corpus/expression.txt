@@ -67,7 +67,7 @@ var a = ("hello");
 anonymous functions
 ===================
 
-const a = function(param: int, ...rest): void {
+const a = fun(param: int, ...rest): void {
     var b = "hello";
 };
 
@@ -94,7 +94,7 @@ const a = function(param: int, ...rest): void {
 another anonymous with name
 ===========================
 
-const f = function filterContactsByNameFunction(person:SocialCharacterWrapper, index:int, vector:Vector.<SocialCharacterWrapper>):Boolean {
+const f = fun filterContactsByNameFunction(person:SocialCharacterWrapper, index:int, vector:Vector.<SocialCharacterWrapper>):Boolean {
 
 };
 

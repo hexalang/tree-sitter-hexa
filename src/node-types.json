@@ -486,7 +486,7 @@
     "type": "call_expression",
     "named": true,
     "fields": {
-      "function": {
+      "fun": {
         "multiple": false,
         "required": true,
         "types": [
@@ -2584,7 +2584,7 @@
     "named": false
   },
   {
-    "type": "function",
+    "type": "fun",
     "named": false
   },
   {

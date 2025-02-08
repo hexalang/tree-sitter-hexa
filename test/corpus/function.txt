@@ -2,7 +2,7 @@
 Empty function no args
 ======================
 
-function hello() {}
+fun hello() {}
 
 ---
 
@@ -14,7 +14,7 @@ function hello() {}
 Empty function with args
 ========================
 
-function Hello (args1, args2) {}
+fun Hello (args1, args2) {}
 
 ---
 
@@ -30,7 +30,7 @@ function Hello (args1, args2) {}
 Empty function with typed args
 ==============================
 
-function Hello (args1: Vector.<int>, args2: String) {}
+fun Hello (args1: Vector.<int>, args2: String) {}
 
 ---
 
@@ -53,7 +53,7 @@ function Hello (args1: Vector.<int>, args2: String) {}
 Empty function with return type
 ===============================
 
-function hello(): void {}
+fun hello(): void {}
 
 ---
 
@@ -70,7 +70,7 @@ function hello(): void {}
 With simple body
 ================
 
-function hello() {
+fun hello() {
     var a = "Hello!";
 }
 
@@ -89,7 +89,7 @@ function hello() {
 With property attribut
 ======================
 
-private function world() {
+private fun world() {
 
 }
 
@@ -107,7 +107,7 @@ private function world() {
 With variable length parameter
 ==============================
 
-function hello(...args) {
+fun hello(...args) {
     
 }
 
@@ -125,7 +125,7 @@ function hello(...args) {
 Function getter
 ===============
 
-function get hello() {
+fun get hello() {
     
 }
 
@@ -143,7 +143,7 @@ function get hello() {
 Function setter
 ===============
 
-function set hello() {
+fun set hello() {
     
 }
 
@@ -161,7 +161,7 @@ function set hello() {
 default parameter
 =================
 
-function hello(w = "World", sep: String = "!") {
+fun hello(w = "World", sep: String = "!") {
 
 }
 
@@ -187,7 +187,7 @@ With annotation
 ===============
 
 [Inspectable(enumeration="none,left,right,start,end")]
-public function get float() : *
+public fun get float() : *
 {
    return this._float;
 }
@@ -218,7 +218,7 @@ With another annotation
 
 [Bindable("listChanged")]
 [Inspectable(arrayType="Object",category="General")]
-public function get float(): *
+public fun get float(): *
 {
    return this._float;
 }
@@ -249,7 +249,7 @@ public function get float(): *
 function called get
 ===================
 
-public function get() {}
+public fun get() {}
 
 ---
 
@@ -264,7 +264,7 @@ public function get() {}
 function called set
 ===================
 
-public function set() {}
+public fun set() {}
 
 ---
 
