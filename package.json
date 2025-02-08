@@ -1,7 +1,7 @@
 {
   "name": "tree-sitter-hexa",
   "version": "0.1.0",
-  "description": "Actionscript grammar for tree-sitter",
+  "description": "Hexa grammar for tree-sitter",
   "main": "bindings/node",
   "keywords": [
     "parser",
