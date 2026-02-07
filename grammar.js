@@ -17,7 +17,7 @@ const PREC = {
   CONDITIONAL: 3, // ?: ?? =>
   ASSIGNEMENT: 2, // = *= /= %= += -= <<= >>= >>>= &= ^= |=
   COMMA: 1, // ,
-};
+}
 
 module.exports = grammar({
   name: 'hexa',
@@ -695,25 +695,25 @@ module.exports = grammar({
 
     // from https://github.com/tree-sitter/tree-sitter-javascript/blob/master/grammar.js
     number: ($) => {
-      const hex_literal = seq(choice('0x', '0X'), /[\da-fA-F](_*[\da-fA-F])*/);
+      const hex_literal = seq(choice('0x', '0X'), /[\da-fA-F](_*[\da-fA-F])*/)
 
-      const decimal_digits = /\d(_*\d)*/;
-      const signed_integer = seq(optional(choice('-', '+')), decimal_digits);
-      const exponent_part = seq(choice('e', 'E'), signed_integer);
+      const decimal_digits = /\d(_*\d)*/
+      const signed_integer = seq(optional(choice('-', '+')), decimal_digits)
+      const exponent_part = seq(choice('e', 'E'), signed_integer)
 
-      const binary_literal = seq(choice('0b', '0B'), /[0-1](_*[0-1])*/);
+      const binary_literal = seq(choice('0b', '0B'), /[0-1](_*[0-1])*/)
 
-      const octal_literal = seq(choice('0o', '0O'), /[0-7](_*[0-7])*/);
+      const octal_literal = seq(choice('0o', '0O'), /[0-7](_*[0-7])*/)
 
       const bigint_literal = seq(
         choice(hex_literal, binary_literal, octal_literal, decimal_digits),
         'n'
-      );
+      )
 
       const decimal_integer_literal = choice(
         '0',
         seq(optional('0'), /[1-9]/, optional(seq(repeat('_'), decimal_digits)))
-      );
+      )
 
       const decimal_literal = choice(
         seq(
@@ -725,12 +725,12 @@ module.exports = grammar({
         seq('.', decimal_digits, optional(exponent_part)),
         seq(decimal_integer_literal, exponent_part),
         seq(decimal_digits)
-      );
+      )
 
       // Numeric constants
-      const nan = 'NaN';
-      const pInfinity = 'Infinity';
-      const mInfinity = '-Infinity';
+      const nan = 'NaN'
+      const pInfinity = 'Infinity'
+      const mInfinity = '-Infinity'
 
       return token(
         choice(
@@ -743,7 +743,7 @@ module.exports = grammar({
           pInfinity,
           mInfinity
         )
-      );
+      )
     },
 
     // number: ($) =>
@@ -868,10 +868,10 @@ module.exports = grammar({
     line_comment: ($) => token(seq('//', /[^\n]*/)),
     block_comment: ($) => token(seq('/*', /[^*]*\*+([^/*][^*]*\*+)*/, '/')),
   },
-});
+})
 
 function sep1(rule, separator) {
-  return seq(rule, repeat(seq(separator, rule)));
+  return seq(rule, repeat(seq(separator, rule)))
 }
 
 function caseInsensitive(keyword) {
@@ -880,5 +880,5 @@ function caseInsensitive(keyword) {
       .split('')
       .map((letter) => `[${letter}${letter.toUpperCase()}]`)
       .join('')
-  );
+  )
 }
