@@ -34,6 +34,7 @@ module.exports = grammar({
   conflicts: ($) => [
     [$.sequence_expression, $.pair],
     [$.primary_expression, $.for_in_statement],
+    [$.return_statement, $.statement_block],
   ],
 
   word: ($) => $.identifier,
@@ -66,9 +67,11 @@ module.exports = grammar({
         optional('readonly'),
         'class',
         field('name', $._type_identifier),
-        optional(field('superclass', seq(field('super_token', choice(':', 'extends')), $._data_type))),
+        optional(field('heritage', $.heritage)),
         field('body', $.class_body)
       ),
+
+    heritage: ($) => repeat1($._data_type),
 
     enum_declaration: ($) =>
       seq(
@@ -76,7 +79,7 @@ module.exports = grammar({
         optional(seq('@extensibleTags')),
         'enum',
         field('name', $._type_identifier),
-        optional(field('base', $._data_type)),
+        optional(field('heritage', $.heritage)),
         field('body', $.enum_body)
       ),
 
@@ -160,7 +163,7 @@ module.exports = grammar({
         repeat($.decorator),
         'interface',
         field('name', $._type_identifier),
-        optional(field('supertype', seq(':', sep1($._data_type, ',')))),
+        optional(field('heritage', $.heritage)),
         '{',
         field('body', repeat($.interface_member)),
         '}'
@@ -175,7 +178,7 @@ module.exports = grammar({
         'fun',
         field('name', $.identifier),
         field('parameters', $.function_parameters),
-        optional(field('return_type', $._data_type)),
+        optional(field('return_type', alias($._data_type, $.type_hint))),
         optional($.statement_terminator)
       ),
 
@@ -184,7 +187,7 @@ module.exports = grammar({
         repeat($.decorator),
         choice('var', 'let'),
         field('name', $.identifier),
-        field('type', $._data_type),
+        field('type', alias($._data_type, $.type_hint)),
         optional($.statement_terminator)
       ),
 
@@ -196,7 +199,7 @@ module.exports = grammar({
         choice('fun', 'function'),
         field('name', $.identifier),
         field('parameters', $.function_parameters),
-        optional(field('return_type', $._data_type)),
+        optional(field('return_type', alias($._data_type, $.type_hint))),
         field('body', $.statement_block)
       ),
 
@@ -209,7 +212,7 @@ module.exports = grammar({
               seq(
                 repeat($.decorator),
                 field('name', $.identifier),
-                optional(field('type', $._data_type)),
+                optional(field('type', alias($._data_type, $.type_hint))),
                 optional(field('default', seq('=', $.expression)))
               ),
               $.rest
@@ -232,8 +235,8 @@ module.exports = grammar({
       seq(
         'var',
         field('name', $.identifier),
-        optional(field('type', $._data_type)),
-        seq('=', field('value', $.expression))
+        optional(field('type', alias($._data_type, $.type_hint))),
+        optional(seq('=', field('value', $.expression)))
       ),
 
     constant_declaration: ($) =>
@@ -242,15 +245,15 @@ module.exports = grammar({
         repeat($.property_attribut),
         'let',
         field('name', $.identifier),
-        optional(field('type', $._data_type)),
-        seq('=', field('value', $.expression)),
+        optional(field('type', alias($._data_type, $.type_hint))),
+        optional(seq('=', field('value', $.expression))),
         optional($.statement_terminator)
       ),
 
     property_attribut: ($) =>
       choice('declare', 'private', 'static', 'readonly'),
 
-    rest: ($) => seq('...', field('name', $.identifier), optional(field('type', $._data_type))),
+    rest: ($) => seq('...', field('name', $.identifier), optional(field('type', alias($._data_type, $.type_hint)))),
 
     statement_terminator: ($) => choice(';'),
 
@@ -368,7 +371,7 @@ module.exports = grammar({
       seq(
         'catch',
         field('parameter', $.identifier),
-        field('type', $._data_type),
+        field('type', alias($._data_type, $.type_hint)),
         optional(field('guard', choice(
           seq('if', $._expressions),
           seq('if', 'let', field('binding', $.let_binding), optional(seq(',', field('additional_conditions', repeat1($.let_condition)))))
@@ -376,13 +379,13 @@ module.exports = grammar({
         field('body', $.statement_block)
       ),
 
-    break_statement: ($) => seq('break', optional(field('label', $.identifier)), optional($.statement_terminator)),
+    break_statement: ($) => seq('break'),
 
-    continue_statement: ($) => seq('continue', optional(field('label', $.identifier)), optional($.statement_terminator)),
+    continue_statement: ($) => seq('continue'),
 
-    return_statement: ($) => seq('return', optional($.expression), optional($.statement_terminator)),
+    return_statement: ($) => prec.left(seq('return', optional($.expression))),
 
-    throw_statement: ($) => seq('throw', optional($.expression), optional($.statement_terminator)),
+    throw_statement: ($) => prec.left(seq('throw', optional($.expression))),
 
     guard_statement: ($) => 
       choice(
@@ -414,7 +417,6 @@ module.exports = grammar({
         $.update_expression,
         $.force_unpack_expression,
         $.spread_expression,
-        $.cast_expression,
         $.cascade_expression
       ),
 
@@ -511,7 +513,7 @@ module.exports = grammar({
           'fun',
           optional(field('name', $.identifier)),
           field('parameters', $.function_parameters),
-          optional(field('return_type', $._data_type)),
+          optional(field('return_type', alias($._data_type, $.type_hint))),
           field('body', $.statement_block)
         )
       ),
@@ -1068,7 +1070,7 @@ module.exports = grammar({
 
     // Tagged template literals
     tagged_template: ($) =>
-      seq(
+      prec.dynamic(1, seq(
         field('tag', choice($.identifier, $.meta_expression)),
         choice(
           // Backticks: html`content`
@@ -1078,7 +1080,7 @@ module.exports = grammar({
           // Triple quotes: gql```content```
           seq('```', field('content', repeat1(choice($.string, $.identifier, $.expression))), '```')
         )
-      ),
+      )),
 
     // Meta expressions
     meta_expression: ($) =>
@@ -1156,7 +1158,7 @@ module.exports = grammar({
               seq($.meta_expression, '(', field('define', $.string), ')'),
               seq($.meta_expression, '(', field('define', $.string), ')', choice('>=', '<', '==', '!='), field('value', choice($.string, $.number))),
               seq(field('variable', $.identifier), choice('==', '!='), field('value', choice($.string, $.identifier)))
-            ),
+            )),
             choice('and', 'or'),
             field('right', choice(
               seq($.meta_expression, '(', field('define', $.string), ')'),
@@ -1168,7 +1170,7 @@ module.exports = grammar({
         optional(seq('#else', field('else_condition', choice(
           $.preprocessor_directive,
           repeat($.statement)
-        ))),
+        )))),
         '#endif'
       ),
 
