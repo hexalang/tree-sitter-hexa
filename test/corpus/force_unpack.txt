@@ -1,0 +1,181 @@
+================
+basic force unpack
+================
+
+let value = nullable!
+let result = array[index]!
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (force_unpack_expression (identifier))
+    )
+    (constant_declaration
+        (identifier)
+        (force_unpack_expression
+            (subscript_expression (identifier) (identifier))
+        )
+    )
+)
+
+================
+force unpack with method calls
+================
+
+let result = getValue()!.process()
+let name = getUser()!.name
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (call_expression
+            (force_unpack_expression
+                (call_expression (identifier))
+            )
+            (identifier)
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (member_expression
+            (force_unpack_expression
+                (call_expression (identifier))
+            )
+            (identifier)
+        )
+    )
+)
+
+================
+force unpack with member access
+================
+
+let value = obj.field!
+let data = obj.nested.field!
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (force_unpack_expression
+            (member_expression (identifier) (identifier))
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (force_unpack_expression
+            (member_expression
+                (member_expression (identifier) (identifier))
+                (identifier)
+            )
+        )
+    )
+)
+
+================
+force unpack with chaining
+================
+
+let result = getNullable()!.field.method()!
+let value = obj?.nested!.value
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (force_unpack_expression
+            (call_expression
+                (member_expression
+                    (force_unpack_expression
+                        (call_expression (identifier))
+                    )
+                    (identifier)
+                )
+                (identifier)
+            )
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (binary_expression
+            (member_expression
+                (identifier)
+                (identifier)
+            )
+            (??)
+            (force_unpack_expression
+                (member_expression (identifier) (identifier))
+            )
+        )
+    )
+)
+
+================
+force unpack in expressions
+================
+
+let result = (getValue()! + 10) * 2
+let valid = nullable! && true
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (binary_expression
+            (parenthesized_expression
+                (binary_expression
+                    (force_unpack_expression
+                        (call_expression (identifier))
+                    )
+                    (+)
+                    (number)
+                )
+            )
+            (*)
+            (number)
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (binary_expression
+            (force_unpack_expression (identifier))
+            (and)
+            (true)
+        )
+    )
+)
+
+================
+force unpack with function calls
+================
+
+process(getValue()!)
+let result = calculate(a!, b!)
+
+---
+
+(program
+    (expression_statement
+        (call_expression
+            (identifier)
+            (force_unpack_expression
+                (call_expression (identifier))
+            )
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (call_expression
+            (identifier)
+            (force_unpack_expression (identifier))
+            (force_unpack_expression (identifier))
+        )
+    )
+)

@@ -21,7 +21,7 @@ fun process(value Int) Int {
 (program
     (function_declaration
         (contract_decorator
-            @verify {
+            '{'
             (expression_statement
                 (binary_expression
                     (identifier)
@@ -32,7 +32,7 @@ fun process(value Int) Int {
             (expression_statement
                 (string)
             )
-            }
+            '}'
         )
         (identifier)
         (function_parameters
@@ -84,8 +84,11 @@ fun processWithSave(value Int) Int {
     )
     (function_declaration
         (contract_decorator
-            @verify {
-            (@save (identifier) as (identifier))
+            '{'
+            (save_clause
+                (variable (identifier))
+                (alias (identifier))
+            )
             (expression_statement
                 (binary_expression
                     (identifier)
@@ -96,7 +99,7 @@ fun processWithSave(value Int) Int {
             (expression_statement
                 (string)
             )
-            }
+            '}'
         )
         (identifier)
         (function_parameters
@@ -394,18 +397,21 @@ class BankAccount {
 (program
     (class_declaration
         (contract_decorator
-            @verify {
-            (expression_statement
-                (binary_expression
-                    (identifier)
-                    (>=)
-                    (number)
+            (seq
+                '@verify'
+                '{'
+                (expression_statement
+                    (binary_expression
+                        (identifier)
+                        (>=)
+                        (number)
+                    )
                 )
+                (expression_statement
+                    (string)
+                )
+                '}'
             )
-            (expression_statement
-                (string)
-            )
-            }
         )
         (identifier)
         (class_body
@@ -416,18 +422,21 @@ class BankAccount {
             )
             (function_declaration
                 (contract_decorator
-                    @verify {
-                    (expression_statement
-                        (binary_expression
-                            (binary_expression (identifier) (+) (identifier))
-                            (>=)
-                            (number)
+                    (seq
+                        '@verify'
+                        '{'
+                        (expression_statement
+                            (binary_expression
+                                (binary_expression (identifier) (+) (identifier))
+                                (>=)
+                                (number)
+                            )
                         )
+                        (expression_statement
+                            (string)
+                        )
+                        '}'
                     )
-                    (expression_statement
-                        (string)
-                    )
-                    }
                 )
                 (identifier)
                 (function_parameters
@@ -445,18 +454,21 @@ class BankAccount {
             )
             (function_declaration
                 (contract_decorator
-                    @verify {
-                    (expression_statement
-                        (binary_expression
-                            (binary_expression (identifier) (-) (identifier))
-                            (>=)
-                            (number)
+                    (seq
+                        '@verify'
+                        '{'
+                        (expression_statement
+                            (binary_expression
+                                (binary_expression (identifier) (-) (identifier))
+                                (>=)
+                                (number)
+                            )
                         )
+                        (expression_statement
+                            (string)
+                        )
+                        '}'
                     )
-                    (expression_statement
-                        (string)
-                    )
-                    }
                 )
                 (identifier)
                 (function_parameters
@@ -502,28 +514,31 @@ class Temperature {
 (program
     (class_declaration
         (contract_decorator
-            @verify {
-            (expression_statement
-                (binary_expression
-                    (identifier)
-                    (>=)
-                    (number)
+            (seq
+                '@verify'
+                '{'
+                (expression_statement
+                    (binary_expression
+                        (identifier)
+                        (>=)
+                        (number)
+                    )
                 )
-            )
-            (expression_statement
-                (string)
-            )
-            (expression_statement
-                (binary_expression
-                    (identifier)
-                    (<=)
-                    (number)
+                (expression_statement
+                    (string)
                 )
+                (expression_statement
+                    (binary_expression
+                        (identifier)
+                        (<=)
+                        (number)
+                    )
+                )
+                (expression_statement
+                    (string)
+                )
+                '}'
             )
-            (expression_statement
-                (string)
-            )
-            }
         )
         (identifier)
         (class_body
@@ -533,22 +548,25 @@ class Temperature {
             )
             (function_declaration
                 (contract_decorator
-                    @verify {
-                    (expression_statement
-                        (binary_expression
+                    (seq
+                        '@verify'
+                        '{'
+                        (expression_statement
                             (binary_expression
-                                (binary_expression (identifier) (-) (number))
-                                (*)
-                                (binary_expression (number) (/) (number))
+                                (binary_expression
+                                    (binary_expression (identifier) (-) (number))
+                                    (*)
+                                    (binary_expression (number) (/) (number))
+                                )
+                                (>=)
+                                (number)
                             )
-                            (>=)
-                            (number)
                         )
+                        (expression_statement
+                            (string)
+                        )
+                        '}'
                     )
-                    (expression_statement
-                        (string)
-                    )
-                    }
                 )
                 (identifier)
                 (function_parameters
@@ -597,28 +615,31 @@ fun validateRange(value Int, min Int, max Int) {
             (identifier) (type_hint (identifier))
         )
         (contract_decorator
-            @verify {
-            (expression_statement
-                (binary_expression
+            (seq
+                '@verify'
+                '{'
+                (expression_statement
                     (binary_expression
-                        (binary_expression (identifier) (>=) (identifier))
-                        (and)
-                        (binary_expression (identifier) (<=) (identifier))
+                        (binary_expression
+                            (binary_expression (identifier) (>=) (identifier))
+                            (and)
+                            (binary_expression (identifier) (<=) (identifier))
+                        )
+                        (or)
+                        (string)
+                    )
+                )
+                (expression_statement
+                    (binary_expression
+                        (binary_expression (identifier) (%) (number))
+                        (==)
+                        (number)
                     )
                     (or)
                     (string)
                 )
+                '}'
             )
-            (expression_statement
-                (binary_expression
-                    (binary_expression (identifier) (%) (number))
-                    (==)
-                    (number)
-                )
-                (or)
-                (string)
-            )
-            }
         )
         (type_hint (identifier))
         (statement_block
@@ -655,30 +676,39 @@ fun divide(a Int, b Int) Double? {
         )
         (type_hint (nullable_type (identifier)))
         (contract_decorator
-            @verify {
-            (@returns {
-            (expression_statement
-                (binary_expression
-                    (identifier)
-                    (!=)
-                    (number)
+            (seq
+                '@verify'
+                '{'
+                (seq
+                    '@returns'
+                    '{'
+                    (expression_statement
+                        (binary_expression
+                            (identifier)
+                            (!=)
+                            (number)
+                        )
+                        (or)
+                        (string)
+                    )
+                    '}'
                 )
-                (or)
-                (string)
-            )
-            })
-            (@returns {
-            (expression_statement
-                (binary_expression
-                    (identifier)
-                    (>)
-                    (number)
+                (seq
+                    '@returns'
+                    '{'
+                    (expression_statement
+                        (binary_expression
+                            (identifier)
+                            (>)
+                            (number)
+                        )
+                        (or)
+                        (string)
+                    )
+                    '}'
                 )
-                (or)
-                (string)
+                '}'
             )
-            })
-            }
         )
         (statement_block
             (if_statement

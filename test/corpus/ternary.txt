@@ -164,6 +164,25 @@ nested
 
 let parentheses = 1 == 2 ? (3 == 3 ? 'verytrue' : 'kindoftrue') : 'false'
 
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (ternary_expression
+            (binary_expression (number) (==) (number))
+            (parenthesized_expression
+                (ternary_expression
+                    (binary_expression (number) (==) (number))
+                    (string)
+                    (string)
+                )
+            )
+            (string)
+        )
+    )
+)
+
 ================
 unparenthesized nested (typer)
 ================

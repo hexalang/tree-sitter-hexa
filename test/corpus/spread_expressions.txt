@@ -1,0 +1,203 @@
+================
+array spread
+================
+
+let arr1 = [1, 2, 3]
+let arr2 = [...arr1, 4, 5]
+let merged = [...arr1, ...arr2]
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (array (number) (number) (number))
+    )
+    (constant_declaration
+        (identifier)
+        (array
+            (spread_expression (identifier))
+            (number)
+            (number)
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (array
+            (spread_expression (identifier))
+            (spread_expression (identifier))
+        )
+    )
+)
+
+================
+object spread
+================
+
+let obj1 = { a: 1, b: 2 }
+let obj2 = { ...obj1, c: 3 }
+let merged = { ...obj1, ...obj2, d: 4 }
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (object
+            (pair (identifier) (number))
+            (pair (identifier) (number))
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (object
+            (spread_expression (identifier))
+            (pair (identifier) (number))
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (object
+            (spread_expression (identifier))
+            (spread_expression (identifier))
+            (pair (identifier) (number))
+        )
+    )
+)
+
+================
+function call spread
+================
+
+let args = [1, 2, 3]
+func(...args)
+let result = method(...args, extra)
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (array (number) (number) (number))
+    )
+    (expression_statement
+        (call_expression
+            (identifier)
+            (spread_expression (identifier))
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (call_expression
+            (identifier)
+            (spread_expression (identifier))
+            (identifier)
+        )
+    )
+)
+
+================
+spread in destructuring
+================
+
+let [first, ...rest] = array
+let { a, ...others } = object
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (array_pattern
+            (element: (identifier))
+            (rest: (identifier))
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (object_pattern
+            (key: (identifier))
+            (rest: (identifier))
+        )
+    )
+)
+
+================
+nested spread
+================
+
+let nested = [...[1, 2], ...[3, 4]]
+let complex = { ...{ a: 1 }, ...{ b: 2 } }
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (array
+            (spread_expression (array (number) (number)))
+            (spread_expression (array (number) (number)))
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (object
+            (spread_expression (object (pair (identifier) (number))))
+            (spread_expression (object (pair (identifier) (number))))
+        )
+    )
+)
+
+================
+spread with expressions
+================
+
+let result = [...getArray(), ...computeValues()]
+let merged = { ...getConfig(), ...defaults }
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (array
+            (spread_expression (call_expression (identifier)))
+            (spread_expression (call_expression (identifier)))
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (object
+            (spread_expression (call_expression (identifier)))
+            (spread_expression (identifier))
+        )
+    )
+)
+
+================
+conditional spread
+================
+
+let result = condition ? [...array1] : [...array2]
+let merged = shouldInclude ? { ...source } : { }
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (ternary_expression
+            (identifier)
+            (array (spread_expression (identifier)))
+            (array (spread_expression (identifier)))
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (ternary_expression
+            (identifier)
+            (object (spread_expression (identifier)))
+            (object)
+        )
+    )
+)

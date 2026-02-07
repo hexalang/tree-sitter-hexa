@@ -9,7 +9,6 @@ switch expr {
 
 ---
 
-
 (program
     (switch_statement
         (identifier)
@@ -35,7 +34,6 @@ switch n {
 }
 
 ---
-
 
 (program
     (switch_statement

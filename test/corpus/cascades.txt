@@ -45,84 +45,84 @@ object.{
     (expression_statement
         (cascade_expression
             (identifier)
-            .{
-            (key: (identifier) : (value: (number)))
-            (key: (identifier) : (value: (number)))
-            }
+            (object_field
+                (pair (identifier) (number))
+                (pair (identifier) (number))
+            )
         )
     )
     (expression_statement
         (member_expression
             (cascade_expression
                 (identifier)
-                .{
-                (key: (identifier) : (value: (number)))
-                (key: (identifier) : (value: (number)))
-                }
-            )
-            (identifier)
-        )
-    )
-    (constant_declaration
-        (identifier)
-        (number)
-    )
-    (constant_declaration
-        (identifier)
-        (number)
-    )
-    (expression_statement
-        (cascade_expression
-            (identifier)
-            .{
-            (key: (identifier) : (value: (identifier)))
-            (key: (identifier) : (value: (identifier)))
-            }
-        )
-    )
-    (expression_statement
-        (cascade_expression
-            (identifier)
-            .{
-            (key: (identifier) : (value: (number)))
-            }
-        )
-    )
-    (expression_statement
-        (cascade_expression
-            (identifier)
-            .{
-            (rest: (identifier))
-            (key: (identifier) : (value: (number)))
-            }
-        )
-    )
-    (expression_statement
-        (cascade_expression
-            (identifier)
-            .{
-            (key: (identifier) : (value: (identifier)))
-            (key: (identifier)
-                .{
-                (key: (identifier) : (value: (number)))
-                }
-            )
-            (key: (identifier)
-                .[
-                (index_key: (identifier) : (index_value: (number)))
-                ]
-            )
-            (key: (identifier)
-                .{
-                (key: (identifier) : (value: (number)))
-                (key: (identifier)
-                    .{
-                    (key: (identifier) : (value: (number)))
-                    }
+                (object_field
+                    (pair (identifier) (number))
+                    (pair (identifier) (number))
                 )
-                }
             )
-            }
+            (identifier)
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (number)
+    )
+    (constant_declaration
+        (identifier)
+        (number)
+    )
+    (expression_statement
+        (cascade_expression
+            (identifier)
+            (object_field
+                (shorthand (identifier))
+                (shorthand (identifier))
+            )
+        )
+    )
+    (expression_statement
+        (cascade_expression
+            (identifier)
+            (object_field
+                (pair (identifier) (number))
+            )
+        )
+    )
+    (expression_statement
+        (cascade_expression
+            (identifier)
+            (object_field
+                (spread_expression (identifier))
+                (pair (identifier) (number))
+            )
+        )
+    )
+    (expression_statement
+        (cascade_expression
+            (identifier)
+            (object_field
+                (pair (identifier) (identifier))
+                (pair (identifier)
+                    (object_field
+                        (pair (identifier) (number))
+                    )
+                )
+                (pair (identifier)
+                    (map_field
+                        (pair (identifier) (number))
+                    )
+                )
+                (pair (identifier)
+                    (object_field
+                        (pair (identifier) (number))
+                        (pair (identifier)
+                            (object_field
+                                (pair (identifier) (number))
+                            )
+                        )
+                    )
+                )
+            )
         )
     )
 )
@@ -160,19 +160,19 @@ map.[
     (expression_statement
         (cascade_expression
             (identifier)
-            .[
-            (index: (number) : (value: (number)))
-            (index: (number) : (value: (number)))
-            ]
+            (map_field
+                (pair (number) (number))
+                (pair (number) (number))
+            )
         )
     )
     (expression_statement
         (cascade_expression
             (identifier)
-            .[
-            (index: (number) : (value: (number)))
-            (index: (number) : (value: (number)))
-            ]
+            (map_field
+                (pair (number) (number))
+                (pair (number) (number))
+            )
         )
     )
     (constant_declaration
@@ -182,40 +182,40 @@ map.[
     (expression_statement
         (cascade_expression
             (identifier)
-            .[
-            (index: (identifier) : (value: (number)))
-            (index: (binary_expression (identifier) (identifier)) : (value: (number)))
-            ]
+            (map_field
+                (pair (identifier) (number))
+                (pair (binary_expression (identifier) (identifier)) (number))
+            )
         )
     )
     (expression_statement
         (cascade_expression
             (identifier)
-            .[
-            (start: (number) ... (end: (member_expression (identifier) (identifier))) : (value: (number)))
-            ]
+            (map_field
+                (pair (range_expression (number) (member_expression (identifier) (identifier))) (number))
+            )
         )
     )
     (expression_statement
         (cascade_expression
             (identifier)
-            .[
-            (start: (number) ... (end: (member_expression (identifier) (identifier))) : (value: ... (identifier)))
-            ]
+            (map_field
+                (pair (range_expression (number) (member_expression (identifier) (identifier))) (spread_expression (identifier)))
+            )
         )
     )
     (expression_statement
         (cascade_expression
             (identifier)
-            .[
-            (start: (number) ... (end: (member_expression (identifier) (identifier))) : (value: (for_expression
-                (for_binding (identifier))
-                (identifier)
-                (statement_block
-                    (expression_statement (binary_expression (identifier) (number)))
-                )
-            )))
-            ]
+            (map_field
+                (pair (range_expression (number) (member_expression (identifier) (identifier))) (for_expression
+                    (for_binding (identifier))
+                    (identifier)
+                    (statement_block
+                        (expression_statement (binary_expression (identifier) (number)))
+                    )
+                ))
+            )
         )
     )
     (constant_declaration
@@ -228,10 +228,10 @@ map.[
     (expression_statement
         (cascade_expression
             (identifier)
-            .[
-            (index: (string) : (value: (string)))
-            (index: (parenthesized_expression (binary_expression (string) (string))) : (value: (string)))
-            ]
+            (map_field
+                (pair (string) (string))
+                (pair (parenthesized_expression (binary_expression (string) (string))) (string))
+            )
         )
     )
 )
@@ -240,6 +240,7 @@ map.[
 index cascade assignment
 ================
 
+let array = [1, 2, 3]
 array.[ 0: 1, 1: 2 ]
 array.[ index: 1, index + 1: 2 ]
 array.[ 0 ... array.length: 123 ]
@@ -341,6 +342,7 @@ array.[ 0: 1, 1: 2 ] == array
 map cascade assignment
 ================
 
+let map = ["key": "value", "one": "two"]
 map.[ "key": "value", "one": "two" ]
 map.[
 	"key": "value",
@@ -353,7 +355,7 @@ map.[ index: 1 ] == map
 (program
     (constant_declaration
         (identifier)
-        (object
+        (map
             (pair (string) (string))
             (pair (string) (string))
         )
@@ -361,229 +363,30 @@ map.[ index: 1 ] == map
     (expression_statement
         (cascade_expression
             (identifier)
-            .[
-            (index: (string) : (value: (string)))
-            (index: (string) : (value: (string)))
-            ]
+            (map_field
+                (pair (string) (string))
+                (pair (string) (string))
+            )
         )
     )
     (expression_statement
         (cascade_expression
             (identifier)
-            .[
-            (index: (string) : (value: (string)))
-            (index: (parenthesized_expression (binary_expression (string) (string))) : (value: (string)))
-            ]
+            (map_field
+                (pair (string) (string))
+                (pair (parenthesized_expression (binary_expression (string) (string))) (string))
+            )
         )
     )
     (expression_statement
         (binary_expression
             (cascade_expression
                 (identifier)
-                .[
-                (index: (identifier) : (value: (number)))
-                ]
-            )
-            (identifier)
-        )
-    )
-)
-
-(program
-    (constant_declaration
-        (identifier)
-        (array (number) (number) (number))
-    )
-    (expression_statement
-        (cascade_expression
-            (identifier)
-            .[
-            (index: (number) : (value: (number)))
-            (index: (number) : (value: (number)))
-            ]
-        )
-    )
-    (expression_statement
-        (cascade_expression
-            (identifier)
-            .[
-            (index: (number) : (value: (number)))
-            (index: (number) : (value: (number)))
-            ]
-        )
-    )
-    (constant_declaration
-        (identifier)
-        (number)
-    )
-    (expression_statement
-        (cascade_expression
-            (identifier)
-            .[
-            (index: (identifier) : (value: (number)))
-            (index: (binary_expression (identifier) (identifier)) : (value: (number)))
-            ]
-        )
-    )
-    (expression_statement
-        (cascade_expression
-            (identifier)
-            .[
-            (start: (number) ... (end: (member_expression (identifier) (identifier))) : (value: (number)))
-            ]
-        )
-    )
-    (expression_statement
-        (cascade_expression
-            (identifier)
-            .[
-            (start: (number) ... (end: (member_expression (identifier) (identifier))) : (value: ... (identifier)))
-            ]
-        )
-    )
-    (expression_statement
-        (cascade_expression
-            (identifier)
-            .[
-            (start: (number) ... (end: (member_expression (identifier) (identifier))) : (value: (for_expression
-                (for_binding (identifier))
-                (identifier)
-                (statement_block
-                    (expression_statement (binary_expression (identifier) (number)))
+                (map_field
+                    (pair (identifier) (number))
                 )
-            )))
-            ]
-        )
-    )
-    (constant_declaration
-        (identifier)
-        (object
-            (pair (string) (string))
-            (pair (string) (string))
-        )
-    )
-    (expression_statement
-        (cascade_expression
-            (identifier)
-            .[
-            (index: (string) : (value: (string)))
-            (index: (string) : (value: (string)))
-            ]
-        )
-    )
-    (expression_statement
-        (cascade_expression
-            (identifier)
-            .[
-            (index: (string) : (value: (string)))
-            (index: (parenthesized_expression (binary_expression (string) (string))) : (value: (string)))
-            ]
-        )
-    )
-    (line_comment)
-    (expression_statement
-        (cascade_expression
-            (identifier)
-            .[
-            (index: (number) : (value: (number)))
-            (index: (number) : (value: (number)))
-            ]
-        )
-    )
-    (expression_statement
-        (cascade_expression
-            (identifier)
-            .[
-            (index: (identifier) : (value: (number)))
-            (index: (binary_expression (identifier) (identifier)) : (value: (number)))
-            ]
-        )
-    )
-    (expression_statement
-        (cascade_expression
-            (identifier)
-            .[
-            (start: (number) ... (end: (member_expression (identifier) (identifier))) : (value: (number)))
-            ]
-        )
-    )
-    (expression_statement
-        (cascade_expression
-            (identifier)
-            .[
-            (start: (number) ... (end: (member_expression (identifier) (identifier))) : (value: ... (identifier)))
-            ]
-        )
-    )
-    (expression_statement
-        (cascade_expression
-            (identifier)
-            .[
-            (start: (number) ... (end: (member_expression (identifier) (identifier))) : (value: (for_expression
-                (for_binding (identifier))
-                (identifier)
-                (statement_block
-                    (expression_statement (binary_expression (identifier) (number)))
-                )
-            )))
-            ]
-        )
-    )
-    (line_comment)
-    (expression_statement
-        (binary_expression
-            (call_expression
-                (cascade_expression
-                    (identifier)
-                    .[
-                    (index: (number) : (value: (number)))
-                    (index: (number) : (value: (number)))
-                    ]
-                )
-                (identifier)
             )
-            (number)
-        )
-    )
-    (expression_statement
-        (binary_expression
-            (cascade_expression
-                (identifier)
-                .[
-                (index: (number) : (value: (number)))
-                (index: (number) : (value: (number)))
-                ]
-            )
-            (identifier)
-        )
-    )
-    (line_comment)
-    (expression_statement
-        (cascade_expression
-            (identifier)
-            .[
-            (index: (string) : (value: (string)))
-            (index: (string) : (value: (string)))
-            ]
-        )
-    )
-    (expression_statement
-        (cascade_expression
-            (identifier)
-            .[
-            (index: (string) : (value: (string)))
-            (index: (parenthesized_expression (binary_expression (string) (string))) : (value: (string)))
-            ]
-        )
-    )
-    (expression_statement
-        (binary_expression
-            (cascade_expression
-                (identifier)
-                .[
-                (index: (identifier) : (value: (number)))
-                ]
-            )
+            (==)
             (identifier)
         )
     )

@@ -181,10 +181,10 @@ switch permissions {
             )
             (line_comment)
             (switch_case
-                |
-                (identifier)
-                |
-                (identifier)
+                (flag_pattern
+                    (flag (identifier))
+                    (flag (identifier))
+                )
                 :
                 (expression_statement
                     (call_expression
@@ -194,10 +194,10 @@ switch permissions {
                 )
             )
             (switch_case
-                |
-                (identifier)
-                |
-                _
+                (flag_pattern
+                    (flag (identifier))
+                    (flag (identifier))
+                )
                 :
                 (expression_statement
                     (call_expression
@@ -207,41 +207,10 @@ switch permissions {
                 )
             )
             (switch_case
-                |
-                _
-                |
-                (not)
-                (identifier)
-                :
-                (expression_statement
-                    (call_expression
-                        (member_expression (identifier) (identifier))
-                        (string)
-                    )
+                (flag_pattern
+                    (flag (identifier))
+                    (flag (identifier))
                 )
-            )
-            (switch_case
-                |
-                (identifier)
-                |
-                (identifier)
-                |
-                _
-                :
-                (expression_statement
-                    (call_expression
-                        (member_expression (identifier) (identifier))
-                        (string)
-                    )
-                )
-            )
-            (switch_case
-                |
-                (identifier)
-                |
-                (identifier)
-                |
-                (identifier)
                 :
                 (expression_statement
                     (call_expression
@@ -252,10 +221,77 @@ switch permissions {
             )
             (line_comment)
             (switch_case
-                |
-                (parenthesized_expression (identifier))
-                |
-                _
+                (flag_pattern
+                    (flag (identifier))
+                    (flag (identifier))
+                )
+                :
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+            (switch_case
+                (flag_pattern
+                    (flag (identifier))
+                    (flag (identifier))
+                )
+                :
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+            (switch_case
+                (flag_pattern
+                    (not (flag (identifier)))
+                )
+                :
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+            (switch_case
+                (flag_pattern
+                    (flag (identifier))
+                    (flag (identifier))
+                    (flag (identifier))
+                )
+                :
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+            (switch_case
+                (flag_pattern
+                    (flag (identifier))
+                    (flag (identifier))
+                    (flag (identifier))
+                )
+                :
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+            (line_comment)
+            (switch_case
+                (flag_pattern
+                    (parenthesized_expression (identifier))
+                    (flag (identifier))
+                )
                 :
                 (expression_statement
                     (call_expression
@@ -285,6 +321,53 @@ case (requiredFlags) | _:
 	console.log("Has required flags")
 
 ---
+
+(program
+    (line_comment)
+    (switch_case
+        (flag_pattern
+            (flag (identifier))
+            (flag (identifier))
+            (not (flag (identifier)))
+        )
+        :
+        (expression_statement
+            (call_expression
+                (member_expression (identifier) (identifier))
+                (string)
+            )
+        )
+    )
+    (line_comment)
+    (switch_case
+        (flag_pattern
+            (flag (identifier))
+            (flag (identifier))
+            (flag (identifier))
+        )
+        :
+        (expression_statement
+            (call_expression
+                (member_expression (identifier) (identifier))
+                (string)
+            )
+        )
+    )
+    (line_comment)
+    (switch_case
+        (flag_pattern
+            (parenthesized_expression (identifier))
+            (flag (identifier))
+        )
+        :
+        (expression_statement
+            (call_expression
+                (member_expression (identifier) (identifier))
+                (string)
+            )
+        )
+    )
+)
 
 ================
 flag methods

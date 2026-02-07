@@ -1,0 +1,199 @@
+================
+basic nullish coalescing
+================
+
+let value = nullable ?? "default"
+let result = a ?? b ?? c ?? "fallback"
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (binary_expression
+            (identifier)
+            (??)
+            (string)
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (binary_expression
+            (binary_expression
+                (binary_expression (identifier) (??) (identifier))
+                (??)
+                (identifier)
+            )
+            (??)
+            (string)
+        )
+    )
+)
+
+================
+nullish with function calls
+================
+
+let result = getConfig() ?? getDefaultConfig()
+let value = getUser()?.name ?? "Anonymous"
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (binary_expression
+            (call_expression (identifier))
+            (??)
+            (call_expression (identifier))
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (binary_expression
+            (member_expression
+                (call_expression (identifier))
+                (identifier)
+            )
+            (??)
+            (string)
+        )
+    )
+)
+
+================
+nullish with member access
+================
+
+let name = user?.name ?? "Guest"
+let data = response?.data?.items ?? []
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (binary_expression
+            (member_expression
+                (identifier)
+                (identifier)
+            )
+            (??)
+            (string)
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (binary_expression
+            (member_expression
+                (member_expression
+                    (identifier)
+                    (identifier)
+                )
+                (identifier)
+            )
+            (??)
+            (array)
+        )
+    )
+)
+
+================
+nullish with expressions
+================
+
+let result = expensiveOperation() ?? cheapOperation()
+let value = (a + b) ?? (c + d)
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (binary_expression
+            (call_expression (identifier))
+            (??)
+            (call_expression (identifier))
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (binary_expression
+            (parenthesized_expression (binary_expression (identifier) (identifier)))
+            (??)
+            (parenthesized_expression (binary_expression (identifier) (identifier)))
+        )
+    )
+)
+
+================
+nullish in assignment context
+================
+
+obj.value = source?.value ?? defaultValue
+array[index] = items?.[index] ?? 0
+
+---
+
+(program
+    (expression_statement
+        (assignment_expression
+            (member_expression (identifier) (identifier))
+            (binary_expression
+                (member_expression (identifier) (identifier))
+                (??)
+                (identifier)
+            )
+        )
+    )
+    (expression_statement
+        (assignment_expression
+            (subscript_expression (identifier) (identifier))
+            (binary_expression
+                (subscript_expression (identifier) (identifier))
+                (??)
+                (number)
+            )
+        )
+    )
+)
+
+================
+nullish with ternary
+================
+
+let result = value ?? (condition ? "yes" : "no")
+let choice = nullable ?? (fallback ?? "final")
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (binary_expression
+            (identifier)
+            (??)
+            (parenthesized_expression
+                (ternary_expression
+                    (identifier)
+                    (string)
+                    (string)
+                )
+            )
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (binary_expression
+            (identifier)
+            (??)
+            (parenthesized_expression
+                (binary_expression
+                    (identifier)
+                    (??)
+                    (string)
+                )
+            )
+        )
+    )
+)
