@@ -1,11 +1,31 @@
 ==============
-no_initializer
+no_initializer (all variations)
 ==============
 
-var a;
-var hello_world;
-const b;
-const fooBarBaz;
+var a
+var hello_world
+let b
+let fooBarBaz
+var a Int
+var hello_world String
+let b Int
+let fooBarBaz String
+declare var a Int
+declare var hello_world String
+declare let b Int
+declare let fooBarBaz String
+private declare var a Int // private always goes first
+private declare var hello_world String
+private declare let b Int
+private declare let fooBarBaz String
+private var a Int
+private var hello_world String
+private let b Int
+private let fooBarBaz String
+static var a Int
+static var hello_world String
+static let b Int
+static let fooBarBaz String
 
 ---
 
@@ -20,9 +40,9 @@ const fooBarBaz;
 with_initializer
 ================
 
-var a = 1;
-var b = "hello there";
-const c = 3.1415;
+var a = 1
+var b = "hello there"
+let c = 3.1415
 
 ---
 
@@ -36,12 +56,12 @@ const c = 3.1415;
 with_type_hint
 ==============
 
-var a: Int = 1;
-var b: Uint = 12932;
-const c: String = "hello world!";
-const d: package.Class;
-var e: * = null;
-var f: Vector.<Int> = null;
+var a Int = 1
+var b UInt = 12932
+let c String = "hello world!"
+declare let d Package.Class
+var e Any? = null
+var f Array<Int>? = null
 
 ---
 
@@ -54,11 +74,182 @@ var f: Vector.<Int> = null;
     (variable_declaration (identifier) (type_hint (generic_data_type (identifier) (identifier))) (null))
 )
 
+================
+readonly keyword
+================
+
+readonly var a = 1
+readonly let b = "hello"
+readonly var c Int = 123
+readonly let d String = "world"
+
+// Readonly with arrays
+readonly var arr = [1, 2, 3]
+readonly let arr2 = ["a", "b", "c"]
+
+// Readonly with objects
+readonly var obj = { x: 1, y: 2 }
+readonly let obj2 = { name: "test", value: 42 }
+
+// Readonly with nested types
+readonly var nested readonly [String] = ["a", "b"]
+readonly let complex readonly type { var x Int let y Int } = { x: 1, y: 2 }
+readonly let complex readonly interface { var x Int let y Int } = { x: 1, y: 2 }
+
+// Readonly in function parameters
+fun process(readonly data [Int]) {
+	// data cannot be modified
+}
+
+// Readonly return type
+fun createReadonly() readonly type { var x Int var y Int } {
+	return { x: 1, y: 2 }
+}
+
+// Readonly with type inference
+readonly var inferred = { x: 1, y: 2 }
+
+---
+
+(program
+    (variable_declaration
+        (property_attribut)
+        (identifier)
+        (number)
+    )
+    (constant_declaration
+        (property_attribut)
+        (identifier)
+        (string)
+    )
+    (variable_declaration
+        (property_attribut)
+        (identifier)
+        (type_hint (identifier))
+        (number)
+    )
+    (constant_declaration
+        (property_attribut)
+        (identifier)
+        (type_hint (identifier))
+        (string)
+    )
+    (variable_declaration
+        (property_attribut)
+        (identifier)
+        (array (number) (number) (number))
+    )
+    (constant_declaration
+        (property_attribut)
+        (identifier)
+        (array (string) (string) (string))
+    )
+    (variable_declaration
+        (property_attribut)
+        (identifier)
+        (object
+            (pair (identifier) (number))
+            (pair (identifier) (number))
+        )
+    )
+    (constant_declaration
+        (property_attribut)
+        (identifier)
+        (object
+            (pair (identifier) (string))
+            (pair (identifier) (number))
+        )
+    )
+    (variable_declaration
+        (property_attribut)
+        (identifier)
+        (property_attribut)
+        (type_hint (array_type (identifier)))
+        (array (string) (string))
+    )
+    (constant_declaration
+        (property_attribut)
+        (identifier)
+        (property_attribut)
+        (type_hint (type_literal (object_type_literal (type_member (identifier) (identifier) (type_hint (identifier))) (type_member (identifier) (identifier) (type_hint (identifier))))))
+        (object (pair (identifier) (number)) (pair (identifier) (number)))
+    )
+    (constant_declaration
+        (property_attribut)
+        (identifier)
+        (property_attribut)
+        (type_hint (type_literal (interface_type_literal (object_type_literal (type_member (identifier) (identifier) (type_hint (identifier))) (type_member (identifier) (identifier) (type_hint (identifier))))))
+        (object (pair (identifier) (number)) (pair (identifier) (number)))
+    )
+    (function_declaration
+        (identifier)
+        (function_parameters
+            (parameter
+                (property_attribut)
+                (identifier)
+                (type_hint (array_type (identifier)))
+            )
+        )
+        (statement_block)
+    )
+    (function_declaration
+        (identifier)
+        (type_hint (type_literal (object_type_literal (type_member (identifier) (identifier) (type_hint (identifier))) (type_member (identifier) (identifier) (type_hint (identifier))))))
+        (statement_block
+            (return_statement
+                (object (pair (identifier) (number)) (pair (identifier) (number)))
+            )
+        )
+    )
+    (variable_declaration
+        (property_attribut)
+        (identifier)
+        (object (pair (identifier) (number)) (pair (identifier) (number)))
+    )
+)
+
+================
+lazy initialization
+================
+
+var lazyVar Int { lazy { 123 } }
+var lazyWithCapture String { lazy { 
+	let x = computeExpensiveValue()
+	x.toString() 
+} }
+
+// Check if lazy variable is computed
+lazyVar.meta.computed
+
+---
+
+(program
+    (variable_declaration
+        (identifier)
+        (type_hint (identifier))
+        (lazy_expression (statement_block (number)))
+    )
+    (variable_declaration
+        (identifier)
+        (type_hint (identifier))
+        (lazy_expression (statement_block
+            (variable_declaration (identifier) (call_expression (identifier)))
+            (call_expression (member_expression (identifier) (identifier)))
+        ))
+    )
+    (expression_statement
+        (member_expression
+            (member_expression (identifier) (identifier))
+            (identifier)
+        )
+    )
+)
+
 =======================
 With property attribute
 =======================
 
-static var a = "Hello!";
+static var a = "Hello!"
 
 ---
 
@@ -74,8 +265,8 @@ static var a = "Hello!";
 With attribute
 ==============
 
-[Api]
-public var name = "Hello!";
+@api
+private var name = "Hello!"
 
 ---
 
@@ -92,8 +283,8 @@ public var name = "Hello!";
 With attribute value
 ====================
 
-[Api(name="UiApi")]
-public var name = "Hello!";
+@api(name: "UiApi")
+private var name = "Hello!"
 
 ---
 

@@ -24,9 +24,29 @@ amazing */
 // by the block comments
 capacities */
 
+================
+nested block comments
+================
+
+/* Outer comment
+   /* Inner nested comment
+      /* Even deeper nested comment */
+   */
+   Still in outer comment
+*/
+
 ---
 
 (program
+    (line_comment)
+    (line_comment)
+)
+
+(program
     (block_comment)
+    (block_comment)
+)
+
+(program
     (block_comment)
 )

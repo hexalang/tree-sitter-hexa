@@ -16,7 +16,7 @@ class A {
 Class with inheritance
 ======================
 
-class A extends B {
+class A B {
 
 }
 
@@ -34,8 +34,8 @@ class A extends B {
 Class with interfaces
 =====================
 
-class A implements C, D {
-   
+class A C D {
+
 }
 
 ---
@@ -53,7 +53,7 @@ class A implements C, D {
 Class with inheritrance and interfaces
 ======================================
 
-class A extends B implements C {
+class A B C {
 
 }
 
@@ -73,7 +73,7 @@ With simple body
 ================
 
 class Hello {
-    fun world(s: String): void {
+    fun world(s String) Void {
 
     }
 }
@@ -100,7 +100,8 @@ class Hello {
 With class attributs
 ====================
 
-public final class World {
+@final
+class World {
 
 }
 
@@ -108,8 +109,7 @@ public final class World {
 
 (program
     (class_declaration
-        (class_attribut)
-        (class_attribut)
+        (decorator (decorator_name (identifier)))
         (identifier)
         (statement_block)
     )
@@ -119,8 +119,8 @@ public final class World {
 With annotation
 ===============
 
-[ExcludeClass]
-public class A {
+@excludeClass
+class A {
 
 }
 
@@ -128,8 +128,7 @@ public class A {
 
 (program
     (class_declaration
-        (annotation (identifier))
-        (class_attribut)
+        (decorator (decorator_name (identifier)))
         (identifier)
         (statement_block)
     )
@@ -139,9 +138,9 @@ public class A {
 With mutliple annotations
 =========================
 
-[ExcludeClass]
-[ExcludeClass]
-public class A {
+@excludeClass
+@excludeClass
+private class A {
 
 }
 
@@ -149,9 +148,9 @@ public class A {
 
 (program
     (class_declaration
-        (annotation (identifier))
-        (annotation (identifier))
-        (class_attribut)
+        (decorator (decorator_name (identifier)))
+        (decorator (decorator_name (identifier)))
+        (property_attribut)
         (identifier)
         (statement_block)
     )

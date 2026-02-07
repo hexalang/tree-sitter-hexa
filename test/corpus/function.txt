@@ -14,7 +14,7 @@ fun hello() {}
 Empty function with args
 ========================
 
-fun Hello (args1, args2) {}
+fun hello(args1, args2) {}
 
 ---
 
@@ -30,7 +30,7 @@ fun Hello (args1, args2) {}
 Empty function with typed args
 ==============================
 
-fun Hello (args1: Vector.<int>, args2: String) {}
+fun hello(args1 Array<Int>, args2 String) {}
 
 ---
 
@@ -53,7 +53,7 @@ fun Hello (args1: Vector.<int>, args2: String) {}
 Empty function with return type
 ===============================
 
-fun hello(): void {}
+fun hello() Void {}
 
 ---
 
@@ -71,7 +71,7 @@ With simple body
 ================
 
 fun hello() {
-    var a = "Hello!";
+	var a = "Hello!"
 }
 
 ---
@@ -104,7 +104,7 @@ private fun world() {
 )
 
 ==============================
-With variable length parameter
+With variable length untyped parameter
 ==============================
 
 fun hello(...args) {
@@ -121,89 +121,83 @@ fun hello(...args) {
     )
 )
 
-===============
-Function getter
-===============
+=====================
+Anonymous function with variadic parameter
+=====================
 
-fun get hello() {
-    
+let a = fun (param Int, ...rest Any) Void {
+	var b = "hello"
 }
 
 ---
 
 (program
-    (function_declaration
-        (accessor)
+    (constant_declaration
         (identifier)
-        (statement_block)
-    )
-)
-
-===============
-Function setter
-===============
-
-fun set hello() {
-    
-}
-
----
-
-(program
-    (function_declaration
-        (accessor)
-        (identifier)
-        (statement_block)
+        (anonymous_function
+            (function_parameters
+                (identifier) (type_hint (identifier))
+                (rest (identifier) (type_hint (identifier)))
+            )
+            (type_hint (identifier))
+            (statement_block
+                (variable_declaration (identifier) (string))
+            )
+        )
     )
 )
 
 =================
-default parameter
+Default parameter
 =================
 
-fun hello(w = "World", sep: String = "!") {
+fun hello(w String = "World", sep String = "!") {
 
 }
 
 ---
-
 
 (program
     (function_declaration
         (identifier)
         (function_parameters
-            (identifier)
-            (string)
-            (identifier) (type_hint
+            (parameter
                 (identifier)
+                (type_hint (identifier))
+                (default (string))
             )
-            (string))
+            (parameter
+                (identifier)
+                (type_hint (identifier))
+                (default (string))
+            )
+        )
         (statement_block)
     )
 )
 
 ===============
-With annotation
+With decorator
 ===============
 
-[Inspectable(enumeration="none,left,right,start,end")]
-public fun get float() : *
-{
-   return this._float;
+@inspectable(enumeration: "none,left,right,start,end")
+fun getFloat() Any {
+	return this._float
 }
 
 ---
 
 (program
     (function_declaration
-        (annotation
-            (identifier)
-            (assignment_expression (identifier) (string))
+        (decorator
+            (decorator_name (identifier))
+            (call_arguments
+                (named_argument (identifier) (string))
+            )
         )
-        (property_attribut)
-        (accessor)
         (identifier)
-        (type_hint (any_type))
+        (function_parameters)
+        (type_hint (identifier))
         (statement_block
             (return_statement
                 (member_expression (identifier) (identifier))
@@ -213,30 +207,33 @@ public fun get float() : *
 )
 
 =======================
-With another annotation
+With another decorator
 =======================
 
-[Bindable("listChanged")]
-[Inspectable(arrayType="Object",category="General")]
-public fun get float(): *
-{
-   return this._float;
+@bindable("listChanged")
+@inspectable(arrayType: "Object", category: "General")
+fun getFloat() Any {
+	return this._float
 }
 
 ---
 
 (program
     (function_declaration
-        (annotation (identifier) (string))
-        (annotation
-            (identifier)
-            (assignment_expression (identifier) (string))
-            (assignment_expression (identifier) (string))
+        (decorator
+            (decorator_name (identifier))
+            (call_arguments (string))
         )
-        (property_attribut)
-        (accessor)
+        (decorator
+            (decorator_name (identifier))
+            (call_arguments
+                (named_argument (identifier) (string))
+                (named_argument (identifier) (string))
+            )
+        )
         (identifier)
-        (type_hint (any_type))
+        (function_parameters)
+        (type_hint (identifier))
         (statement_block
             (return_statement
                 (member_expression (identifier) (identifier))
@@ -246,31 +243,52 @@ public fun get float(): *
 )
 
 ===================
-function called get
+Private function called get
 ===================
 
-public fun get() {}
+private fun get() {}
 
 ---
 
 (program
     (function_declaration
         (property_attribut)
+        (identifier)
+        (function_parameters)
         (statement_block)
     )
 )
 
 ===================
-function called set
+Static function called get
 ===================
 
-public fun set() {}
+static fun get() {}
 
 ---
 
 (program
     (function_declaration
         (property_attribut)
+        (identifier)
+        (function_parameters)
+        (statement_block)
+    )
+)
+
+===================
+External function called set
+===================
+
+declare fun set() {}
+
+---
+
+(program
+    (function_declaration
+        (property_attribut)
+        (identifier)
+        (function_parameters)
         (statement_block)
     )
 )

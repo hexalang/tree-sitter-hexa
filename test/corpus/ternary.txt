@@ -2,7 +2,7 @@
 simple
 ======
 
-const a = 1 == 2 ? 'nomath' : 'math';
+let a = 1 == 2 ? 'nomath' : 'math'
 
 ---
 
@@ -17,11 +17,159 @@ const a = 1 == 2 ? 'nomath' : 'math';
     )
 )
 
+================
+ternary with function calls
+================
+
+isValid() ? processValid() : processInvalid()
+
+---
+
+(program
+    (expression_statement
+        (ternary_expression
+            (call_expression (identifier))
+            (call_expression (identifier))
+            (call_expression (identifier))
+        )
+    )
+)
+
+================
+ternary with complex expressions
+================
+
+(x + y > 10) ? computeExpensiveResult() : useDefaultValue()
+
+---
+
+(program
+    (expression_statement
+        (ternary_expression
+            (parenthesized_expression
+                (binary_expression (identifier) (binary_expression (identifier) (number)))
+            )
+            (call_expression (identifier))
+            (call_expression (identifier))
+        )
+    )
+)
+
+================
+ternary in assignment
+================
+
+let result = condition ? expensiveOperation() : cheapOperation()
+
+---
+
+================
+ternary with different types
+================
+
+let result = condition ? "string result" : 42
+
+---
+
+================
+ternary with boolean logic
+================
+
+let enabled = config?.enabled ?? false
+let result = enabled ? startFeature() : skipFeature()
+
+---
+
+================
+ternary as expression
+================
+
+let value = switch input {
+	case "add": a + b
+	case "subtract": a - b
+	case _: a ? b : 0
+}
+
+---
+
+================
+ternary with method calls
+================
+
+object.method() ? handleSuccess() : handleError()
+
+---
+
+(program
+    (expression_statement
+        (ternary_expression
+            (call_expression (member_expression (identifier) (identifier)))
+            (call_expression (identifier))
+            (call_expression (identifier))
+        )
+    )
+)
+
+================
+ternary with array access
+================
+
+array[index] ? processValidElement() : handleInvalidElement()
+
+---
+
+(program
+    (expression_statement
+        (ternary_expression
+            (subscript_expression (identifier) (identifier))
+            (call_expression (identifier))
+            (call_expression (identifier))
+        )
+    )
+)
+
+================
+complex nested ternary
+================
+
+condition1 ? (condition2 ? valueA : valueB) : (condition3 ? valueC : valueD)
+
+---
+
+(program
+    (expression_statement
+        (ternary_expression
+            (identifier)
+            (parenthesized_expression
+                (ternary_expression
+                    (identifier)
+                    (identifier)
+                    (identifier)
+                )
+            )
+            (parenthesized_expression
+                (ternary_expression
+                    (identifier)
+                    (identifier)
+                    (identifier)
+                )
+            )
+        )
+    )
+)
+
 ======
 nested
 ======
 
-const a = 1 == 2 ? 3 == 3 ? 'verytrue' : 'kindoftrue' : 'false';
+let parentheses = 1 == 2 ? (3 == 3 ? 'verytrue' : 'kindoftrue') : 'false'
+
+================
+unparenthesized nested (typer)
+================
+
+// Nested ternary is valid syntactically while typer enforces preferred style/rules
+let noParentheses = 1 == 2 ? 3 == 3 ? 'verytrue' : 'kindoftrue' : 'false'
 
 ---
 
@@ -37,6 +185,147 @@ const a = 1 == 2 ? 3 == 3 ? 'verytrue' : 'kindoftrue' : 'false';
                 (string)
             )
             (string)
+        )
+    )
+)
+
+================
+ternary with function calls
+================
+
+isValid() ? processValid() : processInvalid()
+
+---
+
+(program
+    (expression_statement
+        (ternary_expression
+            (call_expression (identifier))
+            (call_expression (identifier))
+            (call_expression (identifier))
+        )
+    )
+)
+
+================
+ternary with complex expressions
+================
+
+(x + y > 10) ? computeExpensiveResult() : useDefaultValue()
+
+---
+
+(program
+    (expression_statement
+        (ternary_expression
+            (parenthesized_expression
+                (binary_expression (identifier) (binary_expression (identifier) (number)))
+            )
+            (call_expression (identifier))
+            (call_expression (identifier))
+        )
+    )
+)
+
+================
+ternary in assignment
+================
+
+let result = condition ? expensiveOperation() : cheapOperation()
+
+---
+
+================
+ternary with different types
+================
+
+let result = condition ? "string result" : 42
+
+---
+
+================
+ternary with boolean logic
+================
+
+let enabled = config?.enabled ?? false
+let result = enabled ? startFeature() : skipFeature()
+
+---
+
+================
+ternary as expression
+================
+
+let value = switch input {
+	case "add": a + b
+	case "subtract": a - b
+	case _: a ? b : 0
+}
+
+---
+
+================
+ternary with method calls
+================
+
+object.method() ? handleSuccess() : handleError()
+
+---
+
+(program
+    (expression_statement
+        (ternary_expression
+            (call_expression (member_expression (identifier) (identifier)))
+            (call_expression (identifier))
+            (call_expression (identifier))
+        )
+    )
+)
+
+================
+ternary with array access
+================
+
+array[index] ? processValidElement() : handleInvalidElement()
+
+---
+
+(program
+    (expression_statement
+        (ternary_expression
+            (subscript_expression (identifier) (identifier))
+            (call_expression (identifier))
+            (call_expression (identifier))
+        )
+    )
+)
+
+================
+complex nested ternary
+================
+
+condition1 ? (condition2 ? valueA : valueB) : (condition3 ? valueC : valueD)
+
+---
+
+(program
+    (expression_statement
+        (ternary_expression
+            (identifier)
+            (parenthesized_expression
+                (ternary_expression
+                    (identifier)
+                    (identifier)
+                    (identifier)
+                )
+            )
+            (parenthesized_expression
+                (ternary_expression
+                    (identifier)
+                    (identifier)
+                    (identifier)
+                )
+            )
         )
     )
 )

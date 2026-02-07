@@ -2,7 +2,7 @@
 simple array
 ============
 
-const a = ["1", 2, 3];
+let a = ["1", 2, 3]
 
 ---
 
@@ -17,7 +17,7 @@ const a = ["1", 2, 3];
 nested
 ======
 
-const a = [[1, 2], 3];
+let a = [[1, 2], 3]
 
 ---
 
@@ -35,7 +35,7 @@ const a = [[1, 2], 3];
 complex expression
 ==================
 
-const a = [{b: (c.d[2])}, 3, c.e];
+let a = [{ b: (c.d[2]) }, 3, c.e]
 
 ---
 
@@ -61,10 +61,145 @@ const a = [{b: (c.d[2])}, 3, c.e];
 empty array
 ===========
 
-const a = [];
+let a = []
 
 ---
 
 (program
     (constant_declaration (identifier) (array))
+)
+
+================
+matrix type
+================
+
+let matrix Matrix<Int> = [[1, 2, 3], [4, 5, 6]]
+matrix[100, 100] = 1
+let v = matrix[1, 1]!
+matrix[1]
+
+for row in matrix {
+	for cell in row {
+		console.log(cell ?? "∅")
+	}
+}
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (type_hint (generic_data_type (identifier) (identifier)))
+        (array 
+            (array (number) (number) (number))
+            (array (number) (number) (number))
+        )
+    )
+    (expression_statement
+        (assignment_expression
+            (subscript_expression
+                (identifier)
+                (sequence_expression (number) (number))
+            )
+            (number)
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (subscript_expression
+            (identifier)
+            (sequence_expression (number) (number))
+        )
+    )
+    (subscript_expression (identifier) (number))
+    (for_in_statement
+        (for_binding (identifier))
+        (identifier)
+        (statement_block
+            (for_in_statement
+                (for_binding (identifier))
+                (identifier)
+                (statement_block
+                    (expression_statement
+                        (call_expression
+                            (member_expression (identifier) (identifier))
+                            (binary_expression
+                                (identifier)
+                                (nullish_coalescing_expression (identifier) (string))
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
+
+================
+multidimensional indexing
+================
+
+let value = matrix[0, 0]
+matrix[0, 0] = value
+blocks[x, y, z]
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (subscript_expression
+            (identifier)
+            (sequence_expression (number) (number))
+        )
+    )
+    (expression_statement
+        (assignment_expression
+            (subscript_expression
+                (identifier)
+                (sequence_expression (number) (number))
+            )
+            (identifier)
+        )
+    )
+    (subscript_expression
+        (identifier)
+        (sequence_expression (identifier) (identifier) (identifier))
+    )
+)
+
+================
+spread operator
+================
+
+let a = [1, 2, 3]
+let b = [4, 5, 6]
+let c = [0, ...a, ...b]
+let d = [...a]
+let e = [...a, index: 4]
+
+---
+
+(program
+    (constant_declaration (identifier) (array (number) (number) (number)))
+    (constant_declaration (identifier) (array (number) (number) (number)))
+    (constant_declaration 
+        (identifier)
+        (array 
+            (number) 
+            (spread_expression (identifier))
+            (spread_expression (identifier))
+        )
+    )
+    (constant_declaration 
+        (identifier)
+        (array (spread_expression (identifier)))
+    )
+    (constant_declaration 
+        (identifier)
+        (array 
+            (spread_expression (identifier))
+            (pair (identifier) (number))
+        )
+    )
 )

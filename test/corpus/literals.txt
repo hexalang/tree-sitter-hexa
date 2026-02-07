@@ -2,10 +2,9 @@
 constant literals
 =================
 
-true;
-false;
-null;
-undefined;
+true
+false
+null
 
 ---
 
@@ -13,7 +12,6 @@ undefined;
   (expression_statement (true))
   (expression_statement (false))
   (expression_statement (null))
-  (expression_statement (undefined))
 )
 
 
@@ -21,19 +19,17 @@ undefined;
 numeric literals
 ================
 
-NaN;
-Infinity;
--Infinity;
-0xFF;
-0xFF_FF;
-0X00;
-23;
-100_000;
-100__000;
-3.14;
-1e10;
-1.24e10;
-1e-4;
+0xFF
+0xFF_FF
+0b0
+0b0_0
+23
+100_000
+100__000
+3.14
+1e10
+1.24e10
+1e-4
 
 ---
 
@@ -50,7 +46,75 @@ Infinity;
   (expression_statement (number))
   (expression_statement (number))
   (expression_statement (number))
+)
+
+================
+BigInt literals
+================
+
+123n
+0xFFn
+0b101n
+0b101_010n
+1_000_000n
+
+// BigInt operations
+123n + 345
+123n + i
+0xFF__FFn
+
+---
+
+(program
   (expression_statement (number))
+  (expression_statement (number))
+  (expression_statement (number))
+  (expression_statement (number))
+  (expression_statement (number))
+  (expression_statement
+    (binary_expression (number) (number))
+  )
+  (expression_statement
+    (binary_expression (number) (identifier))
+  )
+  (expression_statement (number))
+)
+
+================
+complex numbers
+================
+
+2i
+1 + 2i
+1.2 + 2.3 * 1i
+ComplexDouble(2 + 3i)
+ComplexFloat(1.2 + 2.3i)
+
+---
+
+(program
+  (expression_statement (identifier))
+  (expression_statement
+    (binary_expression (number) (identifier))
+  )
+  (expression_statement
+    (binary_expression 
+      (number) 
+      (binary_expression (number) (*) (identifier))
+    )
+  )
+  (expression_statement
+    (call_expression 
+      (identifier) 
+      (binary_expression (number) (+) (binary_expression (number) (*) (identifier)))
+    )
+  )
+  (expression_statement
+    (call_expression 
+      (identifier) 
+      (binary_expression (number) (+) (binary_expression (number) (*) (identifier)))
+    )
+  )
 )
 
 
@@ -58,12 +122,12 @@ Infinity;
 string_literals
 ===============
 
-"hello";
-'world';
-"hello\"";
-'\'world\'';
-"hello 'world'";
-'hello "world"';
+"hello"
+'world'
+"hello\""
+'\'world\''
+"hello 'world'"
+'hello "world"'
 
 ---
 

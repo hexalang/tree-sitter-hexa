@@ -2,7 +2,7 @@
 any
 ===
 
-const a: * = null;
+let a Any? = null
 
 ---
 
@@ -18,7 +18,7 @@ const a: * = null;
 multi scoped
 ============
 
-const a: a.b.c.d = null;
+let a A.B.C? = null
 
 ---
 
@@ -42,7 +42,7 @@ const a: a.b.c.d = null;
 generic data type
 =================
 
-const a: a.Vector.<Vector.<b>> = null;
+let a NS.Vector<Vector<b>>? = null
 
 ---
 

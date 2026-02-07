@@ -2,7 +2,7 @@
 mul
 ===
 
-2 * 3;
+2 * 3
 
 ---
 
@@ -16,7 +16,7 @@ mul
 div
 ===
 
-2 / 3;
+2 / 3
 
 ---
 
@@ -30,7 +30,7 @@ div
 mod
 ===
 
-2 % 3;
+2 % 3
 
 ---
 
@@ -44,7 +44,7 @@ mod
 add
 ===
 
-2 + 3;
+2 + 3
 
 ---
 
@@ -58,7 +58,7 @@ add
 sub
 ===
 
-2 - 3;
+2 - 3
 
 ---
 
@@ -72,7 +72,7 @@ sub
 shl
 ===
 
-4 << 1;
+4 << 1
 
 ---
 
@@ -86,7 +86,7 @@ shl
 shr
 ===
 
-4 >> 1;
+4 >> 1
 
 ---
 
@@ -100,7 +100,7 @@ shr
 ushr
 ====
 
-4 >>> 1;
+4 >>> 1
 
 ---
 
@@ -114,7 +114,7 @@ ushr
 gt
 ===
 
-4 > 1;
+4 > 1
 
 ---
 
@@ -128,7 +128,7 @@ gt
 lt
 ===
 
-4 < 1;
+4 < 1
 
 ---
 
@@ -142,7 +142,7 @@ lt
 gte
 ===
 
-4 >= 1;
+4 >= 1
 
 ---
 
@@ -156,7 +156,7 @@ gte
 lte
 ===
 
-4 <= 1;
+4 <= 1
 
 ---
 
@@ -170,7 +170,7 @@ lte
 as
 ===
 
-23 as float;
+23.as(Float)
 
 ---
 
@@ -181,41 +181,10 @@ as
 )
 
 ===
-in
+nullCheck
 ===
 
-1 in [1, 2];
-
----
-
-(program
-    (expression_statement
-        (binary_expression 
-            (number)
-            (array (number) (number))
-        )
-    )
-)
-
-==========
-instanceof
-==========
-
-"Hello" instanceof String;
-
----
-
-(program
-    (expression_statement
-        (binary_expression (string) (identifier))
-    )
-)
-
-===
-is
-===
-
-b is null;
+b == null
 
 ---
 
@@ -229,7 +198,7 @@ b is null;
 eq
 ===
 
-true == true;
+true == true
 
 ---
 
@@ -243,35 +212,7 @@ true == true;
 neq
 ===
 
-true != false;
-
----
-
-(program
-    (expression_statement
-        (binary_expression (true) (false))
-    )
-)
-
-===
-seq
-===
-
-true === true;
-
----
-
-(program
-    (expression_statement
-        (binary_expression (true) (true))
-    )
-)
-
-====
-sneq
-====
-
-true !== false;
+true != false
 
 ---
 
@@ -285,7 +226,7 @@ true !== false;
 band
 ====
 
-4 & 1;
+4 & 1
 
 ---
 
@@ -299,7 +240,7 @@ band
 bxor
 ====
 
-4 ^ 1;
+4 ^ 1
 
 ---
 
@@ -313,7 +254,7 @@ bxor
 bor
 ===
 
-4 | 1;
+4 | 1
 
 ---
 
@@ -327,7 +268,7 @@ bor
 and
 ===
 
-true && true;
+true and true
 
 ---
 
@@ -342,7 +283,7 @@ true && true;
 or
 ===
 
-true || false;
+true or false
 
 ---
 

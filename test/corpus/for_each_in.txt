@@ -2,7 +2,7 @@
 for-in loop
 ===========
 
-for each (value in obj) {
+for value in obj {
 
 }
 
@@ -16,11 +16,19 @@ for each (value in obj) {
     )
 )
 
-===========
-for-in loop
-===========
+=================
+checked unpacking
+=================
 
-for each (var s: String in lines) {
+for s! in lines {
+
+}
+
+=================
+key:value
+=================
+
+for key: value in map {
 
 }
 

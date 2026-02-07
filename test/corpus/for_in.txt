@@ -2,7 +2,7 @@
 for-in loop
 ===========
 
-for (item in arr) {
+for item in arr {
 
 }
 

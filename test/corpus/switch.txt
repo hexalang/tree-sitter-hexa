@@ -2,9 +2,9 @@
 default only
 ============
 
-switch (expr) {
-    default:
-        break;
+switch expr {
+	case _:
+		expr
 }
 
 ---
@@ -12,9 +12,9 @@ switch (expr) {
 
 (program
     (switch_statement
-        (parenthesized_expression (identifier))
+        (identifier)
         (switch_body
-            (switch_default (break_statement))
+            (switch_default (identifier))
         )
     )
 )
@@ -23,15 +23,15 @@ switch (expr) {
 some cases
 ==========
 
-switch(n) {
-    case 1:
-        break;
-    case 2:
-        break;
-    case 3:
-        break;
-    default:
-        break;
+switch n {
+	case 1:
+		n
+	case 2:
+		n
+	case 3:
+		n
+	case _:
+		n
 }
 
 ---
@@ -39,12 +39,12 @@ switch(n) {
 
 (program
     (switch_statement
-        (parenthesized_expression (identifier))
+        (identifier)
         (switch_body
-            (switch_case (number) (break_statement))
-            (switch_case (number) (break_statement))
-            (switch_case (number) (break_statement))
-            (switch_default (break_statement))
+            (switch_case (number) (identifier))
+            (switch_case (number) (identifier))
+            (switch_case (number) (identifier))
+            (switch_default (identifier))
         )
     )
 )

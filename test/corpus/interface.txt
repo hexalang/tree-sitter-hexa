@@ -16,7 +16,7 @@ interface A {
 with inheritance
 ================
 
-interface A extends B, C {
+interface A B C {
 
 }
 
@@ -35,7 +35,7 @@ simple body
 ===========
 
 interface A {
-    fun set helloWorld(): void;
+    fun helloWorld() Void
 }
 
 ---
@@ -55,7 +55,7 @@ interface A {
 with attribut
 =============
 
-public interface A {
+interface A {
 
 }
 
@@ -73,8 +73,8 @@ public interface A {
 with annotation
 ===============
 
-[ExcludeClass]
-public interface A {
+@excludeClass
+interface A {
 
 }
 

@@ -2,7 +2,7 @@
 with number/string keys
 =======================
 
-const a = {"a": 1, 2: "hello"};
+let a = { "a": 1, 2: "hello" }
 
 ---
 
@@ -20,7 +20,7 @@ const a = {"a": 1, 2: "hello"};
 with identifier keys
 =====================
 
-const a = {a: 1, b: "hello"};
+let a = { a: 1, b: "hello" }
 
 ---
 
@@ -38,7 +38,7 @@ const a = {a: 1, b: "hello"};
 nested object
 =============
 
-const a = {a: {1: 2}};
+var a = { a: { 1: 2 } }
 
 ---
 
@@ -57,7 +57,7 @@ const a = {a: {1: 2}};
 complex expression
 ==================
 
-const a = {a: (w[0])};
+let a = { a: (w[0]) }
 
 ---
 
@@ -76,10 +76,146 @@ const a = {a: (w[0])};
 empty object
 ============
 
-const a = {};
+let a = {}
 
 ---
 
 (program
     (constant_declaration (identifier) (object))
+)
+
+================
+object spread
+================
+
+let obj = { x: 1, y: 2 }
+let copy = { ...obj, z: 3 }
+let immutable = readonly { ...obj, z: 3 }
+let withType = Point { ...obj, x: 4 }
+
+---
+
+(program
+    (constant_declaration 
+        (identifier)
+        (object
+            (pair (identifier) (number))
+            (pair (identifier) (number))
+        )
+    )
+    (constant_declaration 
+        (identifier)
+        (object
+            (spread_expression (identifier))
+            (pair (identifier) (number))
+        )
+    )
+    (constant_declaration 
+        (identifier)
+        (object
+            (spread_expression (identifier))
+            (pair (identifier) (number))
+        )
+    )
+    (constant_declaration 
+        (identifier)
+        (object
+            (spread_expression (identifier))
+            (pair (identifier) (number))
+        )
+    )
+)
+
+================
+object shorthand
+================
+
+let value = 132
+let obj1 = { value, x: 1, y: 2 }
+let obj2 = { value }
+
+---
+
+(program
+    (constant_declaration (identifier) (number))
+    (constant_declaration 
+        (identifier)
+        (object
+            (shorthand (identifier))
+            (pair (identifier) (number))
+            (pair (identifier) (number))
+        )
+    )
+    (constant_declaration 
+        (identifier)
+        (object
+            (shorthand (identifier))
+        )
+    )
+)
+
+================
+computed field names
+================
+
+let name = "x"
+let obj = { @as(name) foo: 1, @as("baz") bar: 2 }
+obj.foo = 123
+
+// More computed field examples
+let dynamicKey = "dynamic"
+let obj2 = { 
+	@as(dynamicKey) value: 42,
+	@as("computed_" + dynamicKey) other: "test"
+}
+
+---
+
+(program
+    (constant_declaration (identifier) (string))
+    (constant_declaration 
+        (identifier)
+        (object
+            (pair 
+                (decorated_expression
+                    (decorator (decorator_name (identifier)) (identifier))
+                    (identifier)
+                )
+                (number)
+            )
+            (pair 
+                (decorated_expression
+                    (decorator (decorator_name (string)) (identifier))
+                    (identifier)
+                )
+                (number)
+            )
+        )
+    )
+    (expression_statement
+        (assignment_expression
+            (member_expression (identifier) (identifier))
+            (number)
+        )
+    )
+    (constant_declaration (identifier) (string))
+    (constant_declaration 
+        (identifier)
+        (object
+            (pair 
+                (decorated_expression
+                    (decorator (decorator_name (identifier)) (identifier))
+                    (identifier)
+                )
+                (number)
+            )
+            (pair 
+                (decorated_expression
+                    (decorator (decorator_name (binary_expression (string) (identifier))) (identifier))
+                    (identifier)
+                )
+                (string)
+            )
+        )
+    )
 )

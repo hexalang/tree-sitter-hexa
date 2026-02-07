@@ -2,7 +2,7 @@
 simple if
 =========
 
-if (a == b) {
+if a == b {
 
 }
 
@@ -10,9 +10,7 @@ if (a == b) {
 
 (program
     (if_statement
-        (parenthesized_expression
-            (binary_expression (identifier) (identifier))
-        )
+        (binary_expression (identifier) (identifier))
         (statement_block)
     )
 )
@@ -21,7 +19,7 @@ if (a == b) {
 if-else
 =======
 
-if (a == b) {
+if a == b {
 
 } else {
 
@@ -31,9 +29,7 @@ if (a == b) {
 
 (program
     (if_statement
-        (parenthesized_expression
-            (binary_expression (identifier) (identifier))
-        )
+        (binary_expression (identifier) (identifier))
         (statement_block)
     (else_clause
         (statement_block))
@@ -44,9 +40,9 @@ if (a == b) {
 if-elseif-else
 ==============
 
-if (a == b) {
+if a == b {
 
-} else if (a == c) {
+} else if a == c {
 
 } else {
 
@@ -57,15 +53,11 @@ if (a == b) {
 
 (program
     (if_statement
-        (parenthesized_expression
-            (binary_expression (identifier) (identifier))
-        )
+        (binary_expression (identifier) (identifier))
         (statement_block)
     (else_clause
         (if_statement
-            (parenthesized_expression
-                (binary_expression (identifier) (identifier))
-            )
+            (binary_expression (identifier) (identifier))
         (statement_block)
         (else_clause
             (statement_block)))
