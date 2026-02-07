@@ -1,0 +1,693 @@
+============
+basic @verify contracts
+============
+
+fun process(value Int) Int {
+	@verify {
+		// Simple boolean facts
+		value >= 0 or "value must be non-negative"
+	}
+	
+	if value < 0 {
+		throw Error("negative value")
+	}
+	
+	let computed = value * 2
+	return computed
+}
+
+---
+
+(program
+    (function_declaration
+        (contract_decorator
+            @verify {
+            (expression_statement
+                (binary_expression
+                    (identifier)
+                    (>=)
+                    (number)
+                )
+            )
+            (expression_statement
+                (string)
+            )
+            }
+        )
+        (identifier)
+        (function_parameters
+            (identifier) (type_hint (identifier))
+        )
+        (type_hint (identifier))
+        (statement_block
+            (if_statement
+                (binary_expression (identifier) (<) (number))
+                (statement_block
+                    (throw_statement
+                        (call_expression (identifier) (string))
+                    )
+                )
+            )
+            (constant_declaration
+                (identifier)
+                (binary_expression (identifier) (*) (number))
+            )
+            (return_statement (identifier))
+        )
+    )
+)
+
+================
+@verify with @save
+============
+
+var lastProcessed Int = 0
+
+fun processWithSave(value Int) Int {
+	@verify {
+		@save lastProcessed as previousLastProcessed
+		lastProcessed >= 0 or "lastProcessed must be non-negative"
+	}
+	
+	let computed = value * 2
+	lastProcessed = computed
+	return computed
+}
+
+---
+
+(program
+    (variable_declaration
+        (identifier)
+        (type_hint (identifier))
+        (number)
+    )
+    (function_declaration
+        (contract_decorator
+            @verify {
+            (@save (identifier) as (identifier))
+            (expression_statement
+                (binary_expression
+                    (identifier)
+                    (>=)
+                    (number)
+                )
+            )
+            (expression_statement
+                (string)
+            )
+            }
+        )
+        (identifier)
+        (function_parameters
+            (identifier) (type_hint (identifier))
+        )
+        (type_hint (identifier))
+        (statement_block
+            (constant_declaration
+                (identifier)
+                (binary_expression (identifier) (*) (number))
+            )
+            (expression_statement
+                (assignment_expression
+                    (identifier)
+                    (identifier)
+                )
+            )
+            (return_statement (identifier))
+        )
+    )
+)
+
+================
+@verify with @returns
+============
+
+fun calculate(a Int, b Int) Int {
+	@verify {
+		@returns {
+			let sum = a + b
+			sum >= 0 or "sum must be non-negative"
+		}
+	}
+	
+	return a + b
+}
+
+---
+
+(program
+    (function_declaration
+        (contract_decorator
+            @verify {
+            (@returns {
+            (constant_declaration (identifier) (binary_expression (identifier) (+) (identifier)))
+            (expression_statement
+                (binary_expression
+                    (identifier)
+                    (>=)
+                    (number)
+                )
+            )
+            (expression_statement
+                (string)
+            )
+            })
+            }
+        )
+        (identifier)
+        (function_parameters
+            (identifier) (type_hint (identifier))
+            (identifier) (type_hint (identifier))
+        )
+        (type_hint (identifier))
+        (statement_block
+            (return_statement (binary_expression (identifier) (+) (identifier)))
+        )
+    )
+)
+
+================
+@verify with complex checks
+============
+
+fun validateUser(user User) Bool {
+	@verify {
+		{
+			let nonNegative = user.age >= 0
+			let adult = user.age >= 18
+			nonNegative and adult or "user must be non-negative and adult"
+		} or "user validation failed"
+	}
+	
+	return true
+}
+
+---
+
+(program
+    (function_declaration
+        (contract_decorator
+            @verify {
+            (expression_statement
+                (binary_expression
+                    (binary_expression
+                        (member_expression (identifier) (identifier))
+                        (>=)
+                        (number)
+                    )
+                    (and)
+                    (binary_expression
+                        (member_expression (identifier) (identifier))
+                        (>=)
+                        (number)
+                    )
+                )
+            )
+            (expression_statement
+                (string)
+            )
+            }
+        )
+        (identifier)
+        (function_parameters
+            (identifier) (type_hint (identifier))
+        )
+        (type_hint (identifier))
+        (statement_block
+            (return_statement (true))
+        )
+    )
+)
+
+================
+@verify with inline blocks
+============
+
+fun complexValidation(value Int) Int {
+	@verify {
+		{
+			let nonNegative = value >= 0
+			let even = (value % 2) == 0
+			nonNegative and even or "value must be non-negative and even"
+		}
+	}
+	
+	return value * 2
+}
+
+---
+
+(program
+    (function_declaration
+        (contract_decorator
+            @verify {
+            (expression_statement
+                (binary_expression
+                    (identifier)
+                    (>=)
+                    (number)
+                )
+            )
+            (expression_statement
+                (binary_expression
+                    (binary_expression (identifier) (%) (number))
+                    (==)
+                    (number)
+                )
+            )
+            (expression_statement
+                (binary_expression
+                    (binary_expression
+                        (identifier)
+                        (>=)
+                        (number)
+                    )
+                    (and)
+                    (binary_expression
+                        (binary_expression (identifier) (%) (number))
+                        (==)
+                        (number)
+                    )
+                )
+            )
+            (expression_statement
+                (string)
+            )
+            }
+        )
+        (identifier)
+        (function_parameters
+            (identifier) (type_hint (identifier))
+        )
+        (type_hint (identifier))
+        (statement_block
+            (constant_declaration
+                (identifier)
+                (binary_expression (identifier) (*) (number))
+            )
+            (return_statement (identifier))
+        )
+    )
+)
+
+================
+@verify with @throws
+============
+
+fun riskyOperation(value Int) Int {
+	@verify {
+		@throws {
+			// Validate that state did not change on exception
+			lastProcessed == previousLastProcessed or "lastProcessed must not change on exception"
+		}
+	}
+	
+	if value < 0 {
+		throw Error("negative value")
+	}
+	
+	let computed = value * 2
+	lastProcessed = computed
+	return computed
+}
+
+---
+
+(program
+    (function_declaration
+        (contract_decorator
+            @verify {
+            (@throws {
+            (expression_statement
+                (binary_expression
+                    (identifier)
+                    (==)
+                    (identifier)
+                )
+            )
+            (expression_statement
+                (string)
+            )
+            })
+            }
+        )
+        (identifier)
+        (function_parameters
+            (identifier) (type_hint (identifier))
+        )
+        (type_hint (identifier))
+        (statement_block
+            (if_statement
+                (binary_expression (identifier) (<) (number))
+                (statement_block
+                    (throw_statement
+                        (call_expression (identifier) (string))
+                    )
+                )
+            )
+            (constant_declaration
+                (identifier)
+                (binary_expression (identifier) (*) (number))
+            )
+            (expression_statement
+                (assignment_expression
+                    (identifier)
+                    (identifier)
+                )
+            )
+            (return_statement (identifier))
+        )
+    )
+)
+
+================
+@verify on classes
+============
+
+class BankAccount {
+	var balance Int = 0
+	
+	@verify {
+		balance >= 0 or "balance cannot be negative"
+	}
+	
+	fun deposit(amount Int) {
+		@verify {
+			balance + amount >= 0 or "insufficient funds after deposit"
+		}
+		
+		balance += amount
+	}
+	
+	fun withdraw(amount Int) {
+		@verify {
+			balance - amount >= 0 or "insufficient funds"
+		}
+		
+		balance -= amount
+	}
+}
+
+---
+
+(program
+    (class_declaration
+        (contract_decorator
+            @verify {
+            (expression_statement
+                (binary_expression
+                    (identifier)
+                    (>=)
+                    (number)
+                )
+            )
+            (expression_statement
+                (string)
+            )
+            }
+        )
+        (identifier)
+        (class_body
+            (variable_declaration
+                (identifier)
+                (type_hint (identifier))
+                (number)
+            )
+            (function_declaration
+                (contract_decorator
+                    @verify {
+                    (expression_statement
+                        (binary_expression
+                            (binary_expression (identifier) (+) (identifier))
+                            (>=)
+                            (number)
+                        )
+                    )
+                    (expression_statement
+                        (string)
+                    )
+                    }
+                )
+                (identifier)
+                (function_parameters
+                    (identifier) (type_hint (identifier))
+                )
+                (statement_block
+                    (expression_statement
+                        (augmented_assignment_expression
+                            (identifier)
+                            '+=
+                            (identifier)
+                        )
+                    )
+                )
+            )
+            (function_declaration
+                (contract_decorator
+                    @verify {
+                    (expression_statement
+                        (binary_expression
+                            (binary_expression (identifier) (-) (identifier))
+                            (>=)
+                            (number)
+                        )
+                    )
+                    (expression_statement
+                        (string)
+                    )
+                    }
+                )
+                (identifier)
+                (function_parameters
+                    (identifier) (type_hint (identifier))
+                )
+                (statement_block
+                    (expression_statement
+                        (augmented_assignment_expression
+                            (identifier)
+                            '-=
+                            (identifier)
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
+
+================
+@verify with properties
+============
+
+class Temperature {
+	var celsius Double
+	
+	@verify {
+		celsius >= -273.15 or "temperature above absolute zero"
+		celsius <= 1000 or "temperature below maximum"
+	}
+	
+	fun setFahrenheit(fahrenheit Double) {
+		@verify {
+			(fahrenheit - 32) * 5/9 >= -273.15 or "fahrenheit above absolute zero"
+		}
+		
+		celsius = (fahrenheit - 32) * 5/9
+	}
+}
+
+---
+
+(program
+    (class_declaration
+        (contract_decorator
+            @verify {
+            (expression_statement
+                (binary_expression
+                    (identifier)
+                    (>=)
+                    (number)
+                )
+            )
+            (expression_statement
+                (string)
+            )
+            (expression_statement
+                (binary_expression
+                    (identifier)
+                    (<=)
+                    (number)
+                )
+            )
+            (expression_statement
+                (string)
+            )
+            }
+        )
+        (identifier)
+        (class_body
+            (variable_declaration
+                (identifier)
+                (type_hint (identifier))
+            )
+            (function_declaration
+                (contract_decorator
+                    @verify {
+                    (expression_statement
+                        (binary_expression
+                            (binary_expression
+                                (binary_expression (identifier) (-) (number))
+                                (*)
+                                (binary_expression (number) (/) (number))
+                            )
+                            (>=)
+                            (number)
+                        )
+                    )
+                    (expression_statement
+                        (string)
+                    )
+                    }
+                )
+                (identifier)
+                (function_parameters
+                    (identifier) (type_hint (identifier))
+                )
+                (statement_block
+                    (expression_statement
+                        (assignment_expression
+                            (identifier)
+                            (binary_expression
+                                (binary_expression
+                                    (binary_expression (identifier) (-) (number))
+                                    (*)
+                                    (binary_expression (number) (/) (number))
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
+
+================
+@verify with multiple conditions
+============
+
+fun validateRange(value Int, min Int, max Int) {
+	@verify {
+		value >= min and value <= max or "value must be between {min} and {max}"
+		value % 2 == 0 or "value must be even"
+	}
+	
+	return value
+}
+
+---
+
+(program
+    (function_declaration
+        (identifier)
+        (function_parameters
+            (identifier) (type_hint (identifier))
+            (identifier) (type_hint (identifier))
+            (identifier) (type_hint (identifier))
+        )
+        (contract_decorator
+            @verify {
+            (expression_statement
+                (binary_expression
+                    (binary_expression
+                        (binary_expression (identifier) (>=) (identifier))
+                        (and)
+                        (binary_expression (identifier) (<=) (identifier))
+                    )
+                    (or)
+                    (string)
+                )
+            )
+            (expression_statement
+                (binary_expression
+                    (binary_expression (identifier) (%) (number))
+                    (==)
+                    (number)
+                )
+                (or)
+                (string)
+            )
+            }
+        )
+        (type_hint (identifier))
+        (statement_block
+            (return_statement (identifier))
+        )
+    )
+)
+
+================
+@verify with result type
+============
+
+fun divide(a Int, b Int) Double? {
+	@verify {
+		@returns b != 0 or "division by zero not allowed"
+		@returns result > 0 or "result must be positive"
+	}
+	
+	if b == 0 {
+		return null
+	}
+	
+	return a / b
+}
+
+---
+
+(program
+    (function_declaration
+        (identifier)
+        (function_parameters
+            (identifier) (type_hint (identifier))
+            (identifier) (type_hint (identifier))
+        )
+        (type_hint (nullable_type (identifier)))
+        (contract_decorator
+            @verify {
+            (@returns {
+            (expression_statement
+                (binary_expression
+                    (identifier)
+                    (!=)
+                    (number)
+                )
+                (or)
+                (string)
+            )
+            })
+            (@returns {
+            (expression_statement
+                (binary_expression
+                    (identifier)
+                    (>)
+                    (number)
+                )
+                (or)
+                (string)
+            )
+            })
+            }
+        )
+        (statement_block
+            (if_statement
+                (binary_expression (identifier) (==) (number))
+                (statement_block
+                    (return_statement (null))
+                )
+            )
+            (return_statement (binary_expression (identifier) (/) (identifier)))
+        )
+    )
+)

@@ -1,0 +1,294 @@
+============
+basic #if
+============
+
+#if meta.defined('debug') {
+	console.log("Debug mode")
+} else if meta.defined('release') {
+	console.log("Release mode")
+} else {
+	console.log("Other mode")
+}
+
+---
+
+================
+#if with expressions
+============
+
+#if meta.int('apiLevel') >= 2 {
+	console.log("API level 2")
+}
+
+#if mode == Mode.Debug {
+	console.log("Debug mode")
+}
+
+---
+
+================
+nested #if
+============
+
+#if meta.defined('debug') {
+	#if meta.defined('verbose') {
+		console.log("Debug and verbose")
+	} else {
+		console.log("Debug only")
+	}
+}
+
+---
+
+================
+#if in type definitions
+============
+
+type Entity = #if meta.defined('debug') { EntityDebug } else { EntityRelease }
+
+class C<isDebug Bool> {
+	#if isDebug {
+		let counter Int = 0
+	}
+}
+
+---
+
+================
+#if with enums
+============
+
+enum Mode String {
+	Debug = "debug"
+	Release = "release"
+}
+
+let mode = meta.getDefineAs('mode', Mode)
+#if mode == Mode.Debug {
+	console.log("Debug mode")
+}
+
+---
+
+================
+complex conditional compilation
+============
+
+#if meta.defined('featureA') and meta.defined('featureB') {
+	console.log("Both features enabled")
+}
+
+#if meta.defined('platform') == 'web' or meta.defined('platform') == 'mobile' {
+	console.log("Web or mobile platform")
+}
+
+---
+
+================
+#else if
+============
+
+#if meta.defined('debug') {
+	console.log("Debug")
+} else if meta.defined('testing') {
+	console.log("Testing")
+} else {
+	console.log("Production")
+}
+
+---
+
+================
+#if with string defines
+============
+
+#if meta.string('version') == "1.0.0" {
+	console.log("Version 1.0.0")
+}
+
+---
+
+================
+#if with boolean defines
+============
+
+#if meta.bool('enableFeature') {
+	enableFeature()
+}
+
+---
+
+================
+#if with computed values
+============
+
+let threshold = meta.int('threshold')
+#if threshold > 100 {
+	console.log("Threshold exceeded")
+}
+
+---
+
+(program
+    (preprocessor_directive
+        (condition: (meta_expression (property: defined) (string)))
+        (else_clause
+            (preprocessor_directive
+                (condition: (meta_expression (property: defined) (string)))
+                (else_clause
+                    (preprocessor_directive
+                        (condition: (meta_expression (property: defined) (string)))
+                        (else_clause
+                            (preprocessor_directive
+                                (condition: (meta_expression (property: defined) (string)))
+                                (else_clause
+                                    (repeat
+                                        (expression_statement
+                                            (call_expression (member_expression (identifier) (identifier))
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+    (preprocessor_directive
+        (condition: (meta_expression (property: int) (string) (number) (>=) (number)))
+    )
+    (preprocessor_directive
+        (condition: (binary_expression (identifier) (==) (string)))
+    )
+    (preprocessor_directive
+        (condition: (meta_expression (property: defined) (string)))
+        (else_clause
+            (preprocessor_directive
+                (condition: (meta_expression (property: defined) (string)))
+                (else_clause
+                    (repeat
+                        (expression_statement
+                            (call_expression (member_expression (identifier) (identifier))
+                        )
+                    )
+                )
+            )
+        )
+    )
+    (type_alias_declaration
+        (identifier)
+        (preprocessor_directive
+            (condition: (meta_expression (property: defined) (string)))
+        )
+        (type_hint (identifier))
+        (else_clause
+            (type_hint (identifier))
+        )
+    )
+    (class_declaration
+        (identifier)
+        (function_parameters
+            (identifier) (type_hint (generic_data_type (identifier) (identifier)))
+        )
+        (statement_block
+            (preprocessor_directive
+                (condition: (identifier))
+                (statement_block
+                    (variable_declaration
+                        (identifier)
+                        (type_hint (identifier))
+                        (number)
+                    )
+                )
+            )
+        )
+    )
+    (enum_declaration
+        (identifier)
+        (type_hint (identifier))
+        (enum_body
+            (enum_member
+                (name: Debug)
+                (value: (string))
+            )
+            (enum_member
+                (name: Release)
+                (value: (string))
+            )
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (call_expression (meta_expression (property: getDefineAs)) (string) (identifier))
+    )
+    (preprocessor_directive
+        (condition: (binary_expression (identifier) (==) (identifier)))
+    )
+    (preprocessor_directive
+        (condition: (binary_expression
+            (meta_expression (property: defined) (string))
+            (and)
+            (meta_expression (property: defined) (string))
+        ))
+    )
+    (preprocessor_directive
+        (condition: (binary_expression
+            (meta_expression (property: defined) (string))
+            (==) (string)
+            (or)
+            (meta_expression (property: defined) (string))
+        ))
+    )
+    (preprocessor_directive
+        (condition: (meta_expression (property: defined) (string)))
+        (else_clause
+            (preprocessor_directive
+                (condition: (meta_expression (property: defined) (string)))
+                (else_clause
+                    (repeat
+                        (expression_statement
+                            (call_expression (member_expression (identifier) (identifier))
+                        )
+                    )
+                )
+            )
+        )
+    )
+    (preprocessor_directive
+        (condition: (meta_expression (property: string) (string) (==) (string)))
+    )
+    (preprocessor_directive
+        (condition: (meta_expression (property: int) (string) (>) (number)))
+    )
+    (preprocessor_directive
+        (condition: (meta_expression (property: bool) (string)))
+        (else_clause
+            (preprocessor_directive
+                (condition: (meta_expression (property: defined) (string)))
+                (else_clause
+                    (repeat
+                        (expression_statement
+                            (call_expression (member_expression (identifier) (identifier))
+                        )
+                    )
+                )
+            )
+        )
+    )
+    (preprocessor_directive
+        (condition: (meta_expression (property: defined) (string)))
+        (else_clause
+            (preprocessor_directive
+                (condition: (meta_expression (property: defined) (string)))
+                (else_clause
+                    (repeat
+                        (expression_statement
+                            (call_expression (member_expression (identifier) (identifier))
+                        )
+                    )
+                )
+            )
+        )
+    )
+)

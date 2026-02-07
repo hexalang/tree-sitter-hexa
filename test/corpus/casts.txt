@@ -1,0 +1,279 @@
+============
+basic casts
+============
+
+expr.as(Type)
+expr.as(Type, 'null')
+expr.as(Type, 'throw')
+expr.as(Type, 'force')
+
+---
+
+(program
+    (expression_statement
+        (cast_expression
+            (identifier)
+            (type_hint (identifier))
+        )
+    )
+    (expression_statement
+        (cast_expression
+            (identifier)
+            (type_hint (identifier))
+            (mode: (string))
+        )
+    )
+    (expression_statement
+        (cast_expression
+            (identifier)
+            (type_hint (identifier))
+            (mode: (string))
+        )
+    )
+    (expression_statement
+        (cast_expression
+            (identifier)
+            (type_hint (identifier))
+            (mode: (string))
+        )
+    )
+)
+
+---
+
+================
+cast with chaining
+================
+
+expr.as(Type, 'throw').method().as(OtherType<T>, 'null')!.method()
+
+---
+
+(program
+    (expression_statement
+        (call_expression
+            (member_expression
+                (force_unpack_expression
+                    (cast_expression
+                        (call_expression
+                            (member_expression
+                                (cast_expression
+                                    (identifier)
+                                    (type_hint (identifier))
+                                    (mode: (string))
+                                )
+                                (identifier)
+                            )
+                        )
+                        (type_hint (generic_data_type (identifier) (identifier)))
+                        (mode: (string))
+                    )
+                )
+                (identifier)
+            )
+        )
+    )
+)
+
+================
+platform-specific casts
+================
+
+expr.as(Type, 'static_cast')
+expr.as(Type, 'dynamic_cast')
+expr.as(Type, 'const_cast')
+expr.as(Type, 'reinterpret_cast')
+
+---
+
+(program
+    (expression_statement
+        (cast_expression
+            (identifier)
+            (type_hint (identifier))
+            (mode: (string))
+        )
+    )
+    (expression_statement
+        (cast_expression
+            (identifier)
+            (type_hint (identifier))
+            (mode: (string))
+        )
+    )
+    (expression_statement
+        (cast_expression
+            (identifier)
+            (type_hint (identifier))
+            (mode: (string))
+        )
+    )
+    (expression_statement
+        (cast_expression
+            (identifier)
+            (type_hint (identifier))
+            (mode: (string))
+        )
+    )
+)
+
+================
+cast with variable
+================
+
+let cast = 'reinterpret_cast'
+expr.as(Type, cast)
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (string)
+    )
+    (expression_statement
+        (cast_expression
+            (identifier)
+            (type_hint (identifier))
+            (mode: (identifier))
+        )
+    )
+)
+
+================
+inferred type cast
+================
+
+let some T? = expr.as(_)
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (type_hint (nullable_type (identifier)))
+        (cast_expression
+            (identifier)
+            (_)
+        )
+    )
+)
+
+================
+nullable value casts
+================
+
+let nullable T? = null
+if let value = nullable.as(Entity) {
+	// ... handle value
+}
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (type_hint (nullable_type (identifier)))
+        (null)
+    )
+    (if_statement
+        (let_binding (identifier) (cast_expression (identifier) (identifier)))
+        (statement_block
+            (line_comment)
+        )
+    )
+)
+
+================
+complex cast expressions
+================
+
+result = (a + b).as(Type).method()
+chained = x.as(String).as(Int).as(Bool)
+
+---
+
+(program
+    (expression_statement
+        (cast_expression
+            (identifier)
+            (type_hint (identifier))
+            (mode: (string))
+        )
+    )
+    (expression_statement
+        (cast_expression
+            (identifier)
+            (type_hint (identifier))
+            (mode: (string))
+        )
+    )
+    (expression_statement
+        (cast_expression
+            (identifier)
+            (type_hint (identifier))
+            (mode: (string))
+        )
+    )
+    (expression_statement
+        (cast_expression
+            (identifier)
+            (type_hint (identifier))
+            (mode: (string))
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (string)
+    )
+    (expression_statement
+        (cast_expression
+            (identifier)
+            (type_hint (identifier))
+            (mode: (identifier))
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (type_hint (nullable_type (identifier)))
+        (cast_expression
+            (identifier)
+            (_)
+        )
+    )
+    (if_statement
+        (let_binding (identifier) (cast_expression (identifier) (identifier)))
+        (statement_block
+            (line_comment)
+        )
+    )
+    (expression_statement
+        (assignment_expression
+            (identifier)
+            (call_expression
+                (member_expression
+                    (cast_expression
+                        (parenthesized_expression (binary_expression (identifier) (identifier)))
+                        (type_hint (identifier))
+                    )
+                    (identifier)
+                )
+            )
+        )
+    )
+    (expression_statement
+        (assignment_expression
+            (identifier)
+            (cast_expression
+                (cast_expression
+                    (cast_expression
+                        (identifier)
+                        (type_hint (identifier))
+                    )
+                    (type_hint (identifier))
+                )
+                (type_hint (identifier))
+            )
+        )
+    )
+)

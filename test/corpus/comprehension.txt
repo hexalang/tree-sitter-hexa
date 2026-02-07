@@ -1,0 +1,60 @@
+================
+for expression
+================
+
+let array = for i in 0 ... 10 { i * 2 }
+array.length
+array[0]
+array[9]
+
+let even = for i in 0 ... 10 {
+	if i % 2 != 0 {
+		continue
+	}
+	i
+}
+
+even.length
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (for_expression
+            (for_binding (identifier))
+            (range_expression (number) ... (number))
+            (statement_block
+                (expression_statement (binary_expression (identifier) (number)))
+            )
+        )
+    )
+    (expression_statement
+        (member_expression (identifier) (identifier))
+    )
+    (expression_statement
+        (subscript_expression (identifier) (number))
+    )
+    (expression_statement
+        (subscript_expression (identifier) (number))
+    )
+    (constant_declaration
+        (identifier)
+        (for_expression
+            (for_binding (identifier))
+            (range_expression (number) ... (number))
+            (statement_block
+                (if_statement
+                    (binary_expression (binary_expression (identifier) (number)) (number))
+                    (statement_block
+                        (continue_statement)
+                    )
+                )
+                (expression_statement (identifier))
+            )
+        )
+    )
+    (expression_statement
+        (member_expression (identifier) (identifier))
+    )
+)

@@ -1,0 +1,368 @@
+============
+basic regex patterns
+============
+
+switch string {
+	case /abc/ or /def/:
+		console.log("abc or def")
+	
+	case /def/gimsu:
+		console.log("def")
+}
+
+---
+
+(program
+    (switch_statement
+        (identifier)
+        (switch_body
+            (switch_case
+                (binary_expression
+                    (regex (regex_pattern))
+                    (or)
+                    (regex (regex_pattern))
+                )
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+            (switch_case
+                (regex (regex_pattern) (regex_flags))
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+        )
+    )
+)
+
+================
+regex with flags
+============
+
+switch string {
+	case /pattern/gimsu:
+		console.log("case insensitive")
+}
+
+---
+
+(program
+    (switch_statement
+        (identifier)
+        (switch_body
+            (switch_case
+                (regex (regex_pattern) (regex_flags))
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+        )
+    )
+)
+
+================
+regex with named groups
+============
+
+switch string {
+	case /(?<name>\w+) (?<value>\d+)/:
+		console.log("Name:", name, "Value:", value)
+}
+
+(program
+    (switch_statement
+        (identifier)
+        (switch_body
+            (switch_case
+                (regex (regex_pattern))
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string) (identifier) (string) (identifier)
+                    )
+                )
+            )
+        )
+    )
+)
+
+---
+
+================
+regex with optional groups
+============
+
+switch string {
+	case /^(?<name>\w+)(?<beta>beta)?$/:
+		console.log("Program:", name)
+		console.log("Beta?", beta ?? "no")
+}
+
+---
+
+(program
+    (switch_statement
+        (identifier)
+        (switch_body
+            (switch_case
+                (regex (regex_pattern))
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string) (identifier)
+                    )
+                )
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string) (binary_expression (identifier) (??) (string))
+                    )
+                )
+            )
+        )
+    )
+)
+
+================
+regex with repeated groups
+============
+
+switch string {
+	case /(?<command>\w+) (?<args>\w+)*$/:
+		console.log("Command:", command, "Args:", args.join(", "))
+}
+
+---
+
+(program
+    (switch_statement
+        (identifier)
+        (switch_body
+            (switch_case
+                (regex (regex_pattern))
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string) (identifier) (string) (call_expression (member_expression (identifier) (identifier)) (string))
+                    )
+                )
+            )
+        )
+    )
+)
+
+================
+regex with guards
+============
+
+switch string {
+	case /(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})/
+		if let year = parseInt(year),
+			let month = parseInt(month),
+			let day = parseInt(day):
+			console.log("Date:", year, month, day)
+}
+
+---
+
+(program
+    (switch_statement
+        (identifier)
+        (switch_body
+            (switch_case
+                (regex (regex_pattern))
+                (guard
+                    (sequence_expression
+                        (assignment_expression (identifier) (call_expression (identifier) (identifier)))
+                        (assignment_expression (identifier) (call_expression (identifier) (identifier)))
+                        (assignment_expression (identifier) (call_expression (identifier) (identifier)))
+                    )
+                )
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string) (identifier) (identifier) (identifier)
+                    )
+                )
+            )
+        )
+    )
+)
+
+================
+regex with whole match
+============
+
+switch string {
+	case /pattern/ as whole:
+		console.log("Whole match:", whole)
+}
+
+---
+
+(program
+    (switch_statement
+        (identifier)
+        (switch_body
+            (switch_case
+                (regex (regex_pattern))
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string) (identifier)
+                    )
+                )
+            )
+        )
+    )
+)
+
+================
+complex regex patterns
+============
+
+switch string {
+	case /^(?<area>\d{3})-(?<exchange>\w{4})-(?<number>\d{6})$/:
+		console.log("Phone:", area, exchange, number)
+}
+
+---
+
+(program
+    (switch_statement
+        (identifier)
+        (switch_body
+            (switch_case
+                (regex (regex_pattern))
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string) (identifier) (identifier) (identifier)
+                    )
+                )
+            )
+        )
+    )
+)
+
+================
+regex with alternation
+============
+
+switch string {
+	case /http|https/:
+		console.log("URL protocol")
+}
+
+---
+
+(program
+    (switch_statement
+        (identifier)
+        (switch_body
+            (switch_case
+                (regex (regex_pattern))
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+        )
+    )
+)
+
+================
+regex with character classes
+============
+
+switch string {
+	case /[a-zA-Z0-9._%+-]+/:
+		console.log("Valid email format")
+}
+
+---
+
+(program
+    (switch_statement
+        (identifier)
+        (switch_body
+            (switch_case
+                (regex (regex_pattern))
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+        )
+    )
+)
+
+================
+regex with quantifiers
+============
+
+switch string {
+	case /\d{3,5}/:
+		console.log("3 or 5 digits")
+}
+
+---
+
+(program
+    (switch_statement
+        (identifier)
+        (switch_body
+            (switch_case
+                (regex (regex_pattern))
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+        )
+    )
+)
+
+================
+regex with lookahead
+============
+
+switch string {
+	case /\w+(?=\w+)/:
+		console.log("Has parameters")
+}
+
+---
+
+(program
+    (switch_statement
+        (identifier)
+        (switch_body
+            (switch_case
+                (regex (regex_pattern))
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+        )
+    )
+)

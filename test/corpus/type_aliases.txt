@@ -1,0 +1,111 @@
+================
+type alias
+================
+
+type Alias = String
+type Point = type { var x Int var y Int }
+type Point = interface { var x Int var y Int }
+type Handler = fun (arg String) Void
+type Optional<T> = T?
+
+// Using type aliases
+let name Alias = "Hello"
+let p Point = { x: 1, y: 2 }
+let callback Handler = fun (msg String) Void {
+	console.log(msg)
+}
+let value Numeric = 42
+let maybe Optional<String> = "test"
+
+---
+
+(program
+    (type_alias_declaration
+        (identifier)
+        (type_literal (identifier))
+    )
+    (type_alias_declaration
+        (identifier)
+        (type_literal
+            (object_type_literal
+                (type_member (identifier) (identifier) (type_hint (identifier)))
+                (type_member (identifier) (identifier) (type_hint (identifier)))
+            )
+        )
+    )
+    (type_alias_declaration
+        (identifier)
+        (type_literal
+            (interface_type_literal
+                (object_type_literal
+                    (type_member (identifier) (identifier) (type_hint (identifier)))
+                    (type_member (identifier) (identifier) (type_hint (identifier)))
+                )
+            )
+        )
+    )
+    (type_alias_declaration
+        (identifier)
+        (type_literal
+            (object_type_literal
+                (type_member
+                    (identifier)
+                    (identifier)
+                    (function_parameters
+                        (parameter (identifier) (type_hint (identifier)))
+                    )
+                    (type_hint (identifier))
+                )
+            )
+        )
+    )
+    (type_alias_declaration
+        (identifier)
+        (type_literal
+            (nullable_type
+                (generic_data_type (identifier) (identifier))
+            )
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (type_hint (identifier))
+        (string)
+    )
+    (constant_declaration
+        (identifier)
+        (type_hint (identifier))
+        (object
+            (pair (identifier) (number))
+            (pair (identifier) (number))
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (type_hint (identifier))
+        (anonymous_function
+            (function_parameters
+                (parameter (identifier) (type_hint (identifier)))
+            )
+            (type_hint (identifier))
+            (statement_block
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (identifier)
+                    )
+                )
+            )
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (type_hint (identifier))
+        (number)
+    )
+    (constant_declaration
+        (identifier)
+        (type_hint (generic_data_type (identifier) (identifier)))
+        (string)
+    )
+)

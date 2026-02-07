@@ -1,0 +1,209 @@
+============
+compound assignment
+============
+
+a += b
+a -= b
+a *= b
+a /= b
+a %= b
+a &= b
+a |= b
+a ^= b
+a <<= b
+a >>= b
+a >>>= b
+
+---
+
+(program
+    (expression_statement
+        (augmented_assignment_expression
+            (identifier)
+            "+="
+            (identifier)
+        )
+    )
+    (expression_statement
+        (augmented_assignment_expression
+            (identifier)
+            "-="
+            (identifier)
+        )
+    )
+    (expression_statement
+        (augmented_assignment_expression
+            (identifier)
+            "*="
+            (identifier)
+        )
+    )
+    (expression_statement
+        (augmented_assignment_expression
+            (identifier)
+            "/="
+            (identifier)
+        )
+    )
+    (expression_statement
+        (augmented_assignment_expression
+            (identifier)
+            "%="
+            (identifier)
+        )
+    )
+    (expression_statement
+        (augmented_assignment_expression
+            (identifier)
+            "&="
+            (identifier)
+        )
+    )
+    (expression_statement
+        (augmented_assignment_expression
+            (identifier)
+            "|="
+            (identifier)
+        )
+    )
+    (expression_statement
+        (augmented_assignment_expression
+            (identifier)
+            "^="
+            (identifier)
+        )
+    )
+    (expression_statement
+        (augmented_assignment_expression
+            (identifier)
+            "<<="
+            (identifier)
+        )
+    )
+    (expression_statement
+        (augmented_assignment_expression
+            (identifier)
+            ">>="
+            (identifier)
+        )
+    )
+    (expression_statement
+        (augmented_assignment_expression
+            (identifier)
+            ">>>="
+            (identifier)
+        )
+    )
+)
+
+================
+chained compound assignment
+================
+
+x += y += z
+x *= y /= z
+
+---
+
+(program
+    (expression_statement
+        (augmented_assignment_expression
+            (identifier)
+            "+="
+            (augmented_assignment_expression
+                (identifier)
+                "+="
+                (identifier)
+            )
+        )
+    )
+    (expression_statement
+        (augmented_assignment_expression
+            (identifier)
+            "*="
+            (augmented_assignment_expression
+                (identifier)
+                "/="
+                (identifier)
+            )
+        )
+    )
+)
+
+================
+with properties and fields
+================
+
+obj.x += value
+obj.y -= offset
+array[index] *= factor
+map[key] |= flag
+
+---
+
+(program
+    (expression_statement
+        (augmented_assignment_expression
+            (member_expression (identifier) (identifier))
+            "+="
+            (identifier)
+        )
+    )
+    (expression_statement
+        (augmented_assignment_expression
+            (member_expression (identifier) (identifier))
+            "-="
+            (identifier)
+        )
+    )
+    (expression_statement
+        (augmented_assignment_expression
+            (subscript_expression (identifier) (identifier))
+            "*="
+            (identifier)
+        )
+    )
+    (expression_statement
+        (augmented_assignment_expression
+            (subscript_expression (identifier) (identifier))
+            "|="
+            (identifier)
+        )
+    )
+)
+
+================
+complex expressions
+================
+
+result = (a + b) *= c
+value = (x.y) += computeOffset()
+
+---
+
+(program
+    (expression_statement
+        (assignment_expression
+            (identifier)
+            (augmented_assignment_expression
+                (parenthesized_expression
+                    (binary_expression (identifier) (identifier))
+                )
+                "*="
+                (identifier)
+            )
+        )
+    )
+    (expression_statement
+        (assignment_expression
+            (identifier)
+            (augmented_assignment_expression
+                (parenthesized_expression
+                    (member_expression (identifier) (identifier))
+                )
+                "+="
+                (call_expression (identifier))
+            )
+        )
+    )
+)

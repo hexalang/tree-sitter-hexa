@@ -1,0 +1,383 @@
+============
+basic flag enforcement
+============
+
+@flagOnce("username_validated")
+fun validateUsername(user String) Bool {
+	// ... perform checks
+	return true
+}
+
+@flagRequireOnce("username_validated", "User must be validated before sending welcome email")
+fun sendWelcomeEmail(user String) {
+	// ... send email
+}
+
+@flagRequireOnce("username_validated")
+fun logAccess(user String) {
+	// ... log access
+}
+
+@flagRequireOnce("username_validated")
+fun createSession(user String) {
+	// ... create session
+}
+
+---
+
+================
+flag enforcement with usage
+============
+
+fun handleLogin(user String) {
+	validateUsername(user) // Emits flag "username_validated"
+	sendWelcomeEmail(user) // Requires flag "username_validated"
+	logAccess(user) // Requires flag "username_validated"
+	createSession(user) // Requires flag "username_validated"
+}
+
+---
+
+================
+flag enforcement with error cases
+============
+
+// This would cause compiler error
+fun brokenLogin(user String) {
+	// Missing required flag "username_validated"
+	sendWelcomeEmail(user)
+	logAccess(user)
+	createSession(user)
+}
+
+---
+
+================
+nested flag enforcement
+============
+
+@flagOnce("outer_locked")
+fun lockOuter() {
+	// ... actual mutex lock code
+}
+
+@flagOnce("inner_locked")
+@flagRequireOnce("outer_locked")
+fun lockInner() {
+	// ... actual inner mutex lock code
+}
+
+@flagOnce("inner_unlocked")
+@flagRequireOnce("inner_locked")
+fun unlockInner() {
+	// ... actual inner mutex unlock code
+}
+
+@flagDeferRequireOnce("inner_unlocked")
+@unflag("inner_locked")
+fun unlockOuter() {
+	// ... actual outer mutex unlock code
+}
+
+---
+
+================
+flag enforcement in complex flow
+============
+
+@flagOnce("resource_acquired")
+fun processData(data Data) {
+	@flagRequireOnce("resource_acquired")
+	processData(data)
+	@flagDeferRequireOnce("resource_acquired")
+	cleanup()
+}
+
+@flagOnce("resource_acquired")
+fun cleanup() {
+	// ... cleanup code
+}
+
+---
+
+================
+flag enforcement with custom messages
+============
+
+@flagRequireOnce("data_validated", "Input data must pass validation before processing")
+fun processData(data Data) {
+	validateData(data) // Emits "data_validated"
+	transform(data) // Requires "data_validated"
+	store(data) // Requires "data_validated"
+}
+
+---
+
+================
+flag enforcement with conditional flags
+============
+
+@flagOnce("initialized")
+@flagRequireOnce("initialized", "Component must be initialized before use")
+fun useComponent() {
+	initializeComponent() // Emits "initialized"
+	useComponent() // Requires "initialized"
+}
+
+@flagOnce("initialized")
+fun resetComponent() {
+	@flagDeferRequireOnce("initialized")
+	cleanup() // Will be called when "initialized" is still active
+	@unflag("initialized")
+}
+
+---
+
+================
+flag enforcement with methods
+============
+
+class ResourceManager {
+	@flagOnce("resource_locked")
+	
+	fun acquireResource() {
+		// ... acquire resource
+	}
+	
+	fun releaseResource() {
+		@unflag("resource_locked")
+		// ... release resource
+	}
+}
+
+---
+
+================
+complex flag enforcement scenarios
+============
+
+// Multiple flag dependencies
+@flagRequireOnce("authenticated", "authorized")
+fun accessSecureData() {
+	// Requires both "authenticated" and "authorized"
+}
+
+// Flag enforcement in loops
+@flagOnce("item_processed")
+fun processItems(items [Item]) {
+	for item in items {
+		@flagRequireOnce("item_processed")
+			processItem(item)
+			@flagDeferRequireOnce("item_processed")
+	}
+}
+
+---
+
+================
+flag enforcement with classes
+============
+
+class Connection {
+	@flagOnce("connected")
+	
+	fun connect() {
+		// ... establish connection
+	}
+	
+	fun sendData(data String) {
+		@flagRequireOnce("connected")
+		// ... send data
+	}
+	
+	fun disconnect() {
+		@unflag("connected")
+		// ... close connection
+	}
+}
+
+---
+
+(program
+    (function_declaration
+        (flag_decorator (@flagOnce "username_validated"))
+        (identifier)
+        (function_parameters
+            (identifier) (type_hint (identifier))
+        )
+        (type_hint (identifier))
+        (statement_block)
+    )
+    (function_declaration
+        (flag_decorator (@flagRequireOnce "username_validated" "User must be validated before sending welcome email"))
+        (identifier)
+        (function_parameters
+            (identifier) (type_hint (identifier))
+        )
+        (statement_block)
+    )
+    (function_declaration
+        (flag_decorator (@flagRequireOnce "username_validated"))
+        (identifier)
+        (function_parameters
+            (identifier) (type_hint (identifier))
+        )
+        (statement_block)
+    )
+    (function_declaration
+        (flag_decorator (@flagRequireOnce "username_validated"))
+        (identifier)
+        (function_parameters
+            (identifier) (type_hint (identifier))
+        )
+        (statement_block)
+    )
+    (function_declaration
+        (identifier)
+        (function_parameters
+            (identifier) (type_hint (identifier))
+        )
+        (statement_block
+            (expression_statement
+                (call_expression (identifier) (identifier))
+            )
+            (expression_statement
+                (call_expression (identifier) (identifier))
+            )
+            (expression_statement
+                (call_expression (identifier) (identifier))
+            )
+            (expression_statement
+                (call_expression (identifier) (identifier))
+            )
+        )
+    )
+    (function_declaration
+        (identifier)
+        (function_parameters
+            (identifier) (type_hint (identifier))
+        )
+        (statement_block
+            (expression_statement
+                (call_expression (identifier) (identifier))
+            )
+            (expression_statement
+                (call_expression (identifier) (identifier))
+            )
+            (expression_statement
+                (call_expression (identifier) (identifier))
+            )
+            (expression_statement
+                (call_expression (identifier) (identifier))
+            )
+            (expression_statement
+                (call_expression (identifier) (identifier))
+            )
+        )
+    )
+    (function_declaration
+        (flag_decorator (@flagOnce "outer_locked"))
+        (identifier)
+        (function_parameters)
+        (statement_block)
+    )
+    (function_declaration
+        (flag_decorator (@flagOnce "inner_locked"))
+        (flag_decorator (@flagRequireOnce "outer_locked"))
+        (identifier)
+        (function_parameters)
+        (statement_block)
+    )
+    (function_declaration
+        (flag_decorator (@flagOnce "inner_unlocked"))
+        (flag_decorator (@flagRequireOnce "inner_locked"))
+        (identifier)
+        (function_parameters)
+        (statement_block)
+    )
+    (function_declaration
+        (flag_decorator (@flagDeferRequireOnce "inner_unlocked"))
+        (flag_decorator (@unflag "inner_locked"))
+        (identifier)
+        (function_parameters)
+        (statement_block)
+    )
+    (function_declaration
+        (flag_decorator (@flagOnce "resource_acquired"))
+        (identifier)
+        (function_parameters
+            (identifier) (type_hint (identifier))
+        )
+        (statement_block
+            (expression_statement
+                (call_expression (identifier) (identifier))
+            )
+            (flag_decorator (@flagRequireOnce "resource_acquired"))
+            (expression_statement
+                (call_expression (identifier) (identifier))
+            )
+            (flag_decorator (@flagDeferRequireOnce "resource_acquired"))
+            (expression_statement
+                (call_expression (identifier) (identifier))
+            )
+        )
+    )
+    (function_declaration
+        (flag_decorator (@flagOnce "resource_acquired"))
+        (identifier)
+        (function_parameters)
+        (statement_block)
+    )
+    (function_declaration
+        (flag_decorator (@flagRequireOnce "authenticated" "authorized"))
+        (identifier)
+        (function_parameters)
+        (statement_block
+            (expression_statement
+                (call_expression (identifier) (identifier))
+            )
+        )
+    )
+    (function_declaration
+        (flag_decorator (@flagOnce "item_processed"))
+        (identifier)
+        (function_parameters
+            (identifier) (type_hint (array (identifier)))
+        )
+        (statement_block
+            (for_in_statement
+                (for_binding (identifier))
+                (identifier)
+                (statement_block
+                    (flag_decorator (@flagRequireOnce "item_processed"))
+                    (expression_statement
+                        (call_expression (identifier) (identifier))
+                    )
+                    (flag_decorator (@flagDeferRequireOnce "item_processed"))
+                    (expression_statement
+                        (call_expression (identifier) (identifier))
+                    )
+                )
+            )
+        )
+    )
+    (class_declaration
+        (flag_decorator (@flagOnce "resource_locked"))
+        (identifier)
+        (class_body
+            (function_declaration
+                (identifier)
+                (function_parameters)
+                (statement_block)
+            )
+            (function_declaration
+                (identifier)
+                (function_parameters)
+                (statement_block
+                    (flag_decorator (@unflag "resource_locked"))
+                    (expression_statement)
+                )
+            )
+        )
+    )
+)

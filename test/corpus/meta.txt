@@ -1,0 +1,705 @@
+================
+value.type
+================
+
+let someVar = some()
+type Alias = someVar.type
+let otherVar Alias = some()
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (call_expression (identifier))
+    )
+    (type_alias_declaration
+        (identifier)
+        (member_expression (identifier) (identifier))
+    )
+    (constant_declaration
+        (identifier)
+        (type_hint (identifier))
+        (call_expression (identifier))
+    )
+)
+
+================
+meta
+================
+
+let value = someValue
+let sizeof = value.type.meta.sizeInBytes
+
+#if meta.defined('debug') {
+	meta.scream("TODO")
+} else {
+	0
+}
+
+================
+meta compilation methods
+================
+
+#if meta.defined('debug') {
+	meta.scream("TODO")
+} else {
+	0
+}
+
+meta.embedString('file.txt')
+meta.embedString('file.txt', '\r\n')
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (identifier)
+    )
+    (constant_declaration
+        (identifier)
+        (member_expression
+            (member_expression
+                (member_expression
+                    (member_expression (identifier) (identifier))
+                    (identifier)
+                )
+                (identifier)
+            )
+            (identifier)
+        )
+    )
+    (preprocessor_directive
+        #if
+        (meta_expression
+            (identifier)
+            (string)
+        )
+        #else
+        (statement_block
+            (expression_statement
+                (call_expression
+                    (member_expression (identifier) (identifier))
+                    (string)
+                )
+            )
+        )
+        (statement_block
+            (expression_statement (number))
+        )
+        #endif
+    )
+    (preprocessor_directive
+        #if
+        (meta_expression
+            (identifier)
+            (string)
+        )
+        #else
+        (statement_block
+            (expression_statement
+                (call_expression
+                    (member_expression (identifier) (identifier))
+                    (string)
+                )
+            )
+        )
+        (statement_block
+            (expression_statement (number))
+        )
+        #endif
+    )
+    (expression_statement
+        (call_expression
+            (member_expression (identifier) (identifier))
+            (string)
+        )
+    )
+    (expression_statement
+        (call_expression
+            (member_expression (identifier) (identifier))
+            (string)
+            (string)
+        )
+    )
+)
+
+================
+meta properties and methods
+================
+
+let obj = { x: 1, y: 2 }
+obj.meta.hashCode == obj.meta.hashCode
+obj.meta.equalsByFields(obj)
+obj.meta.equalsByFieldsHashCodes(obj)
+obj.meta.dump
+obj.meta.dumpSorted
+obj.meta.dumpWithTypes
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (object
+            (pair (identifier) (number))
+            (pair (identifier) (number))
+        )
+    )
+    (expression_statement
+        (binary_expression
+            (member_expression
+                (member_expression (identifier) (identifier))
+                (identifier)
+            )
+            (==)
+            (member_expression
+                (member_expression (identifier) (identifier))
+                (identifier)
+            )
+        )
+    )
+    (expression_statement
+        (call_expression
+            (member_expression
+                (member_expression (identifier) (identifier))
+                (identifier)
+            )
+            (identifier)
+        )
+    )
+    (expression_statement
+        (call_expression
+            (member_expression
+                (member_expression (identifier) (identifier))
+                (identifier)
+            )
+            (identifier)
+        )
+    )
+    (expression_statement
+        (member_expression
+            (member_expression (identifier) (identifier))
+            (identifier)
+        )
+    )
+    (expression_statement
+        (member_expression
+            (member_expression (identifier) (identifier))
+            (identifier)
+        )
+    )
+    (expression_statement
+        (member_expression
+            (member_expression (identifier) (identifier))
+            (identifier)
+        )
+    )
+)
+
+================
+meta methods introspection
+================
+
+let value = someValue
+let sizeof = value.type.meta.sizeInBytes
+let alignof = value.type.meta.alignOf
+let fieldNames = meta.fieldNames(Point)
+let hasField = meta.hasField(Point, "x")
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (identifier)
+    )
+    (constant_declaration
+        (identifier)
+        (member_expression
+            (member_expression
+                (member_expression
+                    (member_expression (identifier) (identifier))
+                    (identifier)
+                )
+                (identifier)
+            )
+            (identifier)
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (member_expression
+            (member_expression
+                (member_expression
+                    (member_expression (identifier) (identifier))
+                    (identifier)
+                )
+                (identifier)
+            )
+            (identifier)
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (call_expression
+            (member_expression (identifier) (identifier))
+            (identifier)
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (call_expression
+            (member_expression (identifier) (identifier))
+            (identifier)
+            (string)
+        )
+    )
+)
+
+================
+meta in expressions
+================
+
+let result = value.meta.echo + " processed"
+let isValid = meta.validate("input", validator)
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (binary_expression
+            (member_expression
+                (member_expression (identifier) (identifier))
+                (identifier)
+            )
+            (+)
+            (string)
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (call_expression
+            (member_expression (identifier) (identifier))
+            (string)
+            (identifier)
+        )
+    )
+)
+
+================
+meta with generics
+================
+
+fun printFields<T>(value T) {
+	@unroll for field in meta.fieldNames(T) {
+		console.log("Field: {field}")
+	}
+}
+
+---
+
+(program
+    (function_declaration
+        (identifier)
+        (function_parameters
+            (identifier) (type_hint (generic_data_type (identifier) (identifier)))
+        )
+        (statement_block
+            (for_in_statement
+                (decorator (decorator_name (identifier)))
+                (for_binding (identifier))
+                (call_expression
+                    (member_expression (identifier) (identifier))
+                    (identifier)
+                )
+                (statement_block
+                    (expression_statement
+                        (call_expression
+                            (member_expression (identifier) (identifier))
+                            (string)
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
+
+================
+meta position information
+================
+
+meta.line
+meta.file
+meta.functionName
+
+fun log(msg String, where = meta.functionName + ':' + meta.line) {
+	console.log(where, msg)
+}
+
+---
+
+(program
+    (expression_statement
+        (member_expression (identifier) (identifier))
+    )
+    (expression_statement
+        (member_expression (identifier) (identifier))
+    )
+    (expression_statement
+        (member_expression (identifier) (identifier))
+    )
+    (function_declaration
+        (identifier)
+        (function_parameters
+            (identifier) (type_hint (identifier))
+            (identifier) (assignment_expression (binary_expression (member_expression (identifier) (identifier)) (+) (member_expression (identifier) (identifier))))
+        )
+        (statement_block
+            (expression_statement
+                (call_expression
+                    (member_expression (identifier) (identifier))
+                    (identifier)
+                    (identifier)
+                )
+            )
+        )
+    )
+)
+
+================
+meta debugging
+================
+
+throw meta.diagnostic("cause")
+let debugValue = meta.scream("Critical error")
+
+let position = meta.position()
+let trace = meta.trace("Variable value", value)
+
+---
+
+(program
+    (throw_statement
+        (call_expression
+            (member_expression (identifier) (identifier))
+            (string)
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (call_expression
+            (member_expression (identifier) (identifier))
+            (string)
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (call_expression
+            (member_expression (identifier) (identifier))
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (call_expression
+            (member_expression (identifier) (identifier))
+            (string)
+            (identifier)
+        )
+    )
+)
+
+================
+meta with type information
+================
+
+let typeInfo = SomeClass.meta
+let parentType = SomeClass.meta.super
+let interfaces = SomeClass.meta.interfaces
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (member_expression (identifier) (identifier))
+    )
+    (constant_declaration
+        (identifier)
+        (member_expression
+            (member_expression (identifier) (identifier))
+            (identifier)
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (member_expression
+            (member_expression (identifier) (identifier))
+            (identifier)
+        )
+    )
+)
+
+================
+meta compilation flags
+================
+
+#if meta.optimized {
+	console.log("Optimized build")
+}
+
+let target = meta.target()
+let arch = meta.architecture()
+
+---
+
+(program
+    (preprocessor_directive
+        #if
+        (member_expression (identifier) (identifier))
+        (statement_block
+            (expression_statement
+                (call_expression
+                    (member_expression (identifier) (identifier))
+                    (string)
+                )
+            )
+        )
+        #endif
+    )
+    (constant_declaration
+        (identifier)
+        (call_expression
+            (member_expression (identifier) (identifier))
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (call_expression
+            (member_expression (identifier) (identifier))
+        )
+    )
+)
+
+================
+meta runtime checks
+================
+
+if meta.isDebug() {
+	console.log("Running in debug mode")
+}
+
+let platform = meta.platform()
+if platform == "web" {
+	console.log("Web platform detected")
+}
+
+---
+
+(program
+    (if_statement
+        (call_expression
+            (member_expression (identifier) (identifier))
+        )
+        (statement_block
+            (expression_statement
+                (call_expression
+                    (member_expression (identifier) (identifier))
+                    (string)
+                )
+            )
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (call_expression
+            (member_expression (identifier) (identifier))
+        )
+    )
+    (if_statement
+        (binary_expression (identifier) (==) (string))
+        (statement_block
+            (expression_statement
+                (call_expression
+                    (member_expression (identifier) (identifier))
+                    (string)
+                )
+            )
+        )
+    )
+)
+
+================
+meta with reflection
+================
+
+let methods = meta.getMethods(value)
+let properties = meta.getProperties(value)
+let fields = meta.getFields(value)
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (call_expression
+            (member_expression (identifier) (identifier))
+            (identifier)
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (call_expression
+            (member_expression (identifier) (identifier))
+            (identifier)
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (call_expression
+            (member_expression (identifier) (identifier))
+            (identifier)
+        )
+    )
+)
+
+================
+meta constants
+================
+
+let version = meta.version()
+let buildTime = meta.buildTimestamp()
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (call_expression
+            (member_expression (identifier) (identifier))
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (call_expression
+            (member_expression (identifier) (identifier))
+        )
+    )
+)
+
+================
+meta with custom methods
+================
+
+let custom = meta.custom("someMethod", implementation)
+let result = custom(value)
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (call_expression
+            (member_expression (identifier) (identifier))
+            (string)
+            (identifier)
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (call_expression (identifier) (identifier))
+    )
+)
+
+================
+meta assume patterns
+================
+
+let nonNull = value.meta.assumeNotNull
+let safeValue = value.meta.assumeNonEmpty()
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (member_expression
+            (member_expression (identifier) (identifier))
+            (identifier)
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (call_expression
+            (member_expression
+                (member_expression (identifier) (identifier))
+                (identifier)
+            )
+        )
+    )
+)
+
+================
+meta advanced features
+================
+
+// Meta in conditional compilation
+type ConditionalType = #if meta.defined('feature') { EnhancedType } else { BasicType }
+
+// Meta with loops
+@unroll for item in meta.collection(items) {
+	process(item)
+}
+
+// Meta with memory layout
+let offset = meta.offsetOf(Field, StructType)
+let size = meta.sizeOf(Type)
+
+---
+
+(program
+    (type_alias_declaration
+        (identifier)
+        (preprocessor_directive
+            #if
+            (meta_expression
+                (identifier)
+                (string)
+            )
+            (identifier)
+            #else
+            (identifier)
+        )
+    )
+    (for_in_statement
+        (decorator (decorator_name (identifier)))
+        (for_binding (identifier))
+        (call_expression
+            (member_expression (identifier) (identifier))
+            (identifier)
+        )
+        (statement_block
+            (expression_statement
+                (call_expression (identifier) (identifier))
+            )
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (call_expression
+            (member_expression (identifier) (identifier))
+            (identifier)
+            (identifier)
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (call_expression
+            (member_expression (identifier) (identifier))
+            (identifier)
+        )
+    )
+)

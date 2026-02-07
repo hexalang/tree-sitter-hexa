@@ -1,0 +1,450 @@
+============
+basic JSX
+============
+
+@tag
+fun tagName(props) {
+	return <div>Hello, {props.name}!</div>
+}
+
+let element = <div>Hello, world!</div>
+
+---
+
+(program
+    (function_declaration
+        (decorator (decorator_name (identifier)))
+        (identifier)
+        (function_parameters
+            (identifier)
+        )
+        (statement_block
+            (return_statement
+                (jsx_element
+                    (identifier)
+                    (jsx_children
+                        (string)
+                        (jsx_expression
+                            (member_expression (identifier) (identifier))
+                        )
+                        (string)
+                    )
+                )
+            )
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (jsx_element
+            (identifier)
+            (jsx_children
+                (string)
+            )
+        )
+    )
+)
+
+================
+JSX with interpolation
+============
+
+let name = "World"
+let element = <h1>Hello, {name}!</h1>
+
+---
+
+(program
+    (constant_declaration (identifier) (string))
+    (constant_declaration
+        (identifier)
+        (jsx_element
+            (identifier)
+            (jsx_children
+                (string)
+                (jsx_expression (identifier))
+                (string)
+            )
+        )
+    )
+)
+
+================
+nested JSX
+============
+
+let element = <div>
+	<header>
+		<h1>Title</h1>
+	</header>
+	<main>
+		<p>Content</p>
+	</main>
+</div>
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (jsx_element
+            (identifier)
+            (jsx_children
+                (jsx_element
+                    (identifier)
+                    (jsx_children
+                        (jsx_element
+                            (identifier)
+                            (jsx_children
+                                (string)
+                            )
+                        )
+                    )
+                )
+                (jsx_element
+                    (identifier)
+                    (jsx_children
+                        (jsx_element
+                            (identifier)
+                            (jsx_children
+                                (string)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
+
+================
+JSX with conditional
+============
+
+let element = <div>
+	{if let user = getUser() {
+		<p>Welcome, {user.name}!</p>
+	} else {
+		<p>Please log in</p>
+	}}
+</div>
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (jsx_element
+            (identifier)
+            (jsx_children
+                (jsx_expression
+                    (if_statement
+                        (let_binding (identifier) (call_expression (identifier)))
+                        (statement_block
+                            (jsx_element
+                                (identifier)
+                                (jsx_children
+                                    (string)
+                                    (jsx_expression
+                                        (member_expression (identifier) (identifier))
+                                    )
+                                    (string)
+                                )
+                            )
+                        )
+                        (else_clause
+                            (statement_block
+                                (jsx_element
+                                    (identifier)
+                                    (jsx_children
+                                        (string)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
+
+================
+JSX with loop
+============
+
+let element = <ul>
+	{for item in items {
+		<li>{item.name}</li>
+	}}
+</ul>
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (jsx_element
+            (identifier)
+            (jsx_children
+                (jsx_expression
+                    (for_in_statement
+                        (for_binding (identifier))
+                        (identifier)
+                        (statement_block
+                            (jsx_element
+                                (identifier)
+                                (jsx_children
+                                    (jsx_expression
+                                        (member_expression (identifier) (identifier))
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
+
+================
+JSX with switch
+============
+
+let element = <div>
+	{switch status {
+		case "loading":
+			<div>Loading...</div>
+		case "error":
+			<div>Error occurred</div>
+		case "success":
+			<div>Operation complete</div>
+	}}
+</div>
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (jsx_element
+            (identifier)
+            (jsx_children
+                (jsx_expression
+                    (switch_statement
+                        (identifier)
+                        (switch_body
+                            (switch_case
+                                (string)
+                                :
+                                (jsx_element
+                                    (identifier)
+                                    (jsx_children
+                                        (string)
+                                    )
+                                )
+                            )
+                            (switch_case
+                                (string)
+                                :
+                                (jsx_element
+                                    (identifier)
+                                    (jsx_children
+                                        (string)
+                                    )
+                                )
+                            )
+                            (switch_case
+                                (string)
+                                :
+                                (jsx_element
+                                    (identifier)
+                                    (jsx_children
+                                        (string)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
+
+================
+tagged strings
+============
+
+@tag let styledButton = styled`
+	button {
+		background: {primary ? "red" : "blue"};
+		color: white;
+		padding: 10px;
+	}
+`
+
+let html = html`<div>Hello, {name}!</div>`
+let query = sql`SELECT * FROM users WHERE id = ${userId}`
+
+---
+
+(program
+    (constant_declaration
+        (decorator (decorator_name (identifier)))
+        (identifier)
+        (tagged_template
+            (identifier)
+            (string)
+            (jsx_expression
+                (ternary_expression
+                    (identifier)
+                    (string)
+                    (string)
+                )
+            )
+            (string)
+            (string)
+            (string)
+            (string)
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (tagged_template
+            (identifier)
+            (string)
+            (jsx_expression (identifier))
+            (string)
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (tagged_template
+            (identifier)
+            (string)
+            (jsx_expression (identifier))
+            (string)
+        )
+    )
+)
+
+================
+JSX components
+============
+
+class MyComponent Component {
+	@observable var counter Int = 0
+	
+	render() {
+		return <div>Count: {this.counter}</div>
+	}
+}
+
+let element = <MyComponent />
+
+---
+
+(program
+    (class_declaration
+        (identifier)
+        (identifier)
+        (class_body
+            (variable_declaration
+                (decorator (decorator_name (identifier)))
+                (identifier)
+                (type_hint (identifier))
+                (number)
+            )
+            (function_declaration
+                (identifier)
+                (function_parameters)
+                (statement_block
+                    (return_statement
+                        (jsx_element
+                            (identifier)
+                            (jsx_children
+                                (string)
+                                (jsx_expression
+                                    (member_expression (identifier) (identifier))
+                                )
+                                (string)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (jsx_element
+            (identifier)
+        )
+    )
+)
+
+================
+JSX with spread
+============
+
+let props = { ...defaultProps, custom: "value" }
+let element = <Component {...props} />
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (object
+            (spread_expression (identifier))
+            (pair (identifier) (string))
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (jsx_element
+            (identifier)
+            (jsx_attribute
+                (spread)
+                (identifier)
+            )
+        )
+    )
+)
+
+================
+self-closing tags
+============
+
+let element = <img src="/path/to/image.jpg" />
+let input = <input type="text" placeholder="Enter text" />
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (jsx_element
+            (identifier)
+            (jsx_attribute
+                (identifier)
+                (string)
+            )
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (jsx_element
+            (identifier)
+            (jsx_attribute
+                (identifier)
+                (string)
+            )
+            (jsx_attribute
+                (identifier)
+                (string)
+            )
+        )
+    )
+)

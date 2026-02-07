@@ -1,0 +1,99 @@
+================
+imports
+================
+
+import Math
+sin(1)
+
+import Math { sin cos as cosine }
+sin(1)
+cosine(1)
+
+import Math {
+	sin
+	cos as cosine
+}
+
+import Namespace { TypeName1 TypeName2 as MyName }
+import Namespace { TypeName1 TypeName2 method1 method2 }
+
+import Namespace.TypeName
+import Deep.Nested.Namespace.TypeName
+import Namespace as AliasNamespace
+import Namespace.TypeName as AliasTypeName
+
+fun f() {
+	import Math { sin cos as cosine }
+	sin(1)
+}
+
+@export import Math { sin cos as cosine }
+@github('github.com/username/libname') import Lib
+
+---
+
+(program
+    (expression_statement
+        (call_expression (identifier) (number))
+    )
+    (expression_statement
+        (call_expression (identifier) (number))
+    )
+    (import_statement
+        (module: Math)
+        (name: sin)
+        (alias: cosine)
+    )
+    (expression_statement
+        (call_expression (identifier) (number))
+    )
+    (expression_statement
+        (call_expression (identifier) (number))
+    )
+    (import_statement
+        (module: Math)
+        (name: sin)
+        (name: cos)
+        (alias: cosine)
+    )
+    (import_statement
+        (module: Math)
+        (name: sin)
+        (name: os)
+        (alias: cosine)
+    )
+    (import_statement
+        (module: Namespace)
+        (name: TypeName1)
+        (alias: MyName)
+        (name: TypeName2)
+        (alias: MyName)
+        (name: method1)
+        (name: method2)
+    )
+    (function_declaration
+        (identifier)
+        (function_parameters)
+        (statement_block
+            (import_statement
+                (module: Math)
+                (name: sin)
+                (alias: cosine)
+            )
+            (expression_statement
+                (call_expression (identifier) (number))
+            )
+        )
+    )
+    (import_statement
+        (export: true)
+        (module: Math)
+        (name: sin)
+        (alias: cosine)
+    )
+    (import_statement
+        (export: true)
+        (module: Lib)
+        (source: (string))
+    )
+)

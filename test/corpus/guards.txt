@@ -1,0 +1,305 @@
+================
+standalone guard
+================
+
+guard age >= 18 else {
+	throw Error("Must be 18 or older")
+}
+
+guard let user = getCurrentUser(), user.isActive else {
+	return null
+}
+
+---
+
+(program
+    (guard_statement
+        (binary_expression (identifier) (number))
+        (statement_block
+            (throw_statement (call_expression (identifier) (string)))
+        )
+    )
+    (guard_statement
+        (sequence_expression
+            (assignment_expression (identifier) (call_expression (identifier)))
+            (member_expression (identifier) (identifier))
+        )
+        (statement_block
+            (return_statement (null))
+        )
+    )
+)
+
+================
+guard in loops
+================
+
+for item in items {
+	guard let value = item.value else {
+		continue
+	}
+	
+	guard value > 0 else {
+		break
+	}
+	
+	process(value)
+}
+
+---
+
+(program
+    (for_in_statement
+        (for_binding (identifier))
+        (identifier)
+        (statement_block
+            (guard_statement
+                (assignment_expression (identifier) (member_expression (identifier) (identifier)))
+                (statement_block
+                    (continue_statement)
+                )
+            )
+            (guard_statement
+                (binary_expression (identifier) (number))
+                (statement_block
+                    (break_statement)
+                )
+            )
+            (expression_statement
+                (call_expression (identifier) (identifier))
+            )
+        )
+    )
+)
+
+================
+nested guards
+================
+
+guard let user = getUser() else {
+	return null
+}
+
+guard let profile = user.profile else {
+	return null
+}
+
+guard let email = profile.email else {
+	return null
+}
+
+guard email.contains("@") else {
+	throw Error("Invalid email")
+}
+
+---
+
+(program
+    (guard_statement
+        (assignment_expression (identifier) (call_expression (identifier)))
+        (statement_block
+            (return_statement (null))
+        )
+    )
+    (guard_statement
+        (assignment_expression (identifier) (member_expression (identifier) (identifier)))
+        (statement_block
+            (return_statement (null))
+        )
+    )
+    (guard_statement
+        (assignment_expression (identifier) (member_expression (identifier) (identifier)))
+        (statement_block
+            (return_statement (null))
+        )
+    )
+    (guard_statement
+        (call_expression (member_expression (identifier) (identifier)) (string))
+        (statement_block
+            (throw_statement (call_expression (identifier) (string)))
+        )
+    )
+)
+
+================
+guard with complex conditions
+================
+
+guard let data = fetchData(),
+      data.isValid,
+      data.count > 0,
+      data.timestamp > Date.now() - 3600 else {
+	throw Error("Invalid or expired data")
+}
+
+---
+
+(program
+    (guard_statement
+        (sequence_expression
+            (assignment_expression (identifier) (call_expression (identifier)))
+            (member_expression (identifier) (identifier))
+            (binary_expression (member_expression (identifier) (identifier)) (number))
+            (binary_expression (member_expression (identifier) (identifier)) (binary_expression (call_expression (member_expression (identifier) (identifier))) (binary_expression (number) (number))))
+        )
+        (statement_block
+            (throw_statement (call_expression (identifier) (string)))
+        )
+    )
+)
+
+================
+guard with complex conditions
+================
+
+guard let data = fetchData(),
+      data.isValid,
+      data.count > 0,
+      data.timestamp > Date.now() - 3600 else {
+	throw Error("Invalid or expired data")
+}
+
+---
+
+================
+guard in switch expressions
+================
+
+let result = switch value {
+	case let user = getCurrentUser(), user.isActive:
+		processUser(user)
+	case _:
+		null
+}
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (switch_statement
+            (identifier)
+            (switch_body
+                (switch_case
+                    (sequence_expression
+                        (assignment_expression (identifier) (call_expression (identifier)))
+                        (member_expression (identifier) (identifier))
+                    )
+                    (expression_statement
+                        (call_expression (identifier) (identifier))
+                    )
+                )
+                (switch_default
+                    (null)
+                )
+            )
+        )
+    )
+)
+
+================
+guard with computed expressions
+================
+
+guard let config = loadConfig(),
+      (config.timeout ?? 30) > 0,
+      config.retries < maxRetries else {
+	throw Error("Invalid configuration")
+}
+
+---
+
+================
+nested guards
+================
+
+guard let user = getUser() else {
+	return null
+}
+
+guard let profile = user.profile else {
+	return null
+}
+
+guard let email = profile.email else {
+	return null
+}
+
+guard email.contains("@") else {
+	throw Error("Invalid email")
+}
+
+---
+
+================
+guard with early continue
+================
+
+for item in items {
+	guard let value = item.value, value > 0 else {
+		continue
+	}
+	
+	process(value)
+}
+
+---
+
+================
+guard with early break
+================
+
+for item in items {
+	guard let value = item.value, value > threshold else {
+		break
+	}
+	
+	handle(value)
+}
+
+---
+
+================
+guard with function calls in conditions
+================
+
+guard isValid(user), hasPermission(user) else {
+	throw Error("User validation failed")
+}
+
+---
+
+================
+guard with boolean expressions
+================
+
+guard x >= 0 and x <= 100, y != null else {
+	throw Error("Out of bounds")
+}
+
+---
+
+================
+guard with nullable checks
+================
+
+guard let data = fetchData(),
+      let result = data.process(),
+      result != null else {
+	throw Error("Processing failed")
+}
+
+---
+
+(program
+    (guard_statement
+        (sequence_expression
+            (assignment_expression (identifier) (call_expression (identifier)))
+            (assignment_expression (identifier) (call_expression (member_expression (identifier) (identifier))))
+            (binary_expression (identifier) (null))
+        )
+        (statement_block
+            (throw_statement (call_expression (identifier) (string)))
+        )
+    )
+)

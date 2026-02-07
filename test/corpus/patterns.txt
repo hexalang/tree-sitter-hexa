@@ -1,0 +1,401 @@
+================
+switch ranges
+================
+
+switch value {
+	case 1:
+		console.log("One")
+	case x if x > 10:
+		console.log("Greater than 10")
+	case _ ... 123:
+		console.log("Less than or equal to 122")
+	case 1 ... 123:
+		console.log("Between inclusive 1 and 122")
+	case 123 ... _:
+		console.log("Greater than or equal to 123")
+	case _:
+		console.log("Other")
+}
+
+---
+
+(program
+    (switch_statement
+        (identifier)
+        (switch_body
+            (switch_case
+                (number)
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+            (switch_case
+                (identifier
+                    (guard (binary_expression (identifier) (number)))
+                )
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+            (switch_case
+                (range_pattern
+                    (start: _)
+                    (end: (number))
+                )
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+            (switch_case
+                (range_pattern
+                    (start: (number))
+                    (end: (number))
+                )
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+            (switch_case
+                (range_pattern
+                    (start: (number))
+                    (end: _)
+                )
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+            (switch_default
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+        )
+    )
+)
+
+================
+array patterns
+================
+
+switch array {
+	case [x, y, z]:
+		console.log(x, y, z)
+	case [x?, y?, z?]:
+		console.log(x, y, z)
+	case [x, null, z]:
+		console.log(x, z)
+	case [1, _, z]:
+		console.log(z)
+	case [x, ...rest]:
+		console.log(x, rest)
+	case [x, ..._]:
+		console.log(x)
+	case _ if array.length == 0:
+		console.log("Empty via length check")
+	case []:
+		console.log("Empty via pattern")
+	case [x, [1, _, y]]:
+		console.log("Nested pattern", x, y)
+	case _:
+		console.log("Other")
+}
+
+---
+
+(program
+    (switch_statement
+        (identifier)
+        (switch_body
+            (switch_case
+                (type_pattern
+                    (element: (identifier))
+                    (element: (identifier))
+                    (element: (identifier))
+                )
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (identifier) (identifier) (identifier)
+                    )
+                )
+            )
+            (switch_case
+                (type_pattern
+                    (element: (identifier) ?)
+                    (element: (identifier) ?)
+                    (element: (identifier) ?)
+                )
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (identifier) (identifier) (identifier)
+                    )
+                )
+            )
+            (switch_case
+                (type_pattern
+                    (element: (identifier))
+                    (element: (null))
+                    (element: (identifier))
+                )
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (identifier) (identifier)
+                    )
+                )
+            )
+            (switch_case
+                (type_pattern
+                    (element: (number))
+                    (element: _)
+                    (element: (identifier))
+                )
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (identifier)
+                    )
+                )
+            )
+            (switch_case
+                (type_pattern
+                    (element: (identifier))
+                    (rest: (identifier))
+                )
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (identifier) (identifier)
+                    )
+                )
+            )
+            (switch_case
+                (type_pattern
+                    (element: (identifier))
+                    (rest: _)
+                )
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (identifier)
+                    )
+                )
+            )
+            (switch_case
+                (_
+                    (guard (binary_expression (member_expression (identifier) (identifier)) (number)))
+                )
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+            (switch_case
+                (type_pattern)
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+            (switch_case
+                (type_pattern
+                    (element: (identifier))
+                    (element: (nested_array_pattern
+                        (element: (number))
+                        (element: _)
+                        (element: (identifier))
+                    ))
+                )
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string) (identifier) (identifier)
+                    )
+                )
+            )
+            (switch_default
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+        )
+    )
+)
+
+================
+map patterns
+================
+
+switch map {
+	case ["key": "value", "one": "two"]:
+		console.log("Match exactly")
+	case ["key": "value", ...rest]:
+		console.log("Match exactly with rest", rest)
+	case ["key": "value", ..._]:
+		console.log("Match exactly with rest")
+	case [k: "value", ..._]:
+		console.log("Match exactly by value", k)
+	case [_: v, ..._]:
+		console.log("Match at least one key with value", v)
+	case [k: v, ..._]:
+		console.log("Match at least one key-value pair", k, v)
+	case _:
+		console.log("Other")
+}
+
+---
+
+(program
+    (switch_statement
+        (identifier)
+        (switch_body
+            (switch_case
+                (type_pattern
+                    (key: (string) : (value: (string)))
+                    (key: (string) : (value: (string)))
+                )
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+            (switch_case
+                (type_pattern
+                    (key: (string) : (value: (string)))
+                    (rest: (identifier))
+                )
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string) (identifier)
+                    )
+                )
+            )
+            (switch_case
+                (type_pattern
+                    (key: (string) : (value: (string)))
+                    (rest: _)
+                )
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+            (switch_case
+                (type_pattern
+                    (key: (identifier) : (value: (string)))
+                    (rest: _)
+                )
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string) (identifier)
+                    )
+                )
+            )
+            (switch_case
+                (type_pattern
+                    (key: _ : (value: (identifier)))
+                    (rest: _)
+                )
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string) (identifier)
+                    )
+                )
+            )
+            (switch_case
+                (type_pattern
+                    (key: (identifier) : (value: (identifier)))
+                    (rest: _)
+                )
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string) (identifier) (identifier)
+                    )
+                )
+            )
+            (switch_default
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+        )
+    )
+)
+
+================
+object patterns
+================
+
+switch obj {
+	case { x: 1, y: 2 }:
+		console.log("Match")
+	case _:
+		console.log("Other")
+}
+
+---
+
+(program
+    (switch_statement
+        (identifier)
+        (switch_body
+            (switch_case
+                (type_pattern
+                    (key: (identifier) : (value: (number)))
+                    (key: (identifier) : (value: (number)))
+                )
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+            (switch_default
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+        )
+    )
+)

@@ -1,0 +1,249 @@
+================
+simple enum
+================
+
+enum Color {
+	Red
+	Green
+	Blue
+}
+
+---
+
+(program
+    (enum_declaration
+        (identifier)
+        (enum_body
+            (enum_member (identifier))
+            (enum_member (identifier))
+            (enum_member (identifier))
+        )
+    )
+)
+
+================
+enum with values
+================
+
+enum Status Int Interface {
+	Active = 1
+	Inactive = 0
+	Pending = 1 + 1
+}
+
+---
+
+(program
+    (enum_declaration
+        (identifier)
+        (identifier)
+        (identifier)
+        (enum_body
+            (enum_member
+                (identifier)
+                (call_arguments (number))
+            )
+            (enum_member
+                (identifier)
+                (call_arguments (number))
+            )
+            (enum_member
+                (identifier)
+                (call_arguments (binary_expression (number) (number)))
+            )
+        )
+    )
+)
+
+================
+enum with string values
+================
+
+enum Direction String {
+	North = "north"
+	South = "south"
+	East = "east"
+	West = "west"
+
+	fun method() {}
+	static fun staticMethod() {}
+	private fun privateMethod() {}
+	private static fun protectedMethod() {}
+	var x Int = 123
+	static var y Int = 456
+}
+
+---
+
+(program
+    (enum_declaration
+        (identifier)
+        (identifier)
+        (enum_body
+            (enum_member
+                (identifier)
+                (call_arguments (string))
+            )
+            (enum_member
+                (identifier)
+                (call_arguments (string))
+            )
+            (enum_member
+                (identifier)
+                (call_arguments (string))
+            )
+            (enum_member
+                (identifier)
+                (call_arguments (string))
+            )
+            (function_declaration
+                (identifier)
+                (function_parameters)
+                (statement_block)
+            )
+            (function_declaration
+                (property_attribut)
+                (identifier)
+                (function_parameters)
+                (statement_block)
+            )
+            (function_declaration
+                (property_attribut)
+                (identifier)
+                (function_parameters)
+                (statement_block)
+            )
+            (function_declaration
+                (property_attribut)
+                (property_attribut)
+                (identifier)
+                (function_parameters)
+                (statement_block)
+            )
+            (variable_declaration
+                (identifier)
+                (type_hint (identifier))
+                (number)
+            )
+            (variable_declaration
+                (property_attribut)
+                (identifier)
+                (type_hint (identifier))
+                (number)
+            )
+        )
+    )
+)
+
+================
+enum usage
+================
+
+let favoriteColor = Color.Red
+let currentStatus = Status.Active { field: 123}
+let facing = Direction.North(value: 123)
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (member_expression (identifier) (identifier))
+    )
+    (constant_declaration
+        (identifier)
+        (call_expression
+            (member_expression (identifier) (identifier))
+            (object
+                (pair (identifier) (number))
+            )
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (call_expression
+            (member_expression (identifier) (identifier))
+            (named_argument (identifier) (number))
+        )
+    )
+)
+
+================
+switch with enum
+================
+
+switch color {
+	case Color.Red:
+		console.log("Red")
+	case Green:
+		console.log("Green")
+	case Color.Blue(a, b):
+		console.log("Blue")
+}
+
+---
+
+(program
+    (switch_statement
+        (identifier)
+        (switch_body
+            (switch_case
+                (member_expression (identifier) (identifier))
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+            (switch_case
+                (identifier)
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+            (switch_case
+                (call_expression
+                    (member_expression (identifier) (identifier))
+                    (identifier) (identifier)
+                )
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+        )
+    )
+)
+
+================
+enum comparison
+================
+
+if status == Status.Active {
+	console.log("System is active")
+}
+
+---
+
+(program
+    (if_statement
+        (binary_expression
+            (identifier)
+            (member_expression (identifier) (identifier))
+        )
+        (statement_block
+            (expression_statement
+                (call_expression
+                    (member_expression (identifier) (identifier))
+                    (string)
+                )
+            )
+        )
+    )
+)

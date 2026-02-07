@@ -1,0 +1,463 @@
+================
+async await
+================
+
+async fun fetchData() {
+	let data = await fetch("https://api.example.com/data")
+	return data
+}
+
+---
+
+(program
+    (function_declaration
+        (async)
+        (identifier)
+        (function_parameters)
+        (statement_block
+            (variable_declaration 
+                (identifier) 
+                (await_expression 
+                    (call_expression (identifier) (string))
+                )
+            )
+            (return_statement (identifier))
+        )
+    )
+)
+
+================
+fluent await
+================
+
+async fun fetchData2() {
+	let data = fetch("https://api.example.com/data").await.json().await
+	return data
+}
+
+---
+
+(program
+    (function_declaration
+        (async)
+        (identifier)
+        (function_parameters)
+        (statement_block
+            (variable_declaration
+                (identifier)
+                (await_expression
+                    (call_expression
+                        (await_expression
+                            (call_expression
+                                (call_expression (identifier) (string))
+                                (identifier)
+                            )
+                        )
+                        (identifier)
+                    )
+                )
+            )
+            (return_statement (identifier))
+        )
+    )
+)
+
+================
+autoAwait
+================
+
+async('autoAwait') fun fetchData3() {
+	let data = fetch("https://api.example.com/data")
+	let promise = async fetch("https://api.example.com/data")
+	return await promise
+}
+
+---
+
+(program
+    (function_declaration
+        (decorator
+            (decorator_name (async))
+            (call_arguments (string))
+        )
+        (identifier)
+        (function_parameters)
+        (statement_block
+            (variable_declaration (identifier) (call_expression (identifier) (string)))
+            (variable_declaration (identifier) (call_expression (identifier) (call_expression (identifier) (string))))
+            (return_statement (await_expression (identifier)))
+        )
+    )
+)
+
+================
+autoAwait decorator
+================
+
+async('autoAwait') fun fetchData() {
+	let data = fetch("https://api.example.com/data")
+	let processed = data.process()
+	return processed
+}
+
+async('autoAwait') fun processData() {
+	// Can opt out with async
+	let promise = async fetch("https://api.example.com/data")
+	return await promise
+}
+
+---
+
+(program
+    (function_declaration
+        (decorator
+            (decorator_name (async))
+            (call_arguments (string))
+        )
+        (identifier)
+        (function_parameters)
+        (statement_block
+            (variable_declaration (identifier) (call_expression (identifier) (string)))
+            (variable_declaration (identifier) (call_expression (member_expression (identifier) (identifier))))
+            (return_statement (identifier))
+        )
+    )
+    (function_declaration
+        (decorator
+            (decorator_name (async))
+            (call_arguments (string))
+        )
+        (identifier)
+        (function_parameters)
+        (statement_block
+            (line_comment)
+            (variable_declaration (identifier) (call_expression (identifier) (call_expression (identifier) (string))))
+            (return_statement (await_expression (identifier)))
+        )
+    )
+)
+
+================
+callerDecides mode
+================
+
+class MyWorker<isAsync String> {
+	async(isAsync) fun fetchData() {
+		let data = await fetch("https://api.example.com/data")
+		return data
+	}
+	
+	async(isAsync) static fun fetchDataStatic() {
+		let data = await fetch("https://api.example.com/data")
+		return data
+	}
+}
+
+async('callerDecides') fun someAsyncFunction() {
+	let callerDecides = await MyWorker.fetchDataStatic()
+	let callerDecides2 = MyWorker.fetchDataStatic()
+	return callerDecides
+}
+
+---
+
+(program
+    (class_declaration
+        (identifier)
+        (generic_data_type (identifier) (identifier))
+        (class_body
+            (function_declaration
+                (decorator
+                    (decorator_name (async))
+                    (call_arguments (identifier))
+                )
+                (identifier)
+                (function_parameters)
+                (statement_block
+                    (variable_declaration (identifier) (await_expression (call_expression (identifier) (string))))
+                    (return_statement (identifier))
+                )
+            )
+            (function_declaration
+                (decorator
+                    (decorator_name (async))
+                    (call_arguments (identifier))
+                )
+                (property_attribut)
+                (identifier)
+                (function_parameters)
+                (statement_block
+                    (variable_declaration (identifier) (await_expression (call_expression (identifier) (string))))
+                    (return_statement (identifier))
+                )
+            )
+        )
+    )
+    (function_declaration
+        (decorator
+            (decorator_name (async))
+            (call_arguments (string))
+        )
+        (identifier)
+        (function_parameters)
+        (statement_block
+            (variable_declaration (identifier) (await_expression (call_expression (member_expression (identifier) (identifier))))
+            (constant_declaration (identifier) (call_expression (member_expression (identifier) (identifier))))
+            (return_statement (identifier))
+        )
+    )
+)
+
+================
+disable mode
+================
+
+async('disable') fun syncFunction() {
+	// Regular function, async not allowed
+	let data = fetchData("https://api.example.com/data")
+	return data
+}
+
+---
+
+(program
+    (function_declaration
+        (decorator
+            (decorator_name (identifier))
+            (call_arguments (string))
+        )
+        (identifier)
+        (function_parameters)
+        (statement_block
+            (line_comment)
+            (variable_declaration (identifier) (call_expression (identifier) (string)))
+            (return_statement (identifier))
+        )
+    )
+)
+
+================
+fluent await chains
+================
+
+async fun fluentExample() {
+	let data = fetch("https://api.example.com/data").await.json().await
+	let result = data.process().await.validate().await
+	return result
+}
+
+---
+
+(program
+    (function_declaration
+        (decorator (decorator_name (identifier)))
+        (identifier)
+        (function_parameters)
+        (statement_block
+            (variable_declaration
+                (identifier)
+                (await_expression
+                    (call_expression
+                        (await_expression
+                            (call_expression
+                                (call_expression (identifier) (string))
+                                (identifier)
+                            )
+                        )
+                        (identifier)
+                    )
+                )
+            )
+            (variable_declaration
+                (identifier)
+                (await_expression
+                    (call_expression
+                        (await_expression
+                            (call_expression
+                                (member_expression (identifier) (identifier))
+                                (identifier)
+                            )
+                        )
+                        (identifier)
+                    )
+                )
+            )
+            (return_statement (identifier))
+        )
+    )
+)
+
+================
+async with generics
+================
+
+async fun process<T>(data T) {
+	let processed = await transform(data)
+	return processed
+}
+
+---
+
+(program
+    (function_declaration
+        (decorator (decorator_name (identifier)))
+        (identifier)
+        (function_parameters
+            (identifier) (type_hint (generic_data_type (identifier) (identifier)))
+        )
+        (statement_block
+            (variable_declaration (identifier) (await_expression (call_expression (identifier) (identifier))))
+            (return_statement (identifier))
+        )
+    )
+)
+
+================
+async in class context
+================
+
+class AsyncService {
+	async('autoAwait') var mode String = 'default'
+	
+	async('autoAwait') fun loadData() {
+		this.mode = 'loading'
+		let data = await fetchFromDatabase()
+		this.mode = 'ready'
+		return data
+	}
+}
+
+---
+
+(program
+    (class_declaration
+        (identifier)
+        (class_body
+            (variable_declaration
+                (decorator
+                    (decorator_name (identifier))
+                    (call_arguments (string))
+                )
+                (identifier)
+                (type_hint (identifier))
+                (string)
+            )
+            (function_declaration
+                (decorator
+                    (decorator_name (identifier))
+                    (call_arguments (string))
+                )
+                (identifier)
+                (function_parameters)
+                (statement_block
+                    (expression_statement
+                        (assignment_expression
+                            (member_expression (identifier) (identifier))
+                            (string)
+                        )
+                    )
+                    (variable_declaration (identifier) (await_expression (call_expression (identifier))))
+                    (expression_statement
+                        (assignment_expression
+                            (member_expression (identifier) (identifier))
+                            (string)
+                        )
+                    )
+                    (return_statement (identifier))
+                )
+            )
+        )
+    )
+)
+
+================
+async with decorators
+================
+
+@throws(IOException)
+async('callerDecides') fun riskyOperation() {
+	let data = await fetch("https://api.example.com/data")
+	return data
+}
+
+---
+
+(program
+    (function_declaration
+        (decorator (decorator_name (identifier)))
+        (decorator
+            (decorator_name (identifier))
+            (call_arguments (string))
+        )
+        (identifier)
+        (function_parameters)
+        (statement_block
+            (variable_declaration (identifier) (await_expression (call_expression (identifier) (string))))
+            (return_statement (identifier))
+        )
+    )
+)
+
+================
+async return types
+================
+
+async fun maybeReturn() String? {
+	let data = await fetch("https://api.example.com/data")
+	return data.isEmpty() ? null : data
+}
+
+---
+
+(program
+    (function_declaration
+        (decorator (decorator_name (identifier)))
+        (identifier)
+        (function_parameters)
+        (type_hint (nullable_type (identifier)))
+        (statement_block
+            (variable_declaration (identifier) (await_expression (call_expression (identifier) (string))))
+            (return_statement (ternary_expression (call_expression (member_expression (identifier) (identifier))) (null) (identifier)))
+        )
+    )
+)
+
+================
+async with error handling
+================
+
+async fun robustOperation() {
+	try {
+		let data = await riskyOperation()
+		return process(data)
+	} catch e Error {
+		logError(e)
+		return null
+	}
+}
+
+---
+
+(program
+    (function_declaration
+        (decorator (decorator_name (identifier)))
+        (identifier)
+        (function_parameters)
+        (statement_block
+            (try_statement
+                (statement_block
+                    (variable_declaration (identifier) (await_expression (call_expression (identifier))))
+                    (return_statement (call_expression (identifier) (identifier)))
+                )
+                (catch_clause
+                    (identifier)
+                    (type_hint (identifier))
+                    (statement_block
+                        (expression_statement (call_expression (identifier) (identifier)))
+                        (return_statement (null))
+                    )
+                )
+            )
+        )
+    )
+)

@@ -1,0 +1,183 @@
+================
+if let
+================
+
+if let value {
+	value
+} else {
+	null
+}
+
+if let x = a, y > b, let z = c {
+	x
+	z
+} else {
+	null
+}
+
+---
+
+(program
+    (if_statement
+        (let_binding (identifier))
+        (statement_block
+            (expression_statement (identifier))
+        )
+        (else_clause
+            (statement_block
+                (expression_statement (null))
+            )
+        )
+    )
+    (if_statement
+        (let_binding (identifier) (identifier))
+        (let_condition (binary_expression (identifier) (identifier)))
+        (let_binding (identifier) (identifier))
+        (statement_block
+            (expression_statement (identifier))
+            (expression_statement (identifier))
+        )
+        (else_clause
+            (statement_block
+                (expression_statement (null))
+            )
+        )
+    )
+)
+
+================
+while let
+================
+
+while let x = a, y < 10 {
+	y++
+}
+
+---
+
+(program
+    (while_statement
+        (let_binding (identifier) (identifier))
+        (let_condition (binary_expression (identifier) (number)))
+        (statement_block
+            (expression_statement
+                (update_expression (identifier) ++)
+            )
+        )
+    )
+)
+
+================
+guard
+================
+
+fun validateInput(name String?, age Int?) {
+	guard let name, let age, age >= 18 else {
+		throw Error("Invalid input")
+	}
+
+	console.log("{name} is {age} years old")
+}
+
+for item in items {
+	guard let item, item.isValid else {
+		continue
+	}
+	process(item)
+}
+
+---
+
+(program
+    (function_declaration
+        (identifier)
+        (function_parameters
+            (identifier) (type_hint (nullable_type (identifier)))
+            (identifier) (type_hint (nullable_type (identifier)))
+        )
+        (statement_block
+            (guard_statement
+                (let_binding (identifier))
+                (let_condition (let_binding (identifier)))
+                (let_condition (binary_expression (identifier) (number)))
+                (statement_block
+                    (throw_statement
+                        (call_expression (identifier) (string))
+                    )
+                )
+            )
+            (expression_statement
+                (call_expression
+                    (identifier)
+                    (string) (identifier) (string) (identifier)
+                )
+            )
+        )
+    )
+    (for_in_statement
+        (for_binding (identifier))
+        (identifier)
+        (statement_block
+            (guard_statement
+                (let_binding (identifier))
+                (let_condition (member_expression (identifier) (identifier)))
+                (statement_block
+                    (continue_statement)
+                )
+            )
+            (expression_statement
+                (call_expression (identifier) (identifier))
+            )
+        )
+    )
+)
+
+================
+catch guards
+================
+
+try {
+	risky()
+} catch e Error if let reason = e.reason, reason.length > 0 {
+	console.log(reason)
+	handle(e)
+} catch e Error {
+	handle(e)
+}
+
+---
+
+(program
+    (try_statement
+        (statement_block
+            (expression_statement
+                (call_expression (identifier))
+            )
+        )
+        (catch_clause
+            (identifier)
+            (type_hint (identifier))
+            (guard
+                (let_binding (identifier) (member_expression (identifier) (identifier)))
+                (let_condition (binary_expression (member_expression (identifier) (identifier)) (number)))
+            )
+            (statement_block
+                (expression_statement
+                    (call_expression (identifier) (identifier))
+                )
+                (expression_statement
+                    (call_expression (identifier) (identifier))
+                )
+            )
+        )
+        (catch_clause
+            (identifier)
+            (type_hint (identifier))
+            (statement_block
+                (expression_statement
+                    (call_expression (identifier) (identifier))
+                )
+            )
+        )
+    )
+)

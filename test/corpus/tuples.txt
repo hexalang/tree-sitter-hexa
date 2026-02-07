@@ -1,0 +1,195 @@
+================
+tuple interface
+================
+
+@tuple
+declare interface Pair<K, V> {
+	let key K
+	let value V
+}
+
+@tuple
+declare interface Triple<A, B, C Trait> Trait {
+	let first A
+	let second B
+	let third C
+}
+
+---
+
+(program
+    (interface_declaration
+        (decorator (decorator_name (identifier)))
+        (property_attribut)
+        (identifier)
+        (function_parameters
+            (identifier)
+            (identifier)
+        )
+        (statement_block
+            (constant_declaration
+                (identifier)
+                (type_hint (identifier))
+            )
+            (constant_declaration
+                (identifier)
+                (type_hint (identifier))
+            )
+        )
+    )
+    (interface_declaration
+        (decorator (decorator_name (identifier)))
+        (property_attribut)
+        (identifier)
+        (function_parameters
+            (identifier)
+            (identifier)
+            (identifier) (type_hint (identifier))
+        )
+        (type_hint (identifier))
+        (statement_block
+            (constant_declaration
+                (identifier)
+                (type_hint (identifier))
+            )
+            (constant_declaration
+                (identifier)
+                (type_hint (identifier))
+            )
+            (constant_declaration
+                (identifier)
+                (type_hint (identifier))
+            )
+        )
+    )
+)
+
+================
+using tuple interfaces
+================
+
+let pair Pair<String, Int> = { key: "age", value: 25 }
+let triple Triple<String, Int, Bool> = { first: "user", second: 42, third: true }
+
+// Access by index
+let name = pair[0]  // "age"
+let age = pair[1]    // 25
+let user = triple[0] // "user"
+let id = triple[1]   // 42
+let active = triple[2] // true
+
+// Access by field name
+let keyName = pair.key
+let keyValue = pair.value
+let firstName = triple.first
+let secondValue = triple.second
+let thirdValue = triple.third
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (type_hint (generic_data_type (identifier) (identifier) (identifier)))
+        (object
+            (pair (identifier) (string))
+            (pair (identifier) (number))
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (type_hint (generic_data_type (identifier) (identifier) (identifier) (identifier)))
+        (object
+            (pair (identifier) (string))
+            (pair (identifier) (number))
+            (pair (identifier) (true))
+        )
+    )
+    (line_comment)
+    (constant_declaration
+        (identifier)
+        (subscript_expression (identifier) (number))
+    )
+    (line_comment)
+    (constant_declaration
+        (identifier)
+        (subscript_expression (identifier) (number))
+    )
+    (line_comment)
+    (constant_declaration
+        (identifier)
+        (subscript_expression (identifier) (number))
+    )
+    (line_comment)
+    (constant_declaration
+        (identifier)
+        (subscript_expression (identifier) (number))
+    )
+    (line_comment)
+    (constant_declaration
+        (identifier)
+        (subscript_expression (identifier) (number))
+    )
+    (line_comment)
+    (constant_declaration
+        (identifier)
+        (member_expression (identifier) (identifier))
+    )
+    (constant_declaration
+        (identifier)
+        (member_expression (identifier) (identifier))
+    )
+    (constant_declaration
+        (identifier)
+        (member_expression (identifier) (identifier))
+    )
+    (constant_declaration
+        (identifier)
+        (member_expression (identifier) (identifier))
+    )
+    (constant_declaration
+        (identifier)
+        (member_expression (identifier) (identifier))
+    )
+)
+
+================
+tuple interface in patterns
+================
+
+switch pair {
+	case [key, value]:
+		console.log("Key: {key}, Value: {value}")
+	case _:
+		console.log("Not a pair")
+}
+
+---
+
+(program
+    (switch_statement
+        (identifier)
+        (switch_body
+            (switch_case
+                (type_pattern
+                    (element: (identifier))
+                    (element: (identifier))
+                )
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string) (identifier) (string) (identifier)
+                    )
+                )
+            )
+            (switch_default
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+        )
+    )
+)

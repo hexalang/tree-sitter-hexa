@@ -1,0 +1,294 @@
+================
+simple decorators
+================
+
+@struct
+@packed
+@sizeOf(16)
+class AcpiTableHeader {
+	@bits(8) var signature UInt8
+}
+
+---
+
+(program
+    (class_declaration
+        (decorator (decorator_name (identifier)))
+        (decorator (decorator_name (identifier)))
+        (decorator
+            (decorator_name (identifier))
+            (call_arguments (number))
+        )
+        (identifier)
+        (statement_block
+            (variable_declaration
+                (decorator
+                    (decorator_name (identifier))
+                    (call_arguments (number))
+                )
+                (identifier)
+                (type_hint (identifier))
+            )
+        )
+    )
+)
+
+================
+function decorators
+================
+
+@inline
+fun foo() {}
+
+@example("example")
+@exampleB(example: "example")
+@exampleC(1, 2, name: value)
+fun bar() {}
+
+---
+
+(program
+    (function_declaration
+        (decorator (decorator_name (identifier)))
+        (identifier)
+        (function_parameters)
+        (statement_block)
+    )
+    (function_declaration
+        (decorator
+            (decorator_name (identifier))
+            (call_arguments (string))
+        )
+        (decorator
+            (decorator_name (identifier))
+            (call_arguments
+                (named_argument (identifier) (string))
+            )
+        )
+        (decorator
+            (decorator_name (identifier))
+            (call_arguments
+                (number)
+                (number)
+                (named_argument (identifier) (identifier))
+            )
+        )
+        (identifier)
+        (function_parameters)
+        (statement_block)
+    )
+)
+
+================
+parameter decorators
+================
+
+fun someFunction(@example some Type) {
+	// ...
+}
+
+---
+
+(program
+    (function_declaration
+        (identifier)
+        (function_parameters
+            (parameter
+                (decorator (decorator_name (identifier)))
+                (identifier)
+                (type_hint (identifier))
+            )
+        )
+        (statement_block)
+    )
+)
+
+================
+external declarations
+================
+
+@external
+declare fun foo()
+
+@external
+declare var x Int
+
+---
+
+(program
+    (function_declaration
+        (decorator (decorator_name (identifier)))
+        (property_attribut)
+        (identifier)
+        (function_parameters)
+        (statement_block)
+    )
+    (variable_declaration
+        (decorator (decorator_name (identifier)))
+        (property_attribut)
+        (identifier)
+        (type_hint (identifier))
+    )
+)
+
+================
+namespace decorators
+================
+
+@namespace.decorator
+fun foo() {}
+
+---
+
+(program
+    (function_declaration
+        (decorator
+            (decorator_name (identifier) (identifier))
+        )
+        (identifier)
+        (function_parameters)
+        (statement_block)
+    )
+)
+
+================
+variable decorators
+================
+
+@decoratorOnVariable
+var x @example Int = 123
+
+---
+
+(program
+    (variable_declaration
+        (decorator (decorator_name (identifier)))
+        (identifier)
+        (decorator (decorator_name (identifier)))
+        (type_hint (identifier))
+        (number)
+    )
+)
+
+================
+expression decorators
+================
+
+x = @example 123
+
+---
+
+(program
+    (expression_statement
+        (assignment_expression
+            (identifier)
+            (decorated_expression
+                (decorator (decorator_name (identifier)))
+                (number)
+            )
+        )
+    )
+)
+
+================
+overflow control
+================
+
+@overflow(rule) fun function() {
+	var x Int = 2147483647
+	x++
+	console.log(x)
+}
+
+@overflow('wrapAround') fun wrapFunction() {}
+@overflow('clamp') fun clampFunction() {}
+@overflow('throw') fun throwFunction() {}
+@overflow('crash') fun crashFunction() {}
+@overflow('fast') fun fastFunction() {}
+@overflow('callerDecides') fun callerFunction() {}
+
+---
+
+(program
+    (function_declaration
+        (decorator
+            (decorator_name (identifier))
+            (call_arguments (identifier))
+        )
+        (identifier)
+        (function_parameters)
+        (statement_block
+            (variable_declaration
+                (identifier)
+                (type_hint (identifier))
+                (number)
+            )
+            (expression_statement
+                (update_expression
+                    (identifier)
+                    (field (operator) "++")
+                )
+            )
+            (expression_statement
+                (call_expression
+                    (member_expression (identifier) (identifier))
+                    (identifier)
+                )
+            )
+        )
+    )
+    (function_declaration
+        (decorator
+            (decorator_name (identifier))
+            (call_arguments (string))
+        )
+        (identifier)
+        (function_parameters)
+        (statement_block)
+    )
+    (function_declaration
+        (decorator
+            (decorator_name (identifier))
+            (call_arguments (string))
+        )
+        (identifier)
+        (function_parameters)
+        (statement_block)
+    )
+    (function_declaration
+        (decorator
+            (decorator_name (identifier))
+            (call_arguments (string))
+        )
+        (identifier)
+        (function_parameters)
+        (statement_block)
+    )
+    (function_declaration
+        (decorator
+            (decorator_name (identifier))
+            (call_arguments (string))
+        )
+        (identifier)
+        (function_parameters)
+        (statement_block)
+    )
+    (function_declaration
+        (decorator
+            (decorator_name (identifier))
+            (call_arguments (string))
+        )
+        (identifier)
+        (function_parameters)
+        (statement_block)
+    )
+    (function_declaration
+        (decorator
+            (decorator_name (identifier))
+            (call_arguments (string))
+        )
+        (identifier)
+        (function_parameters)
+        (statement_block)
+    )
+)

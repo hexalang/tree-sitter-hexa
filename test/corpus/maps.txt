@@ -1,0 +1,176 @@
+================
+simple map
+================
+
+let map = ["key": "value", "one": "two"]
+let emptyMap [String: String] = []
+let none [Int: String]? = null
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (map
+            (pair (string) (string))
+            (pair (string) (string))
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (type_hint (map_type (identifier) (identifier)))
+        (array)
+    )
+    (constant_declaration
+        (identifier)
+        (type_hint (nullable_type (map_type (identifier) (identifier))))
+        (null)
+    )
+)
+
+================
+immutable map
+================
+
+let immutableMap [String: String] = readonly ["key": "value", "one": "two"]
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (type_hint (map_type (identifier) (identifier)))
+        (map
+            (pair (string) (string))
+            (pair (string) (string))
+        )
+    )
+)
+
+================
+map access
+================
+
+map["key"] == "value"
+map.set("key", "value")
+let value = map.get("key")
+value == "value"
+
+---
+
+(program
+    (expression_statement
+        (binary_expression
+            (subscript_expression (identifier) (string))
+            (string)
+        )
+    )
+    (expression_statement
+        (call_expression
+            (member_expression (identifier) (identifier))
+            (string) (string)
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (call_expression
+            (member_expression (identifier) (identifier))
+            (string)
+        )
+    )
+    (expression_statement
+        (binary_expression
+            (identifier)
+            (string)
+        )
+    )
+)
+
+================
+trailing comma
+================
+
+let map = [
+	"key": "value",
+	"one": "two",
+]
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (map
+            (pair (string) (string))
+            (pair (string) (string))
+        )
+    )
+)
+
+================
+dynamic keys
+================
+
+let keyVar = "dynamicKey"
+let map = [
+	"literal": 1,
+	123: 1,
+	true: 1,
+	null: 1,
+	Value: 3,
+	(Enum.Value): 3,
+	(keyVar): 2,
+	(1 + 2): "three",
+]
+
+---
+
+(program
+    (constant_declaration (identifier) (string))
+    (constant_declaration
+        (identifier)
+        (map
+            (pair (string) (number))
+            (pair (number) (number))
+            (pair (true) (number))
+            (pair (null) (number))
+            (pair (identifier) (number))
+            (pair (parenthesized_expression (member_expression (identifier) (identifier))) (number))
+            (pair (parenthesized_expression (identifier)) (number))
+            (pair (parenthesized_expression (binary_expression (number) (number))) (string))
+        )
+    )
+)
+
+================
+map spreading
+================
+
+let base = ["a": 1, "b": 2]
+let merged = [
+	"a": 0,
+	...base,
+	"c": 3,
+	"b": 99
+]
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (map
+            (pair (string) (number))
+            (pair (string) (number))
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (map
+            (pair (string) (number))
+            (spread_expression (identifier))
+            (pair (string) (number))
+            (pair (string) (number))
+        )
+    )
+)

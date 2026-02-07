@@ -1,0 +1,85 @@
+================
+interpolation
+================
+
+let name = "World"
+"Hello {name}!"
+"{name}"
+"Hello {1 + 2}!"
+
+---
+
+(program
+    (constant_declaration (identifier) (string))
+    (expression_statement (string))
+    (expression_statement (string))
+    (expression_statement (string))
+)
+
+================
+raw backtick
+================
+
+`Hello \\n World`
+`backticks here is fine`
+
+---
+
+(program
+    (expression_statement (string))
+    (expression_statement (string))
+)
+
+================
+tagged strings
+================
+
+let userId = 123
+let html = html``<div>Hello, `backticks here is fine`!</div>``
+let query = sql`SELECT * FROM users WHERE id = ${userId}`
+
+================
+more tagged strings
+================
+
+let css = css`
+	body {
+		color: red;
+		background: blue;
+	}
+`
+
+let js = javascript`
+	function hello() {
+		console.log("Hello World");
+	}
+`
+
+let graphql = gql````
+	query GetUser($id: ID!) {
+		user(id: $id) {
+			name
+			email
+		}
+	}
+````
+
+---
+
+(program
+    (constant_declaration (identifier) (string))
+    (expression_statement (string))
+    (expression_statement (string))
+    (expression_statement (string))
+    (expression_statement (string))
+    (expression_statement (string))
+    (expression_statement (string))
+    (expression_statement (string))
+    (expression_statement (string))
+    (expression_statement (string))
+    (expression_statement (string))
+    (expression_statement (string))
+    (expression_statement (string))
+    (expression_statement (string))
+    (expression_statement (string))
+)

@@ -1,0 +1,303 @@
+============
+basic union
+============
+
+@union
+class Union {
+	var i Int
+	var s String
+}
+
+let x = Union { i: 1 }
+let y = Union { s: "hello" }
+
+x.i = 2
+y.s = "world"
+
+---
+
+(program
+    (class_declaration
+        (decorator (decorator_name (identifier)))
+        (identifier)
+        (statement_block
+            (variable_declaration
+                (identifier)
+                (type_hint (identifier))
+            )
+            (variable_declaration
+                (identifier)
+                (type_hint (identifier))
+            )
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (object
+            (pair (identifier) (number))
+        )
+    )
+    (constant_declaration
+        (identifier)
+        (object
+            (pair (identifier) (string))
+        )
+    )
+    (expression_statement
+        (assignment_expression
+            (member_expression (identifier) (identifier))
+            (number)
+        )
+    )
+    (expression_statement
+        (assignment_expression
+            (member_expression (identifier) (identifier))
+            (string)
+        )
+    )
+)
+
+================
+union with switch
+============
+
+switch x {
+	case Int(int):
+		console.log("Int", int)
+	case String(str):
+		console.log("String", str)
+	case _:
+		console.log("Other")
+}
+
+---
+
+(program
+    (switch_statement
+        (identifier)
+        (switch_body
+            (switch_case
+                (type_pattern
+                    (type: (identifier))
+                    (binding: (identifier))
+                )
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string) (identifier)
+                    )
+                )
+            )
+            (switch_case
+                (type_pattern
+                    (type: (identifier))
+                    (binding: (identifier))
+                )
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string) (identifier)
+                    )
+                )
+            )
+            (switch_default
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+        )
+    )
+)
+
+================
+union type matching
+============
+
+let value Any = Union { i: 42 }
+
+switch value {
+	case Int(int):
+		console.log("Int value")
+	case String(str):
+		console.log("String value")
+	case Any(other):
+		console.log("Other value", other)
+}
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (type_hint (identifier))
+        (object
+            (pair (identifier) (number))
+        )
+    )
+    (switch_statement
+        (identifier)
+        (switch_body
+            (switch_case
+                (type_pattern
+                    (type: (identifier))
+                    (binding: (identifier))
+                )
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+            (switch_case
+                (type_pattern
+                    (type: (identifier))
+                    (binding: (identifier))
+                )
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+            (switch_case
+                (type_pattern
+                    (type: (identifier))
+                    (binding: (identifier))
+                )
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string) (identifier)
+                    )
+                )
+            )
+        )
+    )
+)
+
+================
+nested union access
+============
+
+@union @struct
+class NestedUnion {
+	var value Union
+	var other Int
+}
+
+let nested = NestedUnion { 
+	value: Union { i: 123 },
+	other: 456
+}
+
+nested.value.i = 456
+nested.other = 789
+
+---
+
+================
+union with different field types
+============
+
+@union
+class MixedUnion {
+	var number Int
+	var text String
+	var flag Bool
+	var data [UInt8]
+}
+
+let mixed = MixedUnion {
+	number: 42,
+	text: "hello",
+	flag: true,
+	data: [1, 2, 3]
+}
+
+---
+
+================
+union in function parameters
+============
+
+fun processUnion(data Union) {
+	switch data {
+		case Int(value):
+			console.log("Processing integer:", value)
+		case String(text):
+			console.log("Processing string:", text)
+		case _:
+			console.log("Processing unknown type")
+	}
+}
+
+---
+
+================
+union assignment patterns
+============
+
+let unionValue = Union { i: getIntegerValue() }
+
+switch unionValue {
+	case Int(i) if i > 0:
+		console.log("Positive integer:", i)
+	case Int(i):
+		console.log("Non-positive integer:", i)
+	case _:
+		console.log("Not an integer")
+}
+
+---
+
+(program
+    (constant_declaration
+        (identifier)
+        (object
+            (pair (identifier) (call_expression (identifier)))
+        )
+    )
+    (switch_statement
+        (identifier)
+        (switch_body
+            (switch_case
+                (type_pattern
+                    (type: (identifier))
+                    (binding: (identifier))
+                    (guard (binary_expression (identifier) (number)))
+                )
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string) (identifier)
+                    )
+                )
+            )
+            (switch_case
+                (type_pattern
+                    (type: (identifier))
+                    (binding: (identifier))
+                )
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string) (identifier)
+                    )
+                )
+            )
+            (switch_default
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+        )
+    )
+)

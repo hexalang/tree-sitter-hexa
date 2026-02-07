@@ -1,0 +1,21 @@
+================
+triple slash + doc mentions
+================
+
+/// Hello World
+/// TODO NOTE
+/// See [Some.Type] and [name]
+fun f() {}
+
+---
+
+(program
+    (doc_comment)
+    (doc_comment)
+    (doc_comment)
+    (function_declaration
+        (identifier)
+        (function_parameters)
+        (statement_block)
+    )
+)
