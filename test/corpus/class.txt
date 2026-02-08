@@ -9,7 +9,7 @@ class A {
 ---
 
 (program
-    (class_declaration (identifier) (statement_block))
+    (class_declaration (identifier) (class_body))
 )
 
 ======================
@@ -25,8 +25,8 @@ class A B {
 (program
     (class_declaration
         (identifier)
-        (identifier)
-        (statement_block)
+        (heritage (identifier))
+        (class_body)
     )
 )
 
@@ -43,9 +43,8 @@ class A C D {
 (program
     (class_declaration
         (identifier)
-        (identifier)
-        (identifier)
-        (statement_block)
+        (heritage (identifier) (identifier))
+        (class_body)
     )
 )
 
@@ -62,9 +61,8 @@ class A B C {
 (program
     (class_declaration
         (identifier)
-        (identifier)
-        (identifier)
-        (statement_block)
+        (heritage (identifier) (identifier))
+        (class_body)
     )
 )
 
@@ -83,11 +81,11 @@ class Hello {
 (program
     (class_declaration
         (identifier)
-        (statement_block
+        (class_body
             (function_declaration
                 (identifier)
                 (function_parameters
-                    (identifier) (type_hint (identifier))
+                    (parameter (identifier) (type_hint (identifier)))
                 )
                 (type_hint  (identifier))
                 (statement_block)
@@ -111,7 +109,7 @@ class World {
     (class_declaration
         (decorator (decorator_name (identifier)))
         (identifier)
-        (statement_block)
+        (class_body)
     )
 )
 
@@ -130,7 +128,7 @@ class A {
     (class_declaration
         (decorator (decorator_name (identifier)))
         (identifier)
-        (statement_block)
+        (class_body)
     )
 )
 
@@ -150,8 +148,8 @@ private class A {
     (class_declaration
         (decorator (decorator_name (identifier)))
         (decorator (decorator_name (identifier)))
-        (property_attribut)
+        (property_attribute)
         (identifier)
-        (statement_block)
+        (class_body)
     )
 )

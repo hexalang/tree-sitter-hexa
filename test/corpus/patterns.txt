@@ -45,8 +45,8 @@ switch value {
             )
             (switch_case
                 (range_pattern
-                    (start: _)
-                    (end: (number))
+                    (_)
+                    (number)
                 )
                 (expression_statement
                     (call_expression
@@ -57,8 +57,8 @@ switch value {
             )
             (switch_case
                 (range_pattern
-                    (start: (number))
-                    (end: (number))
+                    (number)
+                    (number)
                 )
                 (expression_statement
                     (call_expression
@@ -69,8 +69,8 @@ switch value {
             )
             (switch_case
                 (range_pattern
-                    (start: (number))
-                    (end: _)
+                    (number)
+                    (_)
                 )
                 (expression_statement
                     (call_expression
@@ -126,9 +126,9 @@ switch array {
         (switch_body
             (switch_case
                 (type_pattern
-                    (element: (identifier))
-                    (element: (identifier))
-                    (element: (identifier))
+                    (identifier)
+                    (identifier)
+                    (identifier)
                 )
                 (expression_statement
                     (call_expression
@@ -139,9 +139,9 @@ switch array {
             )
             (switch_case
                 (type_pattern
-                    (element: (identifier) ?)
-                    (element: (identifier) ?)
-                    (element: (identifier) ?)
+                    (identifier) ?
+                    (identifier) ?
+                    (identifier) ?
                 )
                 (expression_statement
                     (call_expression
@@ -152,9 +152,9 @@ switch array {
             )
             (switch_case
                 (type_pattern
-                    (element: (identifier))
-                    (element: (null))
-                    (element: (identifier))
+                    (identifier)
+                    (null)
+                    (identifier)
                 )
                 (expression_statement
                     (call_expression
@@ -165,9 +165,9 @@ switch array {
             )
             (switch_case
                 (type_pattern
-                    (element: (number))
-                    (element: _)
-                    (element: (identifier))
+                    (number)
+                    (_)
+                    (identifier)
                 )
                 (expression_statement
                     (call_expression
@@ -178,8 +178,8 @@ switch array {
             )
             (switch_case
                 (type_pattern
-                    (element: (identifier))
-                    (rest: (identifier))
+                    (identifier)
+                    (spread_pattern (identifier))
                 )
                 (expression_statement
                     (call_expression
@@ -190,8 +190,8 @@ switch array {
             )
             (switch_case
                 (type_pattern
-                    (element: (identifier))
-                    (rest: _)
+                    (identifier)
+                    (spread_pattern _)
                 )
                 (expression_statement
                     (call_expression
@@ -222,12 +222,12 @@ switch array {
             )
             (switch_case
                 (type_pattern
-                    (element: (identifier))
-                    (element: (nested_array_pattern
-                        (element: (number))
-                        (element: _)
-                        (element: (identifier))
-                    ))
+                    (identifier)
+                    (nested_array_pattern
+                        (number)
+                        (_)
+                        (identifier)
+                    )
                 )
                 (expression_statement
                     (call_expression
@@ -277,8 +277,8 @@ switch map {
         (switch_body
             (switch_case
                 (type_pattern
-                    (key: (string) : (value: (string)))
-                    (key: (string) : (value: (string)))
+                    (string) (string)
+                    (string) (string)
                 )
                 (expression_statement
                     (call_expression
@@ -289,8 +289,8 @@ switch map {
             )
             (switch_case
                 (type_pattern
-                    (key: (string) : (value: (string)))
-                    (rest: (identifier))
+                    (string) (string)
+                    (spread_pattern (identifier))
                 )
                 (expression_statement
                     (call_expression
@@ -301,8 +301,8 @@ switch map {
             )
             (switch_case
                 (type_pattern
-                    (key: (string) : (value: (string)))
-                    (rest: _)
+                    (string) (string)
+                    (spread_pattern _)
                 )
                 (expression_statement
                     (call_expression
@@ -313,8 +313,8 @@ switch map {
             )
             (switch_case
                 (type_pattern
-                    (key: (identifier) : (value: (string)))
-                    (rest: _)
+                    (identifier) (string)
+                    (spread_pattern _)
                 )
                 (expression_statement
                     (call_expression
@@ -325,8 +325,8 @@ switch map {
             )
             (switch_case
                 (type_pattern
-                    (key: _ : (value: (identifier)))
-                    (rest: _)
+                    (_) (identifier)
+                    (spread_pattern _)
                 )
                 (expression_statement
                     (call_expression
@@ -337,8 +337,8 @@ switch map {
             )
             (switch_case
                 (type_pattern
-                    (key: (identifier) : (value: (identifier)))
-                    (rest: _)
+                    (identifier) (identifier)
+                    (spread_pattern _)
                 )
                 (expression_statement
                     (call_expression
@@ -378,8 +378,8 @@ switch obj {
         (switch_body
             (switch_case
                 (type_pattern
-                    (key: (identifier) : (value: (number)))
-                    (key: (identifier) : (value: (number)))
+                    (identifier) (number)
+                    (identifier) (number)
                 )
                 (expression_statement
                     (call_expression

@@ -97,7 +97,7 @@ private fun world() {
 
 (program
     (function_declaration
-        (property_attribut)
+        (property_attribute)
         (identifier)
         (statement_block)
     )
@@ -252,7 +252,7 @@ private fun get() {}
 
 (program
     (function_declaration
-        (property_attribut)
+        (property_attribute)
         (identifier)
         (function_parameters)
         (statement_block)
@@ -269,7 +269,7 @@ static fun get() {}
 
 (program
     (function_declaration
-        (property_attribut)
+        (property_attribute)
         (identifier)
         (function_parameters)
         (statement_block)
@@ -286,7 +286,7 @@ declare fun set() {}
 
 (program
     (function_declaration
-        (property_attribut)
+        (property_attribute)
         (identifier)
         (function_parameters)
         (statement_block)

@@ -8,7 +8,7 @@ mul
 
 (program
     (expression_statement
-        (binary_expression (number) (number))
+        (binary_expression (number) (*) (number))
     )
 )
 
@@ -22,7 +22,7 @@ div
 
 (program
     (expression_statement
-        (binary_expression (number) (number))
+        (binary_expression (number) (/) (number))
     )
 )
 
@@ -36,7 +36,7 @@ mod
 
 (program
     (expression_statement
-        (binary_expression (number) (number))
+        (binary_expression (number) (%) (number))
     )
 )
 
@@ -50,7 +50,7 @@ add
 
 (program
     (expression_statement
-        (binary_expression (number) (number))
+        (binary_expression (number) (+) (number))
     )
 )
 
@@ -64,7 +64,7 @@ sub
 
 (program
     (expression_statement
-        (binary_expression (number) (number))
+        (binary_expression (number) (-) (number))
     )
 )
 
@@ -78,7 +78,7 @@ shl
 
 (program
     (expression_statement
-        (binary_expression (number) (number))
+        (binary_expression (number) (<<) (number))
     )
 )
 
@@ -92,7 +92,7 @@ shr
 
 (program
     (expression_statement
-        (binary_expression (number) (number))
+        (binary_expression (number) (>>) (number))
     )
 )
 
@@ -106,7 +106,7 @@ ushr
 
 (program
     (expression_statement
-        (binary_expression (number) (number))
+        (binary_expression (number) (>>>) (number))
     )
 )
 
@@ -120,7 +120,7 @@ gt
 
 (program
     (expression_statement
-        (binary_expression (number) (number))
+        (binary_expression (number) (>) (number))
     )
 )
 
@@ -134,7 +134,7 @@ lt
 
 (program
     (expression_statement
-        (binary_expression (number) (number))
+        (binary_expression (number) (<) (number))
     )
 )
 
@@ -148,7 +148,7 @@ gte
 
 (program
     (expression_statement
-        (binary_expression (number) (number))
+        (binary_expression (number) (>=) (number))
     )
 )
 
@@ -162,7 +162,7 @@ lte
 
 (program
     (expression_statement
-        (binary_expression (number) (number))
+        (binary_expression (number) (<=) (number))
     )
 )
 
@@ -176,7 +176,7 @@ as
 
 (program
     (expression_statement
-        (cast_expression (number) (identifier))
+        (cast_expression (number) (type_hint (identifier)))
     )
 )
 
@@ -190,7 +190,7 @@ b == null
 
 (program
     (expression_statement
-        (binary_expression (identifier) (null))
+        (binary_expression (identifier) (==) (null))
     )
 )
 
@@ -204,7 +204,7 @@ true == true
 
 (program
     (expression_statement
-        (binary_expression (true) (true))
+        (binary_expression (true) (==) (true))
     )
 )
 
@@ -218,7 +218,7 @@ true != false
 
 (program
     (expression_statement
-        (binary_expression (true) (false))
+        (binary_expression (true) (!=) (false))
     )
 )
 
@@ -232,7 +232,7 @@ band
 
 (program
     (expression_statement
-        (binary_expression (number) (number))
+        (binary_expression (number) (&) (number))
     )
 )
 
@@ -246,7 +246,7 @@ bxor
 
 (program
     (expression_statement
-        (binary_expression (number) (number))
+        (binary_expression (number) (^) (number))
     )
 )
 
@@ -260,7 +260,7 @@ bor
 
 (program
     (expression_statement
-        (binary_expression (number) (number))
+        (binary_expression (number) (|) (number))
     )
 )
 
@@ -274,7 +274,7 @@ true and true
 
 (program
     (expression_statement
-        (binary_expression (true) (true))
+        (binary_expression (true) (and) (true))
     )
 )
 
@@ -289,7 +289,35 @@ true or false
 
 (program
     (expression_statement
-        (binary_expression (true) (false))
+        (binary_expression (true) (or) (false))
     )
 )
 
+
+====
+bxor
+====
+
+4 ^ 1
+
+---
+
+(program
+    (expression_statement
+        (binary_expression (number) (^) (number))
+    )
+)
+
+===
+bor
+===
+
+4 | 1
+
+---
+
+(program
+    (expression_statement
+        (binary_expression (number) (|) (number))
+    )
+)

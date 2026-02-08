@@ -183,7 +183,7 @@ async('callerDecides') fun someAsyncFunction() {
                     (decorator_name (async))
                     (call_arguments (identifier))
                 )
-                (property_attribut)
+                (property_attribute)
                 (identifier)
                 (function_parameters)
                 (statement_block

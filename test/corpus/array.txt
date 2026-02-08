@@ -125,7 +125,8 @@ for row in matrix {
                             (member_expression (identifier) (identifier))
                             (binary_expression
                                 (identifier)
-                                (nullish_coalescing_expression (identifier) (string))
+                                '??'
+                                (string)
                             )
                         )
                     )

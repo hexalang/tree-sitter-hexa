@@ -36,20 +36,19 @@ enum Status Int Interface {
 (program
     (enum_declaration
         (identifier)
-        (identifier)
-        (identifier)
+        (heritage (identifier) (identifier))
         (enum_body
             (enum_member
                 (identifier)
-                (call_arguments (number))
+                (enum_value (number))
             )
             (enum_member
                 (identifier)
-                (call_arguments (number))
+                (enum_value (number))
             )
             (enum_member
                 (identifier)
-                (call_arguments (binary_expression (number) (number)))
+                (enum_value (binary_expression (number) (+) (number)))
             )
         )
     )
@@ -82,19 +81,19 @@ enum Direction String {
         (enum_body
             (enum_member
                 (identifier)
-                (call_arguments (string))
+                (enum_value (string))
             )
             (enum_member
                 (identifier)
-                (call_arguments (string))
+                (enum_value (string))
             )
             (enum_member
                 (identifier)
-                (call_arguments (string))
+                (enum_value (string))
             )
             (enum_member
                 (identifier)
-                (call_arguments (string))
+                (enum_value (string))
             )
             (function_declaration
                 (identifier)
@@ -102,20 +101,20 @@ enum Direction String {
                 (statement_block)
             )
             (function_declaration
-                (property_attribut)
+                (property_attribute)
                 (identifier)
                 (function_parameters)
                 (statement_block)
             )
             (function_declaration
-                (property_attribut)
+                (property_attribute)
                 (identifier)
                 (function_parameters)
                 (statement_block)
             )
             (function_declaration
-                (property_attribut)
-                (property_attribut)
+                (property_attribute)
+                (property_attribute)
                 (identifier)
                 (function_parameters)
                 (statement_block)
@@ -126,7 +125,7 @@ enum Direction String {
                 (number)
             )
             (variable_declaration
-                (property_attribut)
+                (property_attribute)
                 (identifier)
                 (type_hint (identifier))
                 (number)

@@ -261,49 +261,49 @@ array.[ 0: 1, 1: 2 ] == array
     (expression_statement
         (cascade_expression
             (identifier)
-            .[
-            (index: (number) : (value: (number)))
-            (index: (number) : (value: (number)))
-            ]
+            (map_field
+                (pair (number) (number))
+                (pair (number) (number))
+            )
         )
     )
     (expression_statement
         (cascade_expression
             (identifier)
-            .[
-            (index: (identifier) : (value: (number)))
-            (index: (binary_expression (identifier) (identifier)) : (value: (number)))
-            ]
+            (map_field
+                (pair (identifier) (number))
+                (pair (binary_expression (identifier) (identifier)) (number))
+            )
         )
     )
     (expression_statement
         (cascade_expression
             (identifier)
-            .[
-            (start: (number) ... (end: (member_expression (identifier) (identifier))) : (value: (number)))
-            ]
+            (map_field
+                (pair (range_expression (number) (member_expression (identifier) (identifier))) (number))
+            )
         )
     )
     (expression_statement
         (cascade_expression
             (identifier)
-            .[
-            (start: (number) ... (end: (member_expression (identifier) (identifier))) : (value: ... (identifier)))
-            ]
+            (map_field
+                (pair (range_expression (number) (member_expression (identifier) (identifier))) (spread_expression (identifier)))
+            )
         )
     )
     (expression_statement
         (cascade_expression
             (identifier)
-            .[
-            (start: (number) ... (end: (member_expression (identifier) (identifier))) : (value: (for_expression
-                (for_binding (identifier))
-                (identifier)
-                (statement_block
-                    (expression_statement (binary_expression (identifier) (number)))
-                )
-            )))
-            ]
+            (map_field
+                (pair (range_expression (number) (member_expression (identifier) (identifier))) (for_expression
+                    (for_binding (identifier))
+                    (identifier)
+                    (statement_block
+                        (expression_statement (binary_expression (identifier) (number)))
+                    )
+                ))
+            )
         )
     )
     (line_comment)
@@ -312,10 +312,10 @@ array.[ 0: 1, 1: 2 ] == array
             (call_expression
                 (cascade_expression
                     (identifier)
-                    .[
-                    (index: (number) : (value: (number)))
-                    (index: (number) : (value: (number)))
-                    ]
+                    (map_field
+                        (pair (number) (number))
+                        (pair (number) (number))
+                    )
                 )
                 (identifier)
             )
@@ -327,10 +327,10 @@ array.[ 0: 1, 1: 2 ] == array
         (binary_expression
             (cascade_expression
                 (identifier)
-                .[
-                (index: (number) : (value: (number)))
-                (index: (number) : (value: (number)))
-                ]
+                (map_field
+                    (pair (number) (number))
+                    (pair (number) (number))
+                )
             )
             (==)
             (identifier)

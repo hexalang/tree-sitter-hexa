@@ -131,22 +131,17 @@ let threshold = meta.int('threshold')
 
 (program
     (preprocessor_directive
-        (condition: (meta_expression (property: defined) (string)))
+        (meta_expression (defined) (string))
         (else_clause
             (preprocessor_directive
-                (condition: (meta_expression (property: defined) (string)))
+                (meta_expression (defined) (string))
                 (else_clause
                     (preprocessor_directive
-                        (condition: (meta_expression (property: defined) (string)))
+                        (meta_expression (defined) (string))
                         (else_clause
-                            (preprocessor_directive
-                                (condition: (meta_expression (property: defined) (string)))
-                                (else_clause
-                                    (repeat
-                                        (expression_statement
-                                            (call_expression (member_expression (identifier) (identifier))
-                                        )
-                                    )
+                            (repeat
+                                (expression_statement
+                                    (call_expression (member_expression (identifier) (identifier))
                                 )
                             )
                         )
@@ -156,16 +151,16 @@ let threshold = meta.int('threshold')
         )
     )
     (preprocessor_directive
-        (condition: (meta_expression (property: int) (string) (number) (>=) (number)))
+        (binary_expression (meta_expression (int) (string)) (>=) (number))
     )
     (preprocessor_directive
-        (condition: (binary_expression (identifier) (==) (string)))
+        (binary_expression (identifier) (==) (string))
     )
     (preprocessor_directive
-        (condition: (meta_expression (property: defined) (string)))
+        (meta_expression (defined) (string))
         (else_clause
             (preprocessor_directive
-                (condition: (meta_expression (property: defined) (string)))
+                (meta_expression (defined) (string))
                 (else_clause
                     (repeat
                         (expression_statement
@@ -179,7 +174,7 @@ let threshold = meta.int('threshold')
     (type_alias_declaration
         (identifier)
         (preprocessor_directive
-            (condition: (meta_expression (property: defined) (string)))
+            (meta_expression (identifier) (string))
         )
         (type_hint (identifier))
         (else_clause
@@ -193,7 +188,7 @@ let threshold = meta.int('threshold')
         )
         (statement_block
             (preprocessor_directive
-                (condition: (identifier))
+                (identifier)
                 (statement_block
                     (variable_declaration
                         (identifier)
@@ -209,12 +204,12 @@ let threshold = meta.int('threshold')
         (type_hint (identifier))
         (enum_body
             (enum_member
-                (name: Debug)
-                (value: (string))
+                (identifier)
+                (string)
             )
             (enum_member
-                (name: Release)
-                (value: (string))
+                (identifier)
+                (string)
             )
         )
     )
@@ -223,28 +218,28 @@ let threshold = meta.int('threshold')
         (call_expression (meta_expression (property: getDefineAs)) (string) (identifier))
     )
     (preprocessor_directive
-        (condition: (binary_expression (identifier) (==) (identifier)))
+        (binary_expression (identifier) (==) (identifier))
     )
     (preprocessor_directive
-        (condition: (binary_expression
-            (meta_expression (property: defined) (string))
+        (binary_expression
+            (meta_expression (identifier) (string))
             (and)
-            (meta_expression (property: defined) (string))
-        ))
+            (meta_expression (identifier) (string))
+        )
     )
     (preprocessor_directive
-        (condition: (binary_expression
-            (meta_expression (property: defined) (string))
+        (binary_expression
+            (meta_expression (identifier) (string))
             (==) (string)
             (or)
-            (meta_expression (property: defined) (string))
-        ))
+            (meta_expression (identifier) (string))
+        )
     )
     (preprocessor_directive
-        (condition: (meta_expression (property: defined) (string)))
+        (meta_expression (defined) (string))
         (else_clause
             (preprocessor_directive
-                (condition: (meta_expression (property: defined) (string)))
+                (meta_expression (defined) (string))
                 (else_clause
                     (repeat
                         (expression_statement
@@ -256,20 +251,25 @@ let threshold = meta.int('threshold')
         )
     )
     (preprocessor_directive
-        (condition: (meta_expression (property: string) (string) (==) (string)))
+        (binary_expression (meta_expression (identifier) (string)) (==) (string))
     )
     (preprocessor_directive
-        (condition: (meta_expression (property: int) (string) (>) (number)))
+        (binary_expression (meta_expression (identifier) (string)) (>) (number))
     )
     (preprocessor_directive
-        (condition: (meta_expression (property: bool) (string)))
-        (else_clause
+        (meta_expression (identifier) (string))
+        (statement_block
+            (expression_statement
+                (call_expression (member_expression (identifier) (identifier))
+                )
+            )
+        )
+        (preprocessor_else_clause
             (preprocessor_directive
-                (condition: (meta_expression (property: defined) (string)))
-                (else_clause
-                    (repeat
-                        (expression_statement
-                            (call_expression (member_expression (identifier) (identifier))
+                (meta_expression (identifier) (string))
+                (statement_block
+                    (expression_statement
+                        (call_expression (member_expression (identifier) (identifier))
                         )
                     )
                 )
@@ -277,10 +277,10 @@ let threshold = meta.int('threshold')
         )
     )
     (preprocessor_directive
-        (condition: (meta_expression (property: defined) (string)))
+        (meta_expression (defined) (string))
         (else_clause
             (preprocessor_directive
-                (condition: (meta_expression (property: defined) (string)))
+                (meta_expression (defined) (string))
                 (else_clause
                     (repeat
                         (expression_statement

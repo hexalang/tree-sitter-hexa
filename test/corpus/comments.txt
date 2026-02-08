@@ -24,6 +24,13 @@ amazing */
 // by the block comments
 capacities */
 
+---
+
+(program
+    (block_comment)
+    (block_comment)
+)
+
 ================
 nested block comments
 ================
@@ -36,16 +43,6 @@ nested block comments
 */
 
 ---
-
-(program
-    (line_comment)
-    (line_comment)
-)
-
-(program
-    (block_comment)
-    (block_comment)
-)
 
 (program
     (block_comment)
