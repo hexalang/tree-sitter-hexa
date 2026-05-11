@@ -20,7 +20,7 @@ declare interface Triple<A, B, C Trait> Trait {
 (program
     (interface_declaration
         (decorator (decorator_name (identifier)))
-        (property_attribute)
+        (property_attribut)
         (identifier)
         (function_parameters
             (identifier)
@@ -39,7 +39,7 @@ declare interface Triple<A, B, C Trait> Trait {
     )
     (interface_declaration
         (decorator (decorator_name (identifier)))
-        (property_attribute)
+        (property_attribut)
         (identifier)
         (function_parameters
             (identifier)

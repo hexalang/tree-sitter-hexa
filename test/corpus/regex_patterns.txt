@@ -84,12 +84,7 @@ switch string {
         (identifier)
         (switch_body
             (switch_case
-                (regex 
-                    (regex_body 
-                        (named_group "name" (regex_pattern))
-                        (named_group "value" (regex_pattern))
-                    )
-                )
+                (regex (regex_pattern))
                 (expression_statement
                     (call_expression
                         (member_expression (identifier) (identifier))
@@ -120,14 +115,7 @@ switch string {
         (identifier)
         (switch_body
             (switch_case
-                (regex 
-                    (regex_body 
-                        (named_group "name" (regex_pattern))
-                        (optional_group
-                            (named_group "beta" (regex_pattern))
-                        )
-                    )
-                )
+                (regex (regex_pattern))
                 (expression_statement
                     (call_expression
                         (member_expression (identifier) (identifier))
@@ -161,14 +149,7 @@ switch string {
         (identifier)
         (switch_body
             (switch_case
-                (regex 
-                    (regex_body 
-                        (named_group "command" (regex_pattern))
-                        (repeated_group
-                            (named_group "args" (regex_pattern))
-                        )
-                    )
-                )
+                (regex (regex_pattern))
                 (expression_statement
                     (call_expression
                         (member_expression (identifier) (identifier))
@@ -199,13 +180,7 @@ switch string {
         (identifier)
         (switch_body
             (switch_case
-                (regex 
-                    (regex_body 
-                        (named_group "year" (regex_pattern))
-                        (named_group "month" (regex_pattern))
-                        (named_group "day" (regex_pattern))
-                    )
-                )
+                (regex (regex_pattern))
                 (guard
                     (sequence_expression
                         (assignment_expression (identifier) (call_expression (identifier) (identifier)))
@@ -240,10 +215,7 @@ switch string {
         (identifier)
         (switch_body
             (switch_case
-                (regex 
-                    (regex_body)
-                    (as_binding "whole")
-                )
+                (regex (regex_pattern))
                 (expression_statement
                     (call_expression
                         (member_expression (identifier) (identifier))
@@ -271,13 +243,7 @@ switch string {
         (identifier)
         (switch_body
             (switch_case
-                (regex 
-                    (regex_body 
-                        (named_group "area" (regex_pattern))
-                        (named_group "exchange" (regex_pattern))
-                        (named_group "number" (regex_pattern))
-                    )
-                )
+                (regex (regex_pattern))
                 (expression_statement
                     (call_expression
                         (member_expression (identifier) (identifier))

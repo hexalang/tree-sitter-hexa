@@ -34,25 +34,44 @@ module.exports = grammar({
   conflicts: ($) => [
     [$.sequence_expression, $.pair],
     [$.primary_expression, $.for_in_statement],
-    [$.class_declaration, $.enum_declaration],
-  ],  word: ($) => $.identifier,
+    [$.return_statement, $.statement_block],
+  ],
+
+  word: ($) => $.identifier,
 
   inline: ($) => [$._expressions, $.statement, $._variable_declarator],
 
   rules: {
     program: ($) => repeat($.statement),
 
-    _class_keyword: ($) => choice(seq('readonly', 'class'), 'class'),
+    // Declarations
+
+    declaration: ($) =>
+      choice(
+        $.variable_declaration,
+        $.constant_declaration,
+        $.function_declaration,
+        $.class_declaration,
+        $.interface_declaration,
+        $.type_alias_declaration,
+        $.enum_declaration,
+        $.enum_flags,
+        $.import_statement,
+        $.preprocessor_directive
+      ),
 
     class_declaration: ($) =>
       seq(
         repeat(choice($.decorator, $.flag_decorator)),
         optional($.contract_decorator),
-        field('keyword', $._class_keyword),
+        optional('readonly'),
+        'class',
         field('name', $._type_identifier),
         optional(field('heritage', $.heritage)),
         field('body', $.class_body)
       ),
+
+    heritage: ($) => repeat1($._data_type),
 
     enum_declaration: ($) =>
       seq(
@@ -364,7 +383,7 @@ module.exports = grammar({
 
     continue_statement: ($) => seq('continue'),
 
-    return_statement: ($) => prec.right(seq('return', optional($.expression))),
+    return_statement: ($) => prec.left(seq('return', optional($.expression))),
 
     throw_statement: ($) => prec.left(seq('throw', optional($.expression))),
 
@@ -645,8 +664,6 @@ module.exports = grammar({
     // `new` keyword is not used in Hexa
 
     // Data types
-
-    heritage: ($) => repeat1($._data_type),
 
     _data_type: ($) =>
       prec.right(
@@ -1053,15 +1070,15 @@ module.exports = grammar({
 
     // Tagged template literals
     tagged_template: ($) =>
-      prec(PREC.PRIMARY + 1, seq(
+      prec.dynamic(1, seq(
         field('tag', choice($.identifier, $.meta_expression)),
         choice(
           // Backticks: html`content`
-          seq('`', repeat(choice($.string, $.identifier, $.expression)), '`'),
+          seq('`', field('content', repeat1(choice($.string, $.identifier, $.expression))), '`'),
           // Double quotes: css"content"
-          seq('"', repeat(choice($.string, $.identifier, $.expression)), '"'),
+          seq('"', field('content', repeat1(choice($.string, $.identifier, $.expression))), '"'),
           // Triple quotes: gql```content```
-          seq('```', repeat(choice($.string, $.identifier, $.expression)), '```')
+          seq('```', field('content', repeat1(choice($.string, $.identifier, $.expression))), '```')
         )
       )),
 
@@ -1155,20 +1172,6 @@ module.exports = grammar({
           repeat($.statement)
         )))),
         '#endif'
-      ),
-
-    declaration: ($) =>
-      choice(
-        $.variable_declaration,
-        $.constant_declaration,
-        $.function_declaration,
-        $.class_declaration,
-        $.interface_declaration,
-        $.type_alias_declaration,
-        $.enum_declaration,
-        $.enum_flags,
-        $.import_statement,
-        $.preprocessor_directive
       ),
 
     // Type patterns for switch case matching

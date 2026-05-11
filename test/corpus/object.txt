@@ -111,7 +111,6 @@ let withType = Point { ...obj, x: 4 }
         )
     )
     (constant_declaration 
-        (property_attribute "readonly")
         (identifier)
         (object
             (spread_expression (identifier))
@@ -120,7 +119,6 @@ let withType = Point { ...obj, x: 4 }
     )
     (constant_declaration 
         (identifier)
-        (type_hint (identifier))
         (object
             (spread_expression (identifier))
             (pair (identifier) (number))

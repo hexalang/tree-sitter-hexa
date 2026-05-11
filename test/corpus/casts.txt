@@ -20,21 +20,21 @@ expr.as(Type, 'force')
         (cast_expression
             (identifier)
             (type_hint (identifier))
-            (cast_mode (string))
+            (mode: (string))
         )
     )
     (expression_statement
         (cast_expression
             (identifier)
             (type_hint (identifier))
-            (cast_mode (string))
+            (mode: (string))
         )
     )
     (expression_statement
         (cast_expression
             (identifier)
             (type_hint (identifier))
-            (cast_mode (string))
+            (mode: (string))
         )
     )
 )
@@ -91,28 +91,28 @@ expr.as(Type, 'reinterpret_cast')
         (cast_expression
             (identifier)
             (type_hint (identifier))
-            (cast_mode (string))
+            (string)
         )
     )
     (expression_statement
         (cast_expression
             (identifier)
             (type_hint (identifier))
-            (cast_mode (string))
+            (string)
         )
     )
     (expression_statement
         (cast_expression
             (identifier)
             (type_hint (identifier))
-            (cast_mode (string))
+            (string)
         )
     )
     (expression_statement
         (cast_expression
             (identifier)
             (type_hint (identifier))
-            (cast_mode (string))
+            (string)
         )
     )
 )
@@ -198,28 +198,28 @@ chained = x.as(String).as(Int).as(Bool)
         (cast_expression
             (identifier)
             (type_hint (identifier))
-            (cast_mode (string))
+            (mode: (string))
         )
     )
     (expression_statement
         (cast_expression
             (identifier)
             (type_hint (identifier))
-            (cast_mode (string))
+            (mode: (string))
         )
     )
     (expression_statement
         (cast_expression
             (identifier)
             (type_hint (identifier))
-            (cast_mode (string))
+            (mode: (string))
         )
     )
     (expression_statement
         (cast_expression
             (identifier)
             (type_hint (identifier))
-            (cast_mode (string))
+            (mode: (string))
         )
     )
     (constant_declaration

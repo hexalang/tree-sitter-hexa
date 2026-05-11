@@ -181,10 +181,9 @@ switch permissions {
             )
             (line_comment)
             (switch_case
-                (binary_expression
-                    (identifier)
-                    (|)
-                    (identifier)
+                (flag_pattern
+                    (flag (identifier))
+                    (flag (identifier))
                 )
                 :
                 (expression_statement
@@ -195,10 +194,9 @@ switch permissions {
                 )
             )
             (switch_case
-                (binary_expression
-                    (identifier)
-                    (|)
-                    (identifier)
+                (flag_pattern
+                    (flag (identifier))
+                    (flag (identifier))
                 )
                 :
                 (expression_statement
@@ -209,88 +207,9 @@ switch permissions {
                 )
             )
             (switch_case
-                (binary_expression
-                    (identifier)
-                    (|)
-                    (identifier)
-                )
-                :
-                (expression_statement
-                    (call_expression
-                        (member_expression (identifier) (identifier))
-                        (string)
-                    )
-                )
-            )
-            (line_comment)
-            (switch_case
-                (binary_expression
-                    (identifier)
-                    (|)
-                    (identifier)
-                )
-                :
-                (expression_statement
-                    (call_expression
-                        (member_expression (identifier) (identifier))
-                        (string)
-                    )
-                )
-            )
-            (switch_case
-                (binary_expression
-                    (identifier)
-                    (|)
-                    (identifier)
-                )
-                :
-                (expression_statement
-                    (call_expression
-                        (member_expression (identifier) (identifier))
-                        (string)
-                    )
-                )
-            )
-            (switch_case
-                (unary_expression
-                    (not)
-                    (identifier)
-                )
-                :
-                (expression_statement
-                    (call_expression
-                        (member_expression (identifier) (identifier))
-                        (string)
-                    )
-                )
-            )
-            (switch_case
-                (binary_expression
-                    (binary_expression
-                        (identifier)
-                        (|)
-                        (identifier)
-                    )
-                    (|)
-                    (identifier)
-                )
-                :
-                (expression_statement
-                    (call_expression
-                        (member_expression (identifier) (identifier))
-                        (string)
-                    )
-                )
-            )
-            (switch_case
-                (binary_expression
-                    (binary_expression
-                        (identifier)
-                        (|)
-                        (identifier)
-                    )
-                    (|)
-                    (identifier)
+                (flag_pattern
+                    (flag (identifier))
+                    (flag (identifier))
                 )
                 :
                 (expression_statement
@@ -302,10 +221,76 @@ switch permissions {
             )
             (line_comment)
             (switch_case
-                (binary_expression
+                (flag_pattern
+                    (flag (identifier))
+                    (flag (identifier))
+                )
+                :
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+            (switch_case
+                (flag_pattern
+                    (flag (identifier))
+                    (flag (identifier))
+                )
+                :
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+            (switch_case
+                (flag_pattern
+                    (not (flag (identifier)))
+                )
+                :
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+            (switch_case
+                (flag_pattern
+                    (flag (identifier))
+                    (flag (identifier))
+                    (flag (identifier))
+                )
+                :
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+            (switch_case
+                (flag_pattern
+                    (flag (identifier))
+                    (flag (identifier))
+                    (flag (identifier))
+                )
+                :
+                (expression_statement
+                    (call_expression
+                        (member_expression (identifier) (identifier))
+                        (string)
+                    )
+                )
+            )
+            (line_comment)
+            (switch_case
+                (flag_pattern
                     (parenthesized_expression (identifier))
-                    (|)
-                    (identifier)
+                    (flag (identifier))
                 )
                 :
                 (expression_statement
@@ -340,17 +325,10 @@ case (requiredFlags) | _:
 (program
     (line_comment)
     (switch_case
-        (binary_expression
-            (binary_expression
-                (identifier)
-                (|)
-                (identifier)
-            )
-            (|)
-            (unary_expression
-                (not)
-                (identifier)
-            )
+        (flag_pattern
+            (flag (identifier))
+            (flag (identifier))
+            (not (flag (identifier)))
         )
         :
         (expression_statement
@@ -362,14 +340,10 @@ case (requiredFlags) | _:
     )
     (line_comment)
     (switch_case
-        (binary_expression
-            (binary_expression
-                (identifier)
-                (|)
-                (identifier)
-            )
-            (|)
-            (identifier)
+        (flag_pattern
+            (flag (identifier))
+            (flag (identifier))
+            (flag (identifier))
         )
         :
         (expression_statement
@@ -381,10 +355,9 @@ case (requiredFlags) | _:
     )
     (line_comment)
     (switch_case
-        (binary_expression
+        (flag_pattern
             (parenthesized_expression (identifier))
-            (|)
-            (identifier)
+            (flag (identifier))
         )
         :
         (expression_statement

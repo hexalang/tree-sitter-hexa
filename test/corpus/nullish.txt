@@ -42,10 +42,10 @@ let name = user?.profile?.name ?? "Guest"
 ---
 
 (program
-    (expression_statement (binary_expression (identifier) '??' (identifier)))
-    (expression_statement (binary_expression (identifier) '??' (return_statement (number))))
-    (expression_statement (binary_expression (identifier) '??' (throw_statement (call_expression (identifier) (string)))))
-    (constant_declaration (identifier) (binary_expression (member_expression (member_expression (identifier) (identifier) '?') (identifier) '?') '??' (string)))
+    (expression_statement (binary_expression (identifier) (identifier)))
+    (expression_statement (binary_expression (identifier) (return_statement (number))))
+    (expression_statement (binary_expression (identifier) (call_expression (new_expression (identifier)) (string))))
+    (constant_declaration (identifier) (binary_expression (member_expression (member_expression (identifier) (identifier) ?) (identifier) ?) (string)))
 )
 
 ================

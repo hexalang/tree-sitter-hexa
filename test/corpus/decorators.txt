@@ -118,14 +118,14 @@ declare var x Int
 (program
     (function_declaration
         (decorator (decorator_name (identifier)))
-        (property_attribute)
+        (property_attribut)
         (identifier)
         (function_parameters)
         (statement_block)
     )
     (variable_declaration
         (decorator (decorator_name (identifier)))
-        (property_attribute)
+        (property_attribut)
         (identifier)
         (type_hint (identifier))
     )

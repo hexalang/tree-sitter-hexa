@@ -25,7 +25,8 @@ interface A B C {
 (program
     (interface_declaration
         (identifier)
-        (heritage (identifier) (identifier))
+        (identifier)
+        (identifier)
     )
 )
 

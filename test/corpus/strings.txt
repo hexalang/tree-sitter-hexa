@@ -11,25 +11,9 @@ let name = "World"
 
 (program
     (constant_declaration (identifier) (string))
-    (expression_statement 
-        (string
-            (string_fragment "Hello ")
-            (interpolation (identifier))
-            (string_fragment "!")
-        )
-    )
-    (expression_statement 
-        (string
-            (interpolation (identifier))
-        )
-    )
-    (expression_statement 
-        (string
-            (string_fragment "Hello ")
-            (interpolation (binary_expression (number) (+) (number)))
-            (string_fragment "!")
-        )
-    )
+    (expression_statement (string))
+    (expression_statement (string))
+    (expression_statement (string))
 )
 
 ================

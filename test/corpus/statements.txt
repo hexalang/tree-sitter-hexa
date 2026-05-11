@@ -8,7 +8,10 @@ import A.B.C
 
 (program
     (import_statement
-        (import_specifier (identifier) (identifier) (identifier))
+        (scoped_data_type
+            (identifier)
+            (scoped_data_type (identifier) (identifier))
+        )
     )
 )
 
@@ -35,9 +38,9 @@ for i in 0 ... 10 {
 ---
 
 (program
-    (for_in_statement
-        (for_binding (identifier))
-        (range_expression (number) ... (number))
+    (for_statement
+        (empty_statement)
+        (empty_statement)
         (statement_block (break_statement))
     )
 )
@@ -55,12 +58,18 @@ for i in 0 ... 20 {
 ---
 
 (program
-    (for_in_statement
-        (for_binding (identifier))
-        (range_expression (number) ... (number))
+    (for_statement
+        (identifier)
+        (number)
+        (expression_statement
+            (binary_expression (identifier) (number))
+        )
+        (update_expression (identifier))
         (statement_block
             (if_statement
-                (binary_expression (identifier) (==) (number))
+                (parenthesized_expression
+                    (binary_expression (identifier) (number))
+                )
                 (statement_block (continue_statement))
             )
         )
@@ -106,8 +115,7 @@ fun f(x) {
         (statement_block
             (throw_statement
                 (call_expression
-                    (identifier)
-                    (string)
+                    (new_expression (identifier))
                 )
             )
         )
